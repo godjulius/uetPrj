@@ -5,7 +5,7 @@
     --topbar-border-color: var(--p-surface-200);
 }
 
-.my-app-dark {
+.dark {
     --topbar-sticky-background: rgba(0, 0, 0, 0.3);
     --topbar-border-color: var(--p-surface-700);
 }
