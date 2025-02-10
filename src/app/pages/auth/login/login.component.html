@@ -12,8 +12,9 @@
                 </h1>
                 <form [formGroup]="loginForm" class="space-y-4 md:space-y-6" (ngSubmit)="login()">
                     <div class="relative">
-                        <label for="email" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Your
-                            email</label>
+                        <label for="email" class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">
+                            Your email
+                        </label>
                         <input pInputText id="email" formControlName="email" class="w-full"
                                [ngClass]="{'ng-dirty': isEmailInvalid()}"/>
                         <p-message *ngIf="isEmailInvalid()" severity="error" variant="simple" size="small"
@@ -21,7 +22,7 @@
                         </p-message>
                     </div>
                     <div class="relative">
-                        <label for="password" class="block mb-2 text-lg font-medium text-gray-900 dark:text-white">Password</label>
+                        <label for="password" class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">Password</label>
                         <input type="password" pInputText id="password" aria-describedby="password-help"
                                formControlName="password" class="w-full" [ngClass]="{'ng-dirty': isPasswordInvalid()}"/>
                         <p-message *ngIf="isPasswordInvalid()" severity="error" variant="simple" size="small"

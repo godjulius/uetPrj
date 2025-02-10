@@ -1,0 +1,125 @@
+<div class="mobile-sidebar">
+    <p-drawer #drawerRef [(visible)]="visible" position="full" (onHide)="toggleSideBar()">
+        <ng-template #headless>
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-between px-6 pt-4 shrink-0">
+                <span class="inline-flex items-center gap-2">
+                    <span class="pi pi-prime !text-2xl"></span>
+                    <span class="font-semibold text-2xl text-primary">Your Logo</span>
+                </span>
+                    <span>
+                    <p-button type="button" (click)="closeCallback($event)" icon="pi pi-times" rounded="true"
+                              outlined="true" styleClass="h-8 w-8"></p-button>
+                </span>
+                </div>
+                <div class="overflow-y-auto mt-2">
+                    <p-panelmenu [model]="items" [multiple]="true" styleClass="w-full sidebar-menu">
+                        <ng-template #item let-item>
+                            <ng-container *ngIf="item.route; else urlRef">
+                                <a [routerLink]="item.route" class="flex align-items-center
+                    cursor-pointer text-color px-3 py-2">
+                                    <span [class]="item.icon"></span>
+                                    <span class="ml-2">{{ item.label }}</span>
+                                </a>
+                            </ng-container>
+                            <ng-template #urlRef>
+                                <a *ngIf="item.url; else noLink" [href]="item.url" class="flex align-items-center
+                    cursor-pointer text-color px-3 py-2">
+                                    <span [class]="item.icon"></span>
+                                    <span class="ml-2">{{ item.label }}</span>
+                                </a>
+                                <ng-template #noLink>
+                    <span class="flex items-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2">
+                        <span [class]="item.icon"></span>
+                        <span class="ml-2">{{ item.label }}</span>
+                        <i *ngIf="item.items" class="pi pi-angle-down text-primary ml-auto"></i>
+                    </span>
+                                </ng-template>
+                            </ng-template>
+                        </ng-template>
+                    </p-panelmenu>
+                </div>
+                <div class="mt-auto">
+                    <hr class="mb-4 mx-4 border-t border-0 border-surface"/>
+                    <a pRipple
+                       class="m-4 flex items-center cursor-pointer p-4 gap-2 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
+                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                                  shape="circle"/>
+                        <span class="font-bold">Amy Elsner</span>
+                    </a>
+                </div>
+            </div>
+        </ng-template>
+    </p-drawer>
+</div>
+
+<div class="desktop-sidebar p-10">
+    <div class=" overflow-y-auto flex-grow-0 h-[calc(100vh-8rem)] w-[20rem]">
+        <p-panelmenu [model]="items" [multiple]="true" styleClass="w-full">
+            <ng-template #item let-item>
+                <ng-container *ngIf="item.route; else urlRef">
+                    <a [routerLink]="item.route" class="flex align-items-center
+                    cursor-pointer text-color px-3 py-2">
+                        <span [class]="item.icon"></span>
+                        <span class="ml-2">{{ item.label }}</span>
+                    </a>
+                </ng-container>
+                <ng-template #urlRef>
+                    <a *ngIf="item.url; else noLink" [href]="item.url" class="flex align-items-center
+                    cursor-pointer text-color px-3 py-2">
+                        <span [class]="item.icon"></span>
+                        <span class="ml-2">{{ item.label }}</span>
+                    </a>
+                    <ng-template #noLink>
+                    <span class="flex items-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2">
+                        <span [class]="item.icon"></span>
+                        <span class="ml-2">{{ item.label }}</span>
+                        <i *ngIf="item.items" class="pi pi-angle-down text-primary ml-auto"></i>
+                    </span>
+                    </ng-template>
+                </ng-template>
+            </ng-template>
+        </p-panelmenu>
+<!--        Desktop sidebar-->
+<!--        <p>head</p>-->
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+<!--        <p>element represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines and/ or first-line indentation, but HTML paragraphs can be any structural grouping of related content, such as images or form fields.-->
+<!--        </p>-->
+<!--        <p>element represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines and/ or first-line indentation, but HTML paragraphs can be any structural grouping of related content, such as images or form fields.-->
+<!--        </p>-->
+<!--        <p>element represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines and/ or first-line indentation, but HTML paragraphs can be any structural grouping of related content, such as images or form fields.-->
+<!--        </p>-->
+<!--        <p>element represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines and/ or first-line indentation, but HTML paragraphs can be any structural grouping of related content, such as images or form fields.-->
+<!--        </p>-->
+
+<!--        <p>element represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines and/ or first-line indentation, but HTML paragraphs can be any structural grouping of related content, such as images or form fields.-->
+<!--        </p>-->
+<!--        <p>element represents a paragraph. Paragraphs are usually represented in visual media as blocks of text separated from adjacent blocks by blank lines and/ or first-line indentation, but HTML paragraphs can be any structural grouping of related content, such as images or form fields.-->
+<!--        </p>-->
+
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+<!--        <p>123123123123123123</p>-->
+    </div>
+
+</div>
