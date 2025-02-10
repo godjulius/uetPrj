@@ -1,0 +1,31 @@
+.sidebar-menu:first-child .p-panelmenu-panel:first-child, .sidebar-menu:first-child .p-panelmenu-panel:last-child{
+    border-radius: 0;
+}
+
+.sidebar-menu:first-child .p-panelmenu-panel {
+    border-left: none;
+    border-right: none;
+}
+
+/* Giảm độ rộng của thanh cuộn */
+::-webkit-scrollbar {
+    width: 6px;  /* Độ rộng dọc */
+    height: 6px; /* Độ rộng ngang */
+}
+
+/* Tùy chỉnh màu nền của thanh cuộn */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+/* Tùy chỉnh phần kéo của thanh cuộn */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
+}
+
+/* Khi hover vào thanh cuộn */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

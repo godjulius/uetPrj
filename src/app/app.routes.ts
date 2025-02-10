@@ -8,5 +8,9 @@ export const routes: Routes = [
     {
         path: 'account',
         loadChildren: () => import('./pages/auth/auth.routes').then(m => m.routes)
+    },
+    {
+        path: 'demo',
+        loadChildren: () => import('./layout/demo/demo.routes').then(m => m.routes)
     }
 ];

@@ -1,4 +1,11 @@
---root {
+:root {
     /*change colors in app-preset.ts*/
     --p-background-500: #000000;
+    --topbar-sticky-background: rgba(255, 255, 255, 0.3);
+    --topbar-border-color: var(--p-surface-200);
+}
+
+.my-app-dark {
+    --topbar-sticky-background: rgba(0, 0, 0, 0.3);
+    --topbar-border-color: var(--p-surface-700);
 }

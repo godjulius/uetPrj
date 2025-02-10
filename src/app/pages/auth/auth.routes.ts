@@ -13,4 +13,4 @@ export const routes: Routes = [
         component: LoginComponent
     }
 
-]
+];
