@@ -1,12 +1,19 @@
 .demo-top-bar {
-    /*border-bottom: 1px solid var(--border-color);*/
+    /*background-color: var(--topbar-sticky-background);*/
+    position: fixed;
+    top: 0;
+    height: 3rem;
+    left: 0;
+    z-index: 1100;
+    transition: background-color .5s, border-color .5s;
+    border-bottom: 1px solid transparent;
+}
+
+.demo-top-bar.demo-top-bar-sticky {
+    border-bottom: 1px solid var(--topbar-border-color);
     background-color: var(--topbar-sticky-background);
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
-    position: sticky;
-    top: 0;
-    height: 3rem;
-    border-bottom: 1px solid var(--topbar-border-color);
 }
 
 @media(min-width: 1024px) {

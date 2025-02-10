@@ -1,6 +1,6 @@
-<div class="w-full mx-auto flex items-center justify-between px-2 demo-top-bar">
+<div id="app-header" class="w-full mx-auto flex items-center justify-between px-2 md:px-12 demo-top-bar" [ngClass]="isStickyHeader ? 'demo-top-bar-sticky' : ''">
     <div class="flex align-middle items-center text-center">
-        <span class="pi pi-bars px-3 cursor-pointer icon-sidebar" (click)="toggleSideBar()"></span>
+        <span class="pi pi-bars pr-3 cursor-pointer icon-sidebar" (click)="toggleSideBar()"></span>
         <svg width="31" height="33" viewBox="0 0 31 33" fill="none" xmlns="http://www.w3.org/2000/svg"
              style="width: 2rem; margin-right: 1rem">
             <path
@@ -63,14 +63,16 @@
                 fill="var(--ground-background)"
             />
         </svg>
-        <span>App Name</span>
+        <span class="text-black dark:text-white font-bold text-2xl">
+            PRIME<span style="color: var(--p-primary-400)">NG</span>
+        </span>
     </div>
     <div class="flex items-center space-x-2">
-        <p-button icon="pi pi-cog" size="small" variant="outlined" severity="contrast" styleClass="!w-8 h-8"></p-button>
         @if(isDarkTheme) {
             <p-button icon="pi pi-moon" size="small" variant="outlined" severity="contrast" styleClass="!w-8 h-8" (click)="changeColorTheme()"></p-button>
         } @else {
             <p-button icon="pi pi-sun" size="small" variant="outlined" severity="contrast" styleClass="!w-8 h-8" (click)="changeColorTheme()"></p-button>
         }
+        <p-button icon="pi pi-cog" size="small" variant="outlined" severity="contrast" styleClass="!w-8 h-8"></p-button>
     </div>
 </div>
