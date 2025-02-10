@@ -28,7 +28,9 @@ export class DemoHeaderComponent {
     }
 
     checkDarkTheme() {
-        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+            && document.documentElement.classList.contains('dark')
+        ) {
             document.documentElement.classList.add('dark');
             this.isDarkTheme = true;
         }
