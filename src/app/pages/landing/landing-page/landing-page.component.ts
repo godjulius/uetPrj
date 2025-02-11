@@ -5,6 +5,8 @@ import {CommonModule} from '@angular/common';
 import {Toolbar} from 'primeng/toolbar';
 import {ButtonModule} from 'primeng/button';
 import {AvatarModule} from 'primeng/avatar';
+import {Ripple} from 'primeng/ripple';
+import {HeaderUtilsComponent} from '../../../layout/header-utils/header-utils.component';
 
 @Component({
     selector: 'app-landing-page',
@@ -13,7 +15,7 @@ import {AvatarModule} from 'primeng/avatar';
         CommonModule,
         RouterModule,
         Toolbar, AvatarModule, ButtonModule,
-        RouterModule
+        RouterModule, Ripple, HeaderUtilsComponent
 
     ],
     templateUrl: './landing-page.component.html',

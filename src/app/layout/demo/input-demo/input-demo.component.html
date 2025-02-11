@@ -1,0 +1,165 @@
+<div class="mt-14">
+    <h1 class="font-bold text-5xl mb-8">
+        Input group
+    </h1>
+    <p-card header="Basic input group" styleClass="mb-8">
+        <div class="card grid grid-cols-1 md:grid-cols-2 gap-4">
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-user"></i>
+                </p-inputgroup-addon>
+                <input pInputText placeholder="Username"/>
+            </p-inputgroup>
+
+            <p-inputgroup>
+                <p-inputgroup-addon>$</p-inputgroup-addon>
+                <p-inputnumber placeholder="Price"></p-inputnumber>
+                <p-inputgroup-addon>.00</p-inputgroup-addon>
+            </p-inputgroup>
+
+            <p-inputgroup>
+                <p-inputgroup-addon>www</p-inputgroup-addon>
+                <input pInputText placeholder="Website"/>
+            </p-inputgroup>
+
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <i class="pi pi-map"></i>
+                </p-inputgroup-addon>
+                <p-select [options]="cities" optionLabel="name" placeholder="City"/>
+            </p-inputgroup>
+
+            <p-inputgroup class="w-full">
+                <p-inputgroup-addon>
+                    <i class="pi pi-clock"></i>
+                </p-inputgroup-addon>
+                <p-inputgroup-addon>
+                    <i class="pi pi-star-fill"></i>
+                </p-inputgroup-addon>
+                <input type="text" pInputText placeholder="Price" />
+                <p-inputgroup-addon>$</p-inputgroup-addon>
+                <p-inputgroup-addon>.00</p-inputgroup-addon>
+            </p-inputgroup>
+
+        </div>
+    </p-card>
+
+    <p-card header="Input group with button" styleClass="mb-8">
+        <div class="card flex flex-col md:flex-row gap-4">
+            <p-inputgroup>
+                <p-button label="Search"/>
+                <input pInputText placeholder="Keyword"/>
+            </p-inputgroup>
+
+            <p-inputgroup>
+                <input pInputText placeholder="Keyword"/>
+                <p-inputgroup-addon>
+                    <p-button icon="pi pi-search" severity="secondary" variant="text" (click)="menu.toggle($event)"/>
+                </p-inputgroup-addon>
+            </p-inputgroup>
+            <p-menu #menu [model]="itemsInputWithButton" popup styleClass="!min-w-fit"/>
+
+            <p-inputgroup>
+                <p-inputgroup-addon>
+                    <p-button icon="pi pi-check" severity="secondary"/>
+                </p-inputgroup-addon>
+                <input pInputText placeholder="Vote"/>
+                <p-inputgroup-addon>
+                    <p-button icon="pi pi-times" severity="secondary"/>
+                </p-inputgroup-addon>
+            </p-inputgroup>
+        </div>
+    </p-card>
+
+    <h1 class="font-bold text-5xl mb-8">
+        Input mask
+    </h1>
+    <p-card header="Input group with button" styleClass="mb-8">
+        <p-fluid class="card flex flex-wrap gap-4">
+            <div class="flex-auto">
+                <span class="font-bold block mb-2">SSN</span>
+                <p-inputmask mask="999-99-9999" placeholder="999-99-9999" />
+            </div>
+            <div class="flex-auto">
+                <span class="font-bold block mb-2">Phone</span>
+                <p-inputmask mask="(+84) 999-999999" placeholder="(+84) 999-999999" />
+            </div>
+            <div class="flex-auto">
+                <span class="font-bold block mb-2">Serial Number</span>
+                <p-inputmask mask="a*-999-a999" placeholder="a*-999-a999" />
+            </div>
+        </p-fluid>
+    </p-card>
+
+    <h1 class="font-bold text-5xl mb-8">
+        Input OTP
+    </h1>
+    <p-card header="Basic" styleClass="mb-8">
+        <div class="card flex justify-center mb-8">
+            <p-inputotp [integerOnly]="true"></p-inputotp>
+        </div>
+<!--        <p-inputotp [integerOnly]="true" [mask]="true"></p-inputotp>-->
+    </p-card>
+    <p-card header="Input group with button" styleClass="mb-8">
+        <p-fluid class="card flex flex-wrap gap-4">
+            <div class="flex-auto">
+                <span class="font-bold block mb-2">SSN</span>
+                <p-inputmask mask="999-99-9999" placeholder="999-99-9999" />
+            </div>
+            <div class="flex-auto">
+                <span class="font-bold block mb-2">Phone</span>
+                <p-inputmask mask="(+84) 999-999999" placeholder="(+84) 999-999999" />
+            </div>
+            <div class="flex-auto">
+                <span class="font-bold block mb-2">Serial Number</span>
+                <p-inputmask mask="a*-999-a999" placeholder="a*-999-a999" />
+            </div>
+        </p-fluid>
+    </p-card>
+
+    <h1 class="font-bold text-5xl mb-8">
+        Input text
+    </h1>
+    <p-card header="" styleClass="mb-8">
+        <div class="w-1/2 mx-auto flex flex-col gap-8">
+            <div class="w-full">
+                <span>Normal:</span>
+                <input type="text" pInputText class="w-full"/>
+
+            </div>
+            <div class="w-full">
+                <span>Invalid:</span>
+                <input pInputText class="ng-invalid ng-dirty w-full" placeholder="Email"/>
+            </div>
+        </div>
+    </p-card>
+
+    <p-card header="Input with float label" styleClass="mb-8">
+        <div class="flex justify-between gap-8 my-8">
+            <p-floatlabel class="flex-grow">
+                <input pInputText id="over_label" autocomplete="off" class="w-full"/>
+                <label for="over_label">Over Label</label>
+            </p-floatlabel>
+
+
+            <p-floatlabel variant="on" class="flex-grow">
+                <input pInputText id="on_label" autocomplete="off" class="w-full"/>
+                <label for="on_label">On Label</label>
+            </p-floatlabel>
+        </div>
+        <div class="flex justify-center">
+            <p-floatlabel variant="in" class="w-1/2 flex justify-center">
+                <input pInputText id="in_label" autocomplete="off" class="w-full"/>
+                <label for="in_label">In Label</label>
+            </p-floatlabel>
+        </div>
+    </p-card>
+
+    <p-card header="Input text" styleClass="mb-8">
+        <div class="flex flex-col justify-between gap-8 my-8 w-1/2 mx-auto">
+            <input pInputText type="text" pSize="small" placeholder="Small" class="flex-grow"/>
+            <input pInputText type="text" placeholder="Normal" class="flex-grow"/>
+            <input pInputText type="text" pSize="large" placeholder="Large" class="flex-grow"/>
+        </div>
+    </p-card>
+</div>

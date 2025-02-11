@@ -1,0 +1,66 @@
+<div class="flex items-center space-x-2">
+    <div>
+        <p-button icon="pi pi-language" size="small" variant="outlined" severity="contrast"
+                  styleClass="!w-8 h-8" (click)="openDialogLanguage($event)"></p-button>
+        <ng-container [ngTemplateOutlet]="languagesRef"></ng-container>
+    </div>
+    @if (isDarkTheme) {
+        <p-button icon="pi pi-moon" size="small" variant="outlined" severity="contrast" styleClass="!w-8 h-8"
+                  (click)="changeColorTheme()"></p-button>
+    } @else {
+        <p-button icon="pi pi-sun" size="small" variant="outlined" severity="contrast" styleClass="!w-8 h-8"
+                  (click)="changeColorTheme()"></p-button>
+    }
+    <p-button icon="pi pi-cog" size="small" variant="outlined" (click)="settingDrawer = true;" severity="contrast"
+              styleClass="!w-8 h-8"></p-button>
+</div>
+
+<p-drawer [(visible)]="settingDrawer" position="right">
+    <ng-template #header>
+        <div class="flex items-center gap-2">
+            <p-avatar
+                image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                shape="circle"
+            />
+            <span class="font-bold">Amy Elsner</span>
+        </div>
+    </ng-template>
+    <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+    </p>
+    <ng-template #footer>
+        <div class="flex items-center gap-2">
+            <button pButton label="Account" icon="pi pi-user" class="w-full" outlined></button>
+            <button
+                pButton
+                label="Logout"
+                icon="pi pi-sign-out"
+                class="w-full"
+                severity="danger"
+                text
+            ></button>
+        </div>
+    </ng-template>
+</p-drawer>
+
+<ng-template #languagesRef>
+
+    <p-popover #languages>
+        <div class="flex flex-col gap-4">
+            <div>
+                <span class="font-medium block mb-2">Languages</span>
+                <ul class="list-none p-0 m-0 flex flex-col">
+                    <li *ngFor="let language of languagesList"
+                        class="flex items-center gap-1 py-2 hover:bg-emphasis cursor-pointer rounded-border"
+                        (click)="selectLanguage(language)">
+                        <div class="flex gap-1">
+                            <img [src]="language.icon"
+                                 alt="flag" style="width: 32px"/>
+                            <span class="font-medium">{{ language.name }}</span>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </p-popover>
+</ng-template>

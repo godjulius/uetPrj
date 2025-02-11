@@ -3,9 +3,15 @@
     --p-background-500: #000000;
     --topbar-sticky-background: rgba(255, 255, 255, 0.3);
     --topbar-border-color: var(--p-surface-200);
+    --topbar-background-color: var(--p-surface-200);
+    --router-link-active-color: var(--p-primary-400);
+    --router-link-sidebar-color: var(--p-gray-500);
+    --router-link-active-background-color: var(--p-surface-200);
 }
 
 .dark {
     --topbar-sticky-background: rgba(0, 0, 0, 0.3);
     --topbar-border-color: var(--p-surface-700);
+    --topbar-background-color: var(--p-surface-900);
+    --router-link-sidebar-color: var(--p-gray-50);
 }

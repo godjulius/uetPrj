@@ -3,7 +3,6 @@
 @import "assets/css/fonts.css";
 @import "assets/css/colors.css";
 @import "assets/css/custom.css";
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

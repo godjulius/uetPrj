@@ -7,6 +7,13 @@
     border-right: none;
 }
 
+.sidebar-menu-desktop:first-child .p-panelmenu-panel {
+    border: none;
+    border-radius: 0;
+    background-color: transparent;
+    border-left: 1px solid var(--topbar-border-color);
+}
+
 /* Giảm độ rộng của thanh cuộn */
 ::-webkit-scrollbar {
     width: 6px;  /* Độ rộng dọc */

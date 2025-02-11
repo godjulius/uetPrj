@@ -5,5 +5,11 @@
 
 }
 
-.desktop-sidebar {
+.router-link-sidebar {
+    color: var(--router-link-sidebar-color);
+}
+
+.active-menuitem-sidebar {
+    color: var(--router-link-active-color) !important;
+    border-left: 1px solid var(--router-link-active-color);
 }
