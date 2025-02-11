@@ -1,10 +1,10 @@
 .demo-top-bar {
-    /*background-color: var(--topbar-sticky-background);*/
+    background-color: var(--topbar-background-color);
     position: fixed;
     top: 0;
     height: 3rem;
     left: 0;
-    z-index: 1100;
+    z-index: 200;
     transition: background-color .5s, border-color .5s;
     border-bottom: 1px solid transparent;
 }
