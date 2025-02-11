@@ -97,4 +97,8 @@ export class DemoSidebarComponent implements OnInit {
     closeCallback(e: any): void {
         this.drawerRef.close(e);
     }
+
+    closeDrawerCallback(e: any): void {
+        this.drawerRef.close(e);
+    }
 }
