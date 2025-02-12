@@ -38,10 +38,22 @@
 }
 
 .landing-header {
+    /*background-color: var(--topbar-background-color) !important;*/
     position: fixed !important;
+    top: 1rem;
     width: 80% !important;
     transform: translateX(10%) !important;
+    height: 4rem;
+    left: 0;
+    z-index: 200;
+    transition: background-color .5s, border-color .5s;
+    border-bottom: 1px solid transparent;
+    background: none !important;
+}
+
+.landing-header.landing-header-sticky {
+    border: 1px solid var(--topbar-border-color);
     background-color: var(--topbar-sticky-background) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
 }
