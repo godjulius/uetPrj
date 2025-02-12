@@ -1,5 +1,5 @@
 .demo-top-bar {
-    background-color: var(--topbar-background-color);
+    /*background-color: var(--topbar-background-color);*/
     position: fixed;
     top: 0;
     height: 3rem;

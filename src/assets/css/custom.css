@@ -36,3 +36,12 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
 }
+
+.landing-header {
+    position: fixed !important;
+    width: 80% !important;
+    transform: translateX(10%) !important;
+    background-color: var(--topbar-sticky-background) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    backdrop-filter: blur(8px) !important;
+}

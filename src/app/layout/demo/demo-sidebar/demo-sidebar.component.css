@@ -5,11 +5,18 @@
 
 }
 
+.desktop-sidebar {
+    position: sticky;
+    top: 5rem;
+}
+
 .router-link-sidebar {
     color: var(--router-link-sidebar-color);
 }
 
 .active-menuitem-sidebar {
     color: var(--router-link-active-color) !important;
-    border-left: 1px solid var(--router-link-active-color);
+    /*border-left: 1px solid var(--router-link-active-color);*/
+    background: var(--p-panelmenu-item-focus-background);
+    border-radius: 6px;
 }

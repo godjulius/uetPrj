@@ -78,7 +78,116 @@ export class DemoSidebarComponent implements OnInit {
                         label: 'Vite.js',
                         icon: 'pi pi-bookmark',
                         url: 'https://vitejs.dev/'
-                    }
+                    },
+                    {
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'Vite.js',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },{
+                        label: 'Angular',
+                        icon: 'pi pi-star',
+                        url: 'https://angular.io/'
+                    },
+                    {
+                        label: 'end',
+                        icon: 'pi pi-bookmark',
+                        url: 'https://vitejs.dev/'
+                    },
                 ]
             }
         ];
