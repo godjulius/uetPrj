@@ -11,7 +11,7 @@ import {TranslateService} from '@ngx-translate/core';
     styleUrl: './app.component.css'
 })
 export class AppComponent {
-    title = 'angularBase';
+    title = 'Tiramisu bạc hà';
 
     constructor(private primeng: PrimeNG, private translateService: TranslateService) {
         this.checkDarkTheme();
