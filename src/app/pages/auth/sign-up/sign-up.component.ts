@@ -45,6 +45,7 @@ export class SignUpComponent extends BaseComponent implements OnInit{
         if (this.registerForm.valid) {
             console.log(this.registerForm.value);
         } else {
+            console.log(this.registerForm.get('confirmPassword')?.errors);
             console.log('Form is invalid');
         }
     }
