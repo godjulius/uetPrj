@@ -25,16 +25,19 @@
                         <label for="password" class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">Password</label>
                         <input type="password" pInputText id="password" aria-describedby="password-help"
                                formControlName="password" class="w-full" [ngClass]="{'ng-dirty': isPasswordInvalid()}"/>
-                        <p-message *ngIf="isPasswordInvalid()" severity="error" variant="simple" size="small"
-                                   styleClass="absolute error-message">Invalid Password
+                        <p-message *ngIf="registerForm.get('password')?.hasError('required')" severity="error" variant="simple" size="small"
+                                   styleClass="absolute error-message">Please fill in Password
                         </p-message>
                     </div>
                     <div class="relative">
                         <label for="confirmPassword" class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">Confirm Password</label>
                         <input type="password" pInputText id="confirmPassword" aria-describedby="password-help"
                                formControlName="confirmPassword" class="w-full" [ngClass]="{'ng-dirty': isPasswordInvalid()}"/>
-                        <p-message *ngIf="isPasswordInvalid()" severity="error" variant="simple" size="small"
-                                   styleClass="absolute error-message">Invalid Password
+                        <p-message *ngIf="registerForm.get('confirmPassword')?.hasError('required')" severity="error" variant="simple" size="small"
+                                   styleClass="absolute error-message">Please fill in confirm password
+                        </p-message>
+                        <p-message *ngIf="registerForm?.hasError('passwordMismatch')" severity="error" variant="simple" size="small"
+                                   styleClass="absolute error-message">password miss match
                         </p-message>
                     </div>
                     <div class="">
