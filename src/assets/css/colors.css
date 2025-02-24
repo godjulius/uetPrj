@@ -1,7 +1,7 @@
 :root {
     /*change colors in app-preset.ts*/
     --p-background-500: #000000;
-    --topbar-sticky-background: rgba(255, 255, 255, 0.3);
+    --topbar-sticky-background: rgba(240, 240, 240, 0.3);
     --topbar-border-color: var(--p-surface-200);
     --topbar-background-color: var(--p-surface-200);
     --router-link-active-color: var(--p-primary-400);

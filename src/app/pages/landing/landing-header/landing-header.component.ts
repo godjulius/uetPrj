@@ -90,10 +90,6 @@ export class LandingHeaderComponent implements OnInit {
                 ]
             },
             {
-                label: 'Resources',
-                root: true
-            },
-            {
                 label: 'Contact',
                 root: true
             }

@@ -9,6 +9,8 @@ import {Ripple} from 'primeng/ripple';
 import {HeaderUtilsComponent} from '../../../layout/header-utils/header-utils.component';
 import {LandingHeaderComponent} from '../landing-header/landing-header.component';
 import {Dialog} from 'primeng/dialog';
+import {HeroComponent} from '../hero/hero.component';
+import {LandingCourseListComponent} from '../landing-course-list/landing-course-list.component';
 
 @Component({
     selector: 'app-landing-page',
@@ -17,7 +19,7 @@ import {Dialog} from 'primeng/dialog';
         CommonModule,
         RouterModule,
         Toolbar, AvatarModule, ButtonModule,
-        RouterModule, Ripple, HeaderUtilsComponent, LandingHeaderComponent, Dialog
+        RouterModule, Ripple, HeaderUtilsComponent, LandingHeaderComponent, Dialog, HeroComponent, LandingCourseListComponent
 
     ],
     templateUrl: './landing-page.component.html',
