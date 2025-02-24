@@ -1,9 +1,10 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import {ButtonModule} from 'primeng/button';
 import {CommonModule} from '@angular/common';
 import {DrawerModule} from 'primeng/drawer';
 import {Avatar} from 'primeng/avatar';
 import {Popover, PopoverModule} from 'primeng/popover';
+import {Dialog} from 'primeng/dialog';
 
 @Component({
     selector: 'app-header-utils',

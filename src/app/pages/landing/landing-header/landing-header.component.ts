@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AvatarModule} from 'primeng/avatar';
 import {ButtonModule} from 'primeng/button';
@@ -7,13 +7,19 @@ import {MegaMenuItem} from 'primeng/api';
 import {Ripple} from 'primeng/ripple';
 import {Router, RouterLink, RouterModule} from '@angular/router';
 import {HeaderUtilsComponent} from '../../../layout/header-utils/header-utils.component';
+import {Dialog} from 'primeng/dialog';
+import {FormsModule} from '@angular/forms';
+import {InputTextModule} from 'primeng/inputtext';
+import {IconField} from 'primeng/iconfield';
+import {InputIcon} from 'primeng/inputicon';
 
 @Component({
     selector: 'app-landing-header',
     standalone: true,
     imports: [
         CommonModule,
-        MegaMenu, ButtonModule, AvatarModule, Ripple, RouterLink, RouterModule, HeaderUtilsComponent
+        MegaMenu, ButtonModule, AvatarModule, RouterLink, RouterModule, HeaderUtilsComponent, Dialog,
+        InputIcon, IconField, InputTextModule, FormsModule
     ],
     templateUrl: './landing-header.component.html',
     styleUrl: './landing-header.component.css'
@@ -27,6 +33,7 @@ export class LandingHeaderComponent implements OnInit {
             (document.getElementById('landing-header')?.firstChild! as HTMLDivElement).classList.remove('landing-header-sticky');
         }
     }
+    showSearch: boolean = false;
 
     constructor(private router: Router) {
 
@@ -95,5 +102,9 @@ export class LandingHeaderComponent implements OnInit {
 
     handleLogin() {
         this.router.navigate(['account']);
+    }
+
+    handleToggleSearch() {
+        this.showSearch = !this.showSearch;
     }
 }
