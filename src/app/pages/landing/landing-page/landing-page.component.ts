@@ -8,6 +8,7 @@ import {AvatarModule} from 'primeng/avatar';
 import {Ripple} from 'primeng/ripple';
 import {HeaderUtilsComponent} from '../../../layout/header-utils/header-utils.component';
 import {LandingHeaderComponent} from '../landing-header/landing-header.component';
+import {Dialog} from 'primeng/dialog';
 
 @Component({
     selector: 'app-landing-page',
@@ -16,7 +17,7 @@ import {LandingHeaderComponent} from '../landing-header/landing-header.component
         CommonModule,
         RouterModule,
         Toolbar, AvatarModule, ButtonModule,
-        RouterModule, Ripple, HeaderUtilsComponent, LandingHeaderComponent
+        RouterModule, Ripple, HeaderUtilsComponent, LandingHeaderComponent, Dialog
 
     ],
     templateUrl: './landing-page.component.html',
@@ -26,11 +27,5 @@ export class LandingPageComponent extends BaseComponent{
     constructor(private router: Router) {
         super();
         console.log('Landing page')
-    }
-
-
-
-    navigateToDemo() {
-        this.router.navigate(['demo']);
     }
 }

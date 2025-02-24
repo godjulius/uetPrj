@@ -91,6 +91,11 @@
     </ng-template>
     <ng-template #end>
         <div class="flex items-center gap-2 w-full justify-center md:w-auto">
+            <p-button size="small" variant="outlined" severity="contrast"
+                      styleClass="h-8" iconPos="left" (click)="handleToggleSearch()">
+                <span class="pi pi-search"></span>
+                <span pButtonLabel class="!font-normal hidden xl:inline-block">Search for anything</span>
+            </p-button>
             <app-header-utils></app-header-utils>
             <p-button label="login" severity="contrast" size="small" (click)="handleLogin()"/>
             <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle"/>
@@ -98,3 +103,110 @@
     </ng-template>
 </p-megamenu>
 
+<p-dialog
+    position="top"
+    [(visible)]="showSearch"
+    [modal]="true"
+    [style]="{ margin: '84px' }"
+    [breakpoints]="{ '1199px': '90vw', '575px': '100vw' }"
+    [draggable]="false"
+    [resizable]="false"
+    [dismissableMask]="true"
+>
+    <ng-template #header>
+        <p-iconfield class="w-full">
+            <p-inputicon styleClass="pi pi-search"/>
+            <input type="text" pInputText placeholder="Search" class="w-full"/>
+        </p-iconfield>
+    </ng-template>
+
+    <ng-template #content>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+        <div>
+            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
+            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
+            that the default value is right and also left option is available.
+        </div>
+
+    </ng-template>
+
+    <!--    <ng-template #footer>-->
+    <!--        <div class="flex justify-center align-middle gap-3">-->
+    <!--            <div>-->
+    <!--                123-->
+    <!--            </div>-->
+    <!--            <div>-->
+    <!--                2aaa-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </ng-template>-->
+</p-dialog>
