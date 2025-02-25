@@ -1,7 +1,10 @@
 <p-megamenu id="landing-header" [model]="items" [style]="{ 'border-radius': '3rem', display: 'flex' }"
             styleClass="p-4 bg-surface-0 dark:bg-surface-900 landing-header">
+    <img  src="assets/images/logo.png" alt="logo" class="w-24"/>
     <ng-template #start>
-        <img src="assets/images/logo.png" alt="logo" class="w-24"/>
+        <a routerLink="/">
+            <img src="assets/images/logo.png" alt="logo" class="w-24"/>
+        </a>
     </ng-template>
     <ng-template #item let-item>
         <a *ngIf="item.root"
@@ -54,87 +57,27 @@
     [dismissableMask]="true"
 >
     <ng-template #header>
-        <p-iconfield class="w-full">
-            <p-inputicon styleClass="pi pi-search"/>
-            <input type="text" pInputText placeholder="Search" class="w-full"/>
-        </p-iconfield>
+        <p-inputgroup>
+            <p-button label="Search" (click)="handleSearch()" />
+            <input pInputText placeholder="Keyword" [(ngModel)]="searchKeyword" (keyup.enter)="handleSearch()"/>
+        </p-inputgroup>
     </ng-template>
 
     <ng-template #content>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
-        </div>
-        <div>
-            A group is created by wrapping the input and icon with the IconField component. Each icon is defined as a
-            child of InputIcon component. In addition, position of the icon can be changed using iconPosition property
-            that the default value is right and also left option is available.
+        <div class="flex flex-col ">
+            @for (course of courses; track course.title) {
+                <div class="flex justify-between items-center px-2 py-1 rounded-md cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-600">
+                    <img src="assets/images/hero-img.png" alt="{{ course.title }}" class="course-image h-10 w-auto">
+                    <div class="flex flex-col justify-between ml-4 flex-grow overflow-x-hidden ">
+                        <h3 class="font-bold text-xl line-clamp-1">{{ course.title }}</h3>
+                        <div class="flex items-baseline gap-2">
+                            <p class="text-sm">Course </p>
+                            <p class="text-xs">{{ course.instructor }}</p>
+                        </div>
+
+                    </div>
+                </div>
+            }
         </div>
 
     </ng-template>
