@@ -12,6 +12,7 @@ import {FormsModule} from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
 import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
+import {InputGroup} from 'primeng/inputgroup';
 
 @Component({
     selector: 'app-landing-header',
@@ -19,7 +20,7 @@ import {InputIcon} from 'primeng/inputicon';
     imports: [
         CommonModule,
         MegaMenu, ButtonModule, AvatarModule, RouterLink, RouterModule, HeaderUtilsComponent, Dialog,
-        InputIcon, IconField, InputTextModule, FormsModule
+        InputIcon, IconField, InputTextModule, FormsModule, InputGroup
     ],
     templateUrl: './landing-header.component.html',
     styleUrl: './landing-header.component.css'
@@ -34,6 +35,7 @@ export class LandingHeaderComponent implements OnInit {
         }
     }
     showSearch: boolean = false;
+    searchKeyword: string = '';
 
     constructor(private router: Router) {
 
@@ -41,6 +43,8 @@ export class LandingHeaderComponent implements OnInit {
 
 
     items: MegaMenuItem[] | undefined;
+
+
 
     ngOnInit() {
         this.items = [
@@ -102,5 +106,65 @@ export class LandingHeaderComponent implements OnInit {
 
     handleToggleSearch() {
         this.showSearch = !this.showSearch;
+    }
+
+    courses = [
+        {
+            image: 'https://via.placeholder.com/150/FF5733',
+            title: 'Angular Basics',
+            instructor: 'John Doe'
+        },
+        {
+            image: 'https://via.placeholder.com/150/33B5FF',
+            title: 'Advanced React',
+            instructor: 'Jane Smith'
+        },
+        {
+            image: 'https://via.placeholder.com/150/75FF33',
+            title: 'Vue Mastery',
+            instructor: 'Michael Brown'
+        },
+        {
+            image: 'https://via.placeholder.com/150/FF33A1',
+            title: 'Node.js Essentials',
+            instructor: 'Emily White'
+        },
+        {
+            image: 'https://via.placeholder.com/150/FFA833',
+            title: 'TypeScript Deep Dive',
+            instructor: 'Chris Black'
+        },
+        {
+            image: 'https://via.placeholder.com/150/3385FF',
+            title: 'Full Stack Development',
+            instructor: 'Anna Taylor'
+        },
+        {
+            image: 'https://via.placeholder.com/150/33FF9A',
+            title: 'Python for Beginners',
+            instructor: 'David Wilson'
+        },
+        {
+            image: 'https://via.placeholder.com/150/FF3369',
+            title: 'Data Science with Python Data Science with Python',
+            instructor: 'Sophia Johnson'
+        }
+    ];
+
+
+
+    handleSearch() {
+        this.searchKeyword = this.searchKeyword.trim();
+        if (this.searchKeyword.length === 0) { return }
+
+        this.handleToggleSearch()
+
+        this.router.navigate(['/courses'], {
+            queryParams: { token: this.searchKeyword }
+        }).then(
+            () => {
+                this.searchKeyword = '';
+            }
+        )
     }
 }
