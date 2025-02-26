@@ -55,11 +55,16 @@
     [draggable]="false"
     [resizable]="false"
     [dismissableMask]="true"
+    (onShow)="handleFocusInput()"
 >
     <ng-template #header>
         <p-inputgroup>
             <p-button label="Search" (click)="handleSearch()" />
-            <input pInputText placeholder="Keyword" [(ngModel)]="searchKeyword" (keyup.enter)="handleSearch()"/>
+            <input
+                (input)="handleInputSearch($event)"
+                #inputSearch pInputText placeholder="Keyword" (keyup.enter)="handleSearch()"
+                [(ngModel)]="_searchKeyword"
+            />
         </p-inputgroup>
     </ng-template>
 

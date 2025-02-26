@@ -68,3 +68,15 @@
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
 }
+
+.app-container {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+}
+
+@media screen and (min-width: 1024px) {
+    .app-container {
+        margin-left: 5rem;
+        margin-right: 5rem;
+    }
+}
