@@ -1,10 +1,9 @@
-import {Component, EventEmitter, HostListener, Input, OnInit, Output} from '@angular/core';
+import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {AvatarModule} from 'primeng/avatar';
 import {ButtonModule} from 'primeng/button';
 import {MegaMenu} from 'primeng/megamenu';
 import {MegaMenuItem} from 'primeng/api';
-import {Ripple} from 'primeng/ripple';
 import {Router, RouterLink, RouterModule} from '@angular/router';
 import {HeaderUtilsComponent} from '../../../layout/header-utils/header-utils.component';
 import {Dialog} from 'primeng/dialog';
@@ -13,6 +12,7 @@ import {InputTextModule} from 'primeng/inputtext';
 import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
 import {InputGroup} from 'primeng/inputgroup';
+import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
 
 @Component({
     selector: 'app-landing-header',
@@ -34,11 +34,14 @@ export class LandingHeaderComponent implements OnInit {
             (document.getElementById('landing-header')?.firstChild! as HTMLDivElement).classList.remove('landing-header-sticky');
         }
     }
+    @ViewChild('inputSearch') inputSearch!: ElementRef;
+    searchSubject = new Subject<string>();
     showSearch: boolean = false;
     searchKeyword: string = '';
-
+    // use when user click enter immediately
+    _searchKeyword: string = '';
     constructor(private router: Router) {
-
+        this.searchSubjectSubs();
     }
 
 
@@ -106,6 +109,7 @@ export class LandingHeaderComponent implements OnInit {
 
     handleToggleSearch() {
         this.showSearch = !this.showSearch;
+        console.log(this.inputSearch)
     }
 
     courses = [
@@ -154,17 +158,31 @@ export class LandingHeaderComponent implements OnInit {
 
 
     handleSearch() {
-        this.searchKeyword = this.searchKeyword.trim();
-        if (this.searchKeyword.length === 0) { return }
-
         this.handleToggleSearch()
 
         this.router.navigate(['/courses'], {
-            queryParams: { token: this.searchKeyword }
-        }).then(
-            () => {
-                this.searchKeyword = '';
-            }
-        )
+            queryParams: { token: this._searchKeyword }
+        })
+    }
+
+    handleFocusInput() {
+        this.searchKeyword = '';
+        this._searchKeyword = this.searchKeyword;
+        this.inputSearch.nativeElement.focus();
+    }
+
+    handleInputSearch(event: Event) {
+        this.searchSubject.next((event.target as HTMLInputElement).value);
+    }
+
+    searchSubjectSubs() {
+        this.searchSubject
+            .pipe(
+                debounceTime(500),
+                distinctUntilChanged()
+            )
+            .subscribe((keyword) => {
+            this.searchKeyword = keyword;
+        })
     }
 }

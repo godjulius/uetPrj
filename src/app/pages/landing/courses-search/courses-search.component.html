@@ -1,15 +1,9 @@
-<div class="mx-0 mt-40 lg:mx-20 xl:mx-28 flex flex-col gap-24">
-    <h2 class="text-4xl font-bold">2,769 results for “angular”</h2>
-    <div class="flex justify-between">
-        <div class="flex gap-3 h-16">
-            <p-button icon="pi pi-arrow-right-arrow-left" [outlined]="true" label="Filter" size="large" variant="outlined" styleClass="h-16"/>
-            <p-iftalabel class="w-full md:w-56">
-                <p-select [(ngModel)]="sortBy" inputId="sort-by" [options]="sortValues" optionLabel="label" styleClass="w-full" />
-                <label for="sort-by">City</label>
-            </p-iftalabel>
-        </div>
-        <div class="text-gray-500">
-            2,769 results
+<div class="pt-40 app-container flex flex-col gap-6">
+    <h2 class="text-2xl font-bold">2,769 results for “{{ token }}”</h2>
+    <div class="flex gap-4">
+        <app-courses-filter></app-courses-filter>
+        <div class="flex-grow">
+        <app-courses-search-result></app-courses-search-result>
         </div>
     </div>
 </div>

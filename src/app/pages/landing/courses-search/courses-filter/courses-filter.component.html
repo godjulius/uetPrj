@@ -1,0 +1,9 @@
+<div class="flex justify-between">
+    <div class="flex gap-3 h-16">
+        <p-button icon="pi pi-arrow-right-arrow-left" [outlined]="true" label="Filter" size="large" variant="outlined" styleClass="h-16"/>
+        <p-iftalabel class="w-full md:w-56">
+            <p-select [(ngModel)]="sortBy" inputId="sort-by" [options]="sortValues" optionLabel="label" styleClass="w-full" />
+            <label for="sort-by">City</label>
+        </p-iftalabel>
+    </div>
+</div>

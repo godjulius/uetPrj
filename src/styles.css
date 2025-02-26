@@ -8,7 +8,6 @@
 @tailwind utilities;
 
 html, body {
-    height: 100%;
     transition: background-color .5s, border-color .5s, color .5s;
 }
 
