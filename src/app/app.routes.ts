@@ -13,4 +13,8 @@ export const routes: Routes = [
         path: 'demo',
         loadChildren: () => import('./layout/demo/demo.routes').then(m => m.routes)
     },
+    {
+        path: 'admin',
+        loadChildren: () => import('./pages/admin/admin.routes').then(m => m.routes)
+    },
 ];

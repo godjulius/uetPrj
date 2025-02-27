@@ -1,16 +1,16 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {Drawer, DrawerModule} from 'primeng/drawer';
+import {AvatarModule} from "primeng/avatar";
+import {ButtonModule} from "primeng/button";
+import {Drawer, DrawerModule} from "primeng/drawer";
+import {CommonModule} from "@angular/common";
+import {PanelMenu} from "primeng/panelmenu";
+import {Ripple} from "primeng/ripple";
+import {Router, RouterLink, RouterModule} from "@angular/router";
+import {MenuItem} from 'primeng/api';
 import {LayoutService} from '../../../shared/services/layout.service';
-import {AvatarModule} from 'primeng/avatar';
-import {Ripple} from 'primeng/ripple';
-import {ButtonModule} from 'primeng/button';
-import {MenuItem, MenuItemCommandEvent} from 'primeng/api';
-import {PanelMenu} from 'primeng/panelmenu';
-import {ActivatedRoute, Router, RouterLink, RouterModule} from '@angular/router';
 
 @Component({
-  selector: 'app-demo-sidebar',
+  selector: 'app-admin-sidebar',
   standalone: true,
     imports: [
         CommonModule,
@@ -22,14 +22,14 @@ import {ActivatedRoute, Router, RouterLink, RouterModule} from '@angular/router'
         RouterLink,
         RouterModule,
     ],
-  templateUrl: './demo-sidebar.component.html',
-  styleUrl: './demo-sidebar.component.css'
+  templateUrl: './admin-sidebar.component.html',
+  styleUrl: './admin-sidebar.component.css'
 })
-export class DemoSidebarComponent implements OnInit {
+export class AdminSidebarComponent implements OnInit {
     items!: MenuItem[];
     visible: boolean = false;
     @ViewChild('drawerRef') drawerRef!: Drawer;
-    constructor(private layoutService: LayoutService, private router: Router, private route: ActivatedRoute) {
+    constructor(private router: Router, private layoutService: LayoutService) {
         this.sidebarSubjectSubscribe();
     }
 
