@@ -17,7 +17,6 @@ import {RouterOutlet} from '@angular/router';
     styleUrl: './demo.component.css'
 })
 export class DemoComponent{
-    // @ViewChild('mainContent') mainContent!: ElementRef<HTMLDivElement>;
     @HostListener('window:scroll', ['$event'])
     onWindowScroll() {
         if(window.scrollY > 48) {

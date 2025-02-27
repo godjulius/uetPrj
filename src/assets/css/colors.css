@@ -8,7 +8,6 @@
     --router-link-sidebar-color: var(--p-gray-500);
     --router-link-active-background-color: var(--p-surface-200);
     --glow-blend: hard-light, color-dodge;
-    /*--glow-image: url(https://www.primefaces.org/cdn/primevue/images/layout/pattern.png), radial-gradient(50% 50% at center -25px, var(--p-primary-color) 0%, #000000 100%);*/
     --glow-image: url('../images/pattern.png'), radial-gradient(50% 50% at center -25px, var(--p-primary-color) 0%, #000000 100%);
 }
 
