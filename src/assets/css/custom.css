@@ -121,3 +121,9 @@
     background: var(--p-panelmenu-item-focus-background);
     border-radius: 6px;
 }
+
+@media(min-width: 1026px) {
+    .icon-sidebar {
+        display: none;
+    }
+}
