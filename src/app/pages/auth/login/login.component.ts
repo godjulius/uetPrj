@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {SessionStorageService} from '../../../core/services/session-storage.service';
+declare var google: any;
+import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {MessageService} from 'primeng/api';
 import {ButtonModule} from 'primeng/button';
@@ -9,6 +11,8 @@ import {BaseComponent} from '../../../core/base.component';
 import {TranslatePipe} from '@ngx-translate/core';
 import {Message} from 'primeng/message';
 import {CardModule} from 'primeng/card';
+import {AuthService} from '../auth.service';
+import {environment} from '../../../../environments/environment';
 
 @Component({
     selector: 'app-login',
@@ -20,7 +24,8 @@ import {CardModule} from 'primeng/card';
 })
 export class LoginComponent extends BaseComponent implements OnInit {
     loginForm!: FormGroup;
-
+    authService = inject(AuthService)
+    sessionStorageService = inject(SessionStorageService)
     constructor(private fb: FormBuilder) {
         super();
     }
@@ -30,6 +35,19 @@ export class LoginComponent extends BaseComponent implements OnInit {
             email: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required]
         });
+        this.renderGoogleSignInButton();
+    }
+
+    renderGoogleSignInButton() {
+        google.accounts.id.initialize({
+            client_id: environment['google_oauth2'],
+            callback: (res: any) => this.signInGoogle(res)
+        })
+        google.accounts.id.renderButton(document.getElementById('google-signIn-btn') ,{
+                theme: 'outline',
+                size: 'large',
+                shape: 'rectangle',
+            });
     }
 
     login() {
@@ -48,5 +66,18 @@ export class LoginComponent extends BaseComponent implements OnInit {
     isPasswordInvalid(): boolean {
         const passwordControl = this.loginForm.get('password');
         return passwordControl!.invalid && (passwordControl!.dirty || passwordControl!.touched);
+    }
+
+    private decodeToken(token: string) {
+        return JSON.parse(atob(token.split('.')[1]));
+    }
+
+    signInGoogle(res: any) {
+        if(res) {
+            console.log(res)
+            const resPayload = this.decodeToken(res.credential);
+            this.sessionStorageService.set('googleUser', resPayload);
+            console.log(resPayload);
+        }
     }
 }

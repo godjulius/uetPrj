@@ -1,0 +1,77 @@
+<div class="mobile-sidebar">
+    <p-drawer #drawerRef [(visible)]="visible" position="full" (onHide)="toggleSideBar()">
+        <ng-template #headless>
+            <div class="flex flex-col h-full">
+                <div class="flex items-center justify-between px-6 pt-4 shrink-0">
+                <span class="inline-flex items-center gap-2">
+                    <img src="assets/images/logo.png" alt="logo" class="w-24">
+                </span>
+                    <span>
+                    <p-button type="button" (click)="closeCallback($event)" icon="pi pi-times" rounded="true"
+                              outlined="true" styleClass="h-8 w-8"></p-button>
+                </span>
+                </div>
+                <div class="overflow-y-auto mt-2">
+                    <p-panelmenu [model]="items" [multiple]="true" styleClass="w-full sidebar-menu">
+                        <ng-template #item let-item>
+                            <ng-container *ngIf="item.routerLink; else urlRef" >
+                                <a [routerLink]="item.routerLink" class="flex align-items-center
+                                    cursor-pointer text-color px-3 py-2"
+                                   routerLinkActive="active-menuitem-dashboard-sidebar"
+                                   [routerLinkActiveOptions]="{exact:true}"
+                                   (click)="closeDrawerCallback($event)"
+                                >
+                                    <span [class]="item.icon"></span>
+                                    <span class="ml-2">{{ item.label }}</span>
+                                </a>
+                            </ng-container>
+                            <ng-template #urlRef>
+                    <span class="flex items-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2">
+                        <span [class]="item.icon"></span>
+                        <span class="ml-2">{{ item.label }}</span>
+                        <i *ngIf="item.items" class="pi pi-angle-down text-primary ml-auto"></i>
+                    </span>
+                            </ng-template>
+                        </ng-template>
+                    </p-panelmenu>
+                </div>
+                <div class="mt-auto">
+                    <hr class="mb-4 mx-4 border-t border-0 border-surface"/>
+                    <a pRipple
+                       class="m-4 flex items-center cursor-pointer p-4 gap-2 rounded-border text-surface-700 dark:text-surface-100 hover:bg-surface-100 dark:hover:bg-surface-700 duration-150 transition-colors p-ripple">
+                        <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                                  shape="circle"/>
+                        <span class="font-bold">Amy Elsner</span>
+                    </a>
+                </div>
+            </div>
+        </ng-template>
+    </p-drawer>
+</div>
+
+<div class="desktop-dashboard-sidebar my-16 mx-8 mb-0">
+    <div class=" overflow-y-auto flex-grow-0 h-[calc(100vh-8rem)] w-[20rem]">
+        <p-panelmenu [model]="items" [multiple]="true" styleClass="w-full sidebar-menu-desktop text-black dark:text-white">
+            <ng-template #item let-item>
+                <ng-container *ngIf="item.routerLink; else urlRef">
+                    <a [routerLink]="item.routerLink" class="flex align-items-center
+                    cursor-pointer text-color px-3 py-2 router-link-dashboard-sidebar"
+                       routerLinkActive="active-menuitem-dashboard-sidebar"
+                       [routerLinkActiveOptions]="{exact:true}"
+                    >
+                        <span [class]="item.icon"></span>
+                        <span class="ml-2">{{ item.label }}</span>
+                    </a>
+                </ng-container>
+                <ng-template #urlRef>
+                    <span class="flex items-center cursor-pointer text-surface-700 dark:text-surface-0 px-4 py-2">
+                        <span [class]="item.icon"></span>
+                        <span class="ml-2">{{ item.label }}</span>
+                        <i *ngIf="item.items" class="pi pi-angle-down text-primary ml-auto"></i>
+                    </span>
+                </ng-template>
+            </ng-template>
+        </p-panelmenu>
+    </div>
+
+</div>
