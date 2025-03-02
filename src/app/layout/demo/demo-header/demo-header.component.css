@@ -15,9 +15,3 @@
     -webkit-backdrop-filter: blur(8px);
     backdrop-filter: blur(8px);
 }
-
-@media(min-width: 1026px) {
-    .icon-sidebar {
-        display: none;
-    }
-}

@@ -1,0 +1,11 @@
+<div id="app-header" class="w-full mx-auto flex items-center justify-between px-2 md:px-40 dashboard-top-bar">
+    <div class="flex align-middle items-center text-center cursor-pointer">
+        <span class="pi pi-bars pr-3 cursor-pointer icon-sidebar" (click)="toggleSideBar()"></span>
+        <span class="text-black dark:text-white font-bold text-2xl flex" (click)="navigateToLandingPage()">
+            <img src="assets/images/logo.png" alt="logo" class="w-24">
+        </span>
+    </div>
+    <div class="flex items-center space-x-2">
+        <app-header-utils></app-header-utils>
+    </div>
+</div>
