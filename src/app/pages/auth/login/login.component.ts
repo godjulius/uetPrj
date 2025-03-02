@@ -5,7 +5,7 @@ import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/
 import {MessageService} from 'primeng/api';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
-import {RouterModule} from '@angular/router';
+import {Router, RouterModule} from '@angular/router';
 import {CommonModule} from '@angular/common';
 import {BaseComponent} from '../../../core/base.component';
 import {TranslatePipe} from '@ngx-translate/core';
@@ -25,6 +25,7 @@ import {environment} from '../../../../environments/environment';
 export class LoginComponent extends BaseComponent implements OnInit {
     loginForm!: FormGroup;
     authService = inject(AuthService)
+    private router = inject(Router);
     sessionStorageService = inject(SessionStorageService)
     constructor(private fb: FormBuilder) {
         super();
@@ -47,6 +48,8 @@ export class LoginComponent extends BaseComponent implements OnInit {
                 theme: 'outline',
                 size: 'large',
                 shape: 'rectangle',
+                width: '400px',
+                height: '46px',
             });
     }
 
@@ -76,8 +79,15 @@ export class LoginComponent extends BaseComponent implements OnInit {
         if(res) {
             console.log(res)
             const resPayload = this.decodeToken(res.credential);
-            this.sessionStorageService.set('googleUser', resPayload);
+            this.sessionStorageService.setObject('googleUser', resPayload);
             console.log(resPayload);
+            this.router.navigate(['/teacher']);
         }
+    }
+
+    signOutGoogle() {
+        console.log(1)
+        this.sessionStorageService.removeObject('googleUser');
+        google.accounts.id.disableAutoSelect();
     }
 }

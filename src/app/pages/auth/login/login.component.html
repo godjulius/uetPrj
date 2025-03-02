@@ -47,9 +47,10 @@
                             {{ 'LOGIN' | translate }}
                         </p-button>
                     </div>
-                    <div class="flex justify-center">
-                        <div id="google-signIn-btn" class="w-full flex justify-center"></div>
-                    </div>
+                    <div id="google-signIn-btn" class=""></div>
+                    <p-button (click)="signOutGoogle()" styleClass="w-full">
+                        sign out google
+                    </p-button>
                     <p class="text-sm font-light text-gray-500 dark:text-gray-400">
                         Don’t have an account yet?
                         <a routerLink="/account/register"
