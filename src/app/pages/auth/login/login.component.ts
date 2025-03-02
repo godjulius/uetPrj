@@ -1,6 +1,5 @@
 import {SessionStorageService} from '../../../core/services/session-storage.service';
-declare var google: any;
-import {Component, inject, OnInit} from '@angular/core';
+import {AfterViewInit, Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {MessageService} from 'primeng/api';
 import {ButtonModule} from 'primeng/button';
@@ -14,6 +13,8 @@ import {CardModule} from 'primeng/card';
 import {AuthService} from '../auth.service';
 import {environment} from '../../../../environments/environment';
 
+declare var google: any;
+
 @Component({
     selector: 'app-login',
     standalone: true,
@@ -22,7 +23,7 @@ import {environment} from '../../../../environments/environment';
     styleUrl: './login.component.css',
     providers: [MessageService]
 })
-export class LoginComponent extends BaseComponent implements OnInit {
+export class LoginComponent extends BaseComponent implements OnInit, AfterViewInit {
     loginForm!: FormGroup;
     authService = inject(AuthService)
     private router = inject(Router);
@@ -36,20 +37,32 @@ export class LoginComponent extends BaseComponent implements OnInit {
             email: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required]
         });
+
+    }
+
+    ngAfterViewInit() {
         this.renderGoogleSignInButton();
     }
 
     renderGoogleSignInButton() {
         google.accounts.id.initialize({
             client_id: environment['google_oauth2'],
-            callback: (res: any) => this.signInGoogle(res)
-        })
+            callback: (res: any) => this.signInGoogle(res),
+            ux_mode: 'popup', // 🔹 Chuyển sang popup mode
+        });
+
+        // Redirect mode
+        // google.accounts.id.initialize({
+        //     client_id: environment['google_oauth2'],
+        //     callback: (res: any) => this.signInGoogle(res),
+        //     ux_mode: 'redirect', // 🔹 Chuyển sang redirect mode
+        //     login_uri: 'http://localhost:4200' // 🔹 URL nhận dữ liệu sau khi đăng nhập
+        // })
         google.accounts.id.renderButton(document.getElementById('google-signIn-btn') ,{
-                theme: 'outline',
+                theme: 'filled_blue',
                 size: 'large',
-                shape: 'rectangle',
-                width: '400px',
-                height: '46px',
+                shape: 'circle',
+                width: '10px',
             });
     }
 
@@ -79,6 +92,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
         if(res) {
             console.log(res)
             const resPayload = this.decodeToken(res.credential);
+            // Todo: Send the resPayload to the backend to verify the user
             this.sessionStorageService.setObject('googleUser', resPayload);
             console.log(resPayload);
             this.router.navigate(['/teacher']);
@@ -86,7 +100,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
     }
 
     signOutGoogle() {
-        console.log(1)
+        console.log(google)
         this.sessionStorageService.removeObject('googleUser');
         google.accounts.id.disableAutoSelect();
     }
