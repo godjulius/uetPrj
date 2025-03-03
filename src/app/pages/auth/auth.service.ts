@@ -1,11 +1,18 @@
 import {inject, Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {environment} from '../../../environments/environment';
+import {LOGIN, SIGNUP, USERINFO} from '../../core/constants/api.const';
+import {LoginModel, SignUpModel} from './auth.model';
+import {catchError, map, of, pipe} from 'rxjs';
+import {AppMessageService} from '../../core/services/message.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class AuthService implements OnInit {
+    private readonly baseUrl = environment.baseUrl;
     private httpClient = inject(HttpClient);
+    private appMessageService = inject(AppMessageService);
     constructor() {
     }
 
@@ -13,19 +20,33 @@ export class AuthService implements OnInit {
 
     }
 
-    OAuth2Login() {
-        let headers = new HttpHeaders();
-        headers = headers.set('response_type', 'token')
-        headers = headers.set('client_id', '678773826180-11bfng2mkn4h8h3p4s17kcl32a4fdjfp.apps.googleusercontent.com') // Todo: Replace YOUR_CLIENT_ID with your client ID
-        headers = headers.set('redirect_uri', 'http://localhost:4200/')
-        headers = headers.set('scope', 'https://www.googleapis.com/auth/drive.metadata.readonly https://www.googleapis.com/auth/calendar.readonly')
-        // headers = headers.set('state', 'pass-through value')
-        // headers = headers.set('include_granted_scopes', 'true')
-        // console.log(headers);
-        this.httpClient.get('https://accounts.google.com/o/oauth2/v2/auth', {
-            headers: headers
-        }).subscribe((response) => {
-            console.log(response);
-        });
+    login(account: LoginModel) {
+        const formData = new URLSearchParams();
+        formData.set('username', account.username);
+        formData.set('password', account.password);
+        const headers = new HttpHeaders({'Content-Type': 'application/x-www-form-urlencoded'});
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${LOGIN}`, formData, {headers}));
+    }
+
+    signup(account: SignUpModel) {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${SIGNUP}`, account));
+    }
+
+    getUserInfo() {
+        this.httpClient.get(`${this.baseUrl}${USERINFO}`)
+            .subscribe((res: any) => {
+                console.log(res);
+            });
+    }
+
+    handleError(observable: any) {
+        return observable.pipe(
+            catchError((error: any) => {
+                if (error.status === 409) {
+                    this.appMessageService.addError({summary: 'Error', detail: `Email already exists`});
+                }
+                return of(null);
+            })
+        );
     }
 }
