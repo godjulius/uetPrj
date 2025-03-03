@@ -1,11 +1,18 @@
-import { Component } from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {Button} from "primeng/button";
 import {Card} from "primeng/card";
-import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputText} from "primeng/inputtext";
 import {CommonModule} from "@angular/common";
-import {RouterLink} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
+import {AuthService} from '../auth.service';
+import {SignUpModel} from '../auth.model';
+import {passwordMatchValidator} from '../sign-up/sign-up.component';
+import {BaseComponent} from '../../../core/base.component';
+import {Message} from 'primeng/message';
+import {finalize} from 'rxjs';
+import {AppMessageService} from '../../../core/services/message.service';
 
 @Component({
   selector: 'app-teacher-signup',
@@ -18,11 +25,63 @@ import {TranslatePipe} from "@ngx-translate/core";
         InputText,
         ReactiveFormsModule,
         RouterLink,
-        TranslatePipe
+        TranslatePipe,
+        Message
     ],
   templateUrl: './teacher-signup.component.html',
   styleUrl: './teacher-signup.component.css'
 })
-export class TeacherSignupComponent {
+export class TeacherSignupComponent extends BaseComponent implements OnInit{
+    registerForm!: FormGroup;
+    authService = inject(AuthService)
+    private router = inject(Router);
+    private appMessageService = inject(AppMessageService);
+    loading = false;
+    constructor(private fb: FormBuilder) {
+        super();
+    }
 
+    ngOnInit(): void {
+        this.registerForm = this.fb.group({
+            email: ['', [Validators.required, Validators.email]],
+            password: ['', Validators.required],
+            confirmPassword: ['', Validators.required]
+        }, {
+            validators: passwordMatchValidator()
+        });
+    }
+
+    register() {
+        if (this.registerForm.invalid) {
+            return
+        }
+        this.loading = true;
+        const account: SignUpModel = {
+            email: this.registerForm.value.email,
+            password: this.registerForm.value.password
+        }
+        this.authService.signup(account)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                })
+            )
+            .subscribe((res: any) => {
+                if (res) {
+                    console.log(res);
+                    this.appMessageService.addSuccess({summary: 'Success', detail: `Account created successfully`});
+                    // this.router.navigate(['/teacher']);
+                }
+            })
+    }
+
+    isEmailInvalid(): boolean {
+        const emailControl = this.registerForm.get('email');
+        return emailControl!.invalid && (emailControl!.dirty || emailControl!.touched);
+    }
+
+    isPasswordInvalid(): boolean {
+        const passwordControl = this.registerForm.get('password');
+        return passwordControl!.invalid && (passwordControl!.dirty || passwordControl!.touched);
+    }
 }

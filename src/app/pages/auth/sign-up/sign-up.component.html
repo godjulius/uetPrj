@@ -7,7 +7,7 @@
             class="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div class="space-y-4 md:space-y-6">
                 <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                    Sign up
+                    Sign up your student account
                 </h1>
                 <form [formGroup]="registerForm" class="space-y-4 md:space-y-6" (ngSubmit)="register()">
                     <div class="relative">
@@ -45,7 +45,7 @@
                         </p-message>
                     </div>
                     <div class="">
-                        <p-button type="submit" styleClass="w-full">
+                        <p-button type="submit" styleClass="w-full" [loading]="loading" >
                             {{ 'REGISTER' | translate }}
                         </p-button>
                     </div>

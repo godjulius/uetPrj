@@ -1,16 +1,22 @@
-import {Component} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {PrimeNG} from 'primeng/config';
 import {TranslateService} from '@ngx-translate/core';
+import {Toast} from 'primeng/toast';
+import {MessageService} from 'primeng/api';
+import {AppMessageService} from './core/services/message.service';
 
 @Component({
     selector: 'app-root',
     standalone: true,
-    imports: [RouterOutlet],
+    imports: [RouterOutlet, Toast],
     templateUrl: './app.component.html',
-    styleUrl: './app.component.css'
+    styleUrl: './app.component.css',
+    providers: [MessageService]
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
+    private messageService = inject(MessageService);
+    private appMessageService = inject(AppMessageService);
     title = 'Tiramisu bạc hà';
 
     constructor(private primeng: PrimeNG, private translateService: TranslateService) {
@@ -19,7 +25,7 @@ export class AppComponent {
 
     ngOnInit() {
         this.translateService.setDefaultLang('vi');
-
+        this.setMessageService();
     }
 
     checkDarkTheme() {
@@ -28,8 +34,13 @@ export class AppComponent {
         }
     }
 
+    setMessageService() {
+        this.appMessageService.setMessageService(this.messageService);
+    }
+
     translate(lang: string) {
         this.translateService.use(lang);
         this.translateService.get('primeng').subscribe(res => this.primeng.setTranslation(res));
     }
+
 }

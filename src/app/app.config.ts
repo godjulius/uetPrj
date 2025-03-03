@@ -6,8 +6,9 @@ import {routes} from './app.routes';
 import {provideAnimationsAsync} from '@angular/platform-browser/animations/async';
 import {providePrimeNG} from 'primeng/config';
 import {translateProviders} from './i18n.config';
-import {provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi} from '@angular/common/http';
 import {MyPreset} from './styles/app-preset';
+import {commonInterceptor, CommonInterceptor} from './core/services/common.interceptor';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -16,6 +17,13 @@ export const appConfig: ApplicationConfig = {
         provideAnimationsAsync(),
         ...translateProviders,
         provideHttpClient(withInterceptorsFromDi()),
+        // provideHttpClient(),
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: CommonInterceptor,
+            multi: true
+        },
+        // provideHttpClient(withInterceptors([commonInterceptor])),
         providePrimeNG({
             theme: {
                 preset: MyPreset,
