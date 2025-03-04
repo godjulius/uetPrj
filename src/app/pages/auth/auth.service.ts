@@ -3,8 +3,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {LOGIN, SIGNUP, USERINFO} from '../../core/constants/api.const';
 import {LoginModel, SignUpModel} from './auth.model';
-import {catchError, map, of, pipe} from 'rxjs';
-import {AppMessageService} from '../../core/services/message.service';
+import {catchError, of} from 'rxjs';
+import {MessageService} from 'primeng/api';
 
 @Injectable({
     providedIn: 'root'
@@ -12,7 +12,7 @@ import {AppMessageService} from '../../core/services/message.service';
 export class AuthService implements OnInit {
     private readonly baseUrl = environment.baseUrl;
     private httpClient = inject(HttpClient);
-    private appMessageService = inject(AppMessageService);
+   private readonly messageService = inject(MessageService);
     constructor() {
     }
 
@@ -43,7 +43,7 @@ export class AuthService implements OnInit {
         return observable.pipe(
             catchError((error: any) => {
                 if (error.status === 409) {
-                    this.appMessageService.addError({summary: 'Error', detail: `Email already exists`});
+                    this.messageService.add({severity: 'error', summary: 'Error', detail: `Email already exists`});
                 }
                 return of(null);
             })
