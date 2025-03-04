@@ -19,7 +19,7 @@ import {BaseComponent} from '../../../core/base.component';
 import {AuthService} from '../auth.service';
 import {SignUpModel} from '../auth.model';
 import {finalize} from 'rxjs';
-import {AppMessageService} from '../../../core/services/message.service';
+import {MessageService} from 'primeng/api';
 
 @Component({
   selector: 'app-sign-up',
@@ -32,7 +32,7 @@ export class SignUpComponent extends BaseComponent implements OnInit{
     registerForm!: FormGroup;
     authService = inject(AuthService)
     private router = inject(Router);
-    private appMessageService = inject(AppMessageService);
+    private readonly messageService = inject(MessageService)
     loading = false;
     constructor(private fb: FormBuilder) {
         super();
@@ -66,7 +66,7 @@ export class SignUpComponent extends BaseComponent implements OnInit{
             .subscribe((res: any) => {
                 if (res) {
                     console.log(res);
-                    this.appMessageService.addSuccess({summary: 'Success', detail: `Account created successfully`});
+                    this.messageService.add({severity: 'success', summary: 'Success', detail: `Account created successfully`});
                     // this.router.navigate(['/teacher']);
                 }
             })

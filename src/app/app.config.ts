@@ -9,6 +9,7 @@ import {translateProviders} from './i18n.config';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi} from '@angular/common/http';
 import {MyPreset} from './styles/app-preset';
 import {commonInterceptor, CommonInterceptor} from './core/services/common.interceptor';
+import {MessageService} from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -23,6 +24,7 @@ export const appConfig: ApplicationConfig = {
             useClass: CommonInterceptor,
             multi: true
         },
+        MessageService,
         // provideHttpClient(withInterceptors([commonInterceptor])),
         providePrimeNG({
             theme: {

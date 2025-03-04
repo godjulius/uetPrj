@@ -6,18 +6,18 @@ import {
     HttpInterceptor,
     HttpRequest
 } from '@angular/common/http';
-import {catchError, finalize, Observable, of, throwError} from 'rxjs';
+import {catchError, finalize, Observable, throwError} from 'rxjs';
 import {CookieStorageService} from "./cookie-storage.service";
 import {AUTH_TOKEN} from "../constants/common.const";
 import {Router} from "@angular/router";
-import {AppMessageService} from './message.service';
+import {MessageService} from 'primeng/api';
 
 
 @Injectable()
 export class CommonInterceptor implements HttpInterceptor {
     private readonly requests: Array<HttpRequest<any>> = []
     router = inject(Router)
-    private messageService = inject(AppMessageService);
+    private readonly messageService = inject(MessageService)
 
     constructor(private cookieService: CookieStorageService) {
     }
@@ -39,11 +39,11 @@ export class CommonInterceptor implements HttpInterceptor {
                     if (error.status === 401) {
                       // Handle 401 error
                         if (this.cookieService.getCookie(AUTH_TOKEN)) {
-                            this.messageService.addError({summary: 'Error', detail: `Unauthorized`})
+                            this.messageService.add({severity: 'error', summary: 'Error', detail: `Unauthorized`});
                             this.cookieService.deleteCookie(AUTH_TOKEN);
                             this.router.navigate(['/account/login']);
                         } else {
-                            this.messageService.addError({summary: 'Error', detail: `Invalid username or password`})
+                            this.messageService.add({severity: 'error', summary: 'Error', detail: `Invalid username or password`});
                         }
                       this.cookieService.deleteCookie(AUTH_TOKEN);
                       return throwError(() => new Error('Unauthorized'))

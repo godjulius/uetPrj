@@ -12,11 +12,11 @@ import {CardModule} from 'primeng/card';
 import {AuthService} from '../auth.service';
 import {environment} from '../../../../environments/environment';
 import {LoginModel} from '../auth.model';
-import {AppMessageService} from '../../../core/services/message.service';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {finalize} from 'rxjs';
 import {AUTH_TOKEN} from '../../../core/constants/common.const';
 import {CookieStorageService} from '../../../core/services/cookie-storage.service';
+import {MessageService} from 'primeng/api';
 
 declare var google: any;
 
@@ -30,12 +30,11 @@ declare var google: any;
 export class LoginComponent extends BaseComponent implements OnInit, AfterViewInit {
     loginForm!: FormGroup;
     authService = inject(AuthService)
-    appMessageService = inject(AppMessageService)
     private router = inject(Router);
     sessionStorageService = inject(SessionStorageService)
     cookieService = inject(CookieStorageService)
     loading = false;
-
+    messageService = inject(MessageService)
     constructor(private fb: FormBuilder) {
         super();
     }
@@ -93,7 +92,7 @@ export class LoginComponent extends BaseComponent implements OnInit, AfterViewIn
             .subscribe((res: any) => {
                 if (res) {
                     this.cookieService.setCookie(AUTH_TOKEN, res.access_token, 1);
-                    this.appMessageService.addSuccess({summary: 'Success', detail: 'Login successfully'});
+                    this.messageService.add({severity: 'success', summary: 'Success', detail: 'Login successfully'});
                 }
             })
     }
