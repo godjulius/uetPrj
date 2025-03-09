@@ -1,5 +1,5 @@
 import {SessionStorageService} from '../../../core/services/session-storage.service';
-import {AfterViewInit, Component, inject, OnInit} from '@angular/core';
+import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {ButtonModule} from 'primeng/button';
 import {InputTextModule} from 'primeng/inputtext';
@@ -10,31 +10,35 @@ import {TranslatePipe} from '@ngx-translate/core';
 import {Message} from 'primeng/message';
 import {CardModule} from 'primeng/card';
 import {AuthService} from '../auth.service';
-import {environment} from '../../../../environments/environment';
 import {LoginModel} from '../auth.model';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {finalize} from 'rxjs';
 import {AUTH_TOKEN} from '../../../core/constants/common.const';
 import {CookieStorageService} from '../../../core/services/cookie-storage.service';
 import {MessageService} from 'primeng/api';
+import {
+    GoogleSigninButtonModule,
+    SocialAuthService
+} from '@abacritt/angularx-social-login';
 
 declare var google: any;
 
 @Component({
     selector: 'app-login',
     standalone: true,
-    imports: [CommonModule, ReactiveFormsModule, ButtonModule, InputTextModule, RouterModule, TranslatePipe, Message, CardModule],
+    imports: [CommonModule, ReactiveFormsModule, ButtonModule, InputTextModule, RouterModule, TranslatePipe, Message, CardModule, GoogleSigninButtonModule],
     templateUrl: './login.component.html',
     styleUrl: './login.component.css',
 })
-export class LoginComponent extends BaseComponent implements OnInit, AfterViewInit {
-    loginForm!: FormGroup;
+export class LoginComponent extends BaseComponent implements OnInit {
     authService = inject(AuthService)
     private router = inject(Router);
     sessionStorageService = inject(SessionStorageService)
     cookieService = inject(CookieStorageService)
-    loading = false;
     messageService = inject(MessageService)
+    socialAuthService = inject(SocialAuthService)
+    loginForm!: FormGroup;
+    loading = false;
     constructor(private fb: FormBuilder) {
         super();
     }
@@ -44,32 +48,13 @@ export class LoginComponent extends BaseComponent implements OnInit, AfterViewIn
             email: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required]
         });
-
+        this.googleSignInSubs();
     }
 
-    ngAfterViewInit() {
-        this.renderGoogleSignInButton();
-    }
 
-    renderGoogleSignInButton() {
-        google.accounts.id.initialize({
-            client_id: environment['google_oauth2'],
-            callback: (res: any) => this.signInGoogle(res),
-            ux_mode: 'popup', // 🔹 Chuyển sang popup mode
-        });
-
-        // Redirect mode
-        // google.accounts.id.initialize({
-        //     client_id: environment['google_oauth2'],
-        //     callback: (res: any) => this.signInGoogle(res),
-        //     ux_mode: 'redirect', // 🔹 Chuyển sang redirect mode
-        //     login_uri: 'http://localhost:4200' // 🔹 URL nhận dữ liệu sau khi đăng nhập
-        // })
-        google.accounts.id.renderButton(document.getElementById('google-signIn-btn'), {
-            theme: 'filled_blue',
-            size: 'large',
-            shape: 'circle',
-            width: '10px',
+    googleSignInSubs() {
+        this.socialAuthService.authState.subscribe((user) => {
+            console.log(user);
         });
     }
 
@@ -109,22 +94,5 @@ export class LoginComponent extends BaseComponent implements OnInit, AfterViewIn
 
     private decodeToken(token: string) {
         return JSON.parse(atob(token.split('.')[1]));
-    }
-
-    signInGoogle(res: any) {
-        if (res) {
-            console.log(res)
-            const resPayload = this.decodeToken(res.credential);
-            // Todo: Send the resPayload to the backend to verify the user
-            this.sessionStorageService.setObject('googleUser', resPayload);
-            console.log(resPayload);
-            this.router.navigate(['/teacher']);
-        }
-    }
-
-    signOutGoogle() {
-        console.log(google)
-        this.sessionStorageService.removeObject('googleUser');
-        google.accounts.id.disableAutoSelect();
     }
 }
