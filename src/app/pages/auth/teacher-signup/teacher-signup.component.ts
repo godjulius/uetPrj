@@ -7,7 +7,7 @@ import {CommonModule} from "@angular/common";
 import {Router, RouterLink} from "@angular/router";
 import {TranslatePipe} from "@ngx-translate/core";
 import {AuthService} from '../auth.service';
-import {SignUpModel} from '../auth.model';
+import {IProfileModel, SignUpModel} from '../auth.model';
 import {passwordMatchValidator} from '../sign-up/sign-up.component';
 import {BaseComponent} from '../../../core/base.component';
 import {Message} from 'primeng/message';
@@ -70,10 +70,16 @@ export class TeacherSignupComponent extends BaseComponent implements OnInit{
                 if (res) {
                     console.log(res);
                     this.messageService.add({severity: 'success', summary: 'Success', detail: `Account created successfully`});
+                    const profile: IProfileModel = {
+                        ...this.authService.getProfile(),
+                        email: this.registerForm.value.email,
+                    }
+                    this.authService.setProfile(profile);
 
-                    // this.router.navigate(['/teacher']);
+                    this.router.navigate(['/teacher/profile']);
                 }
             })
+
     }
 
     isEmailInvalid(): boolean {

@@ -2,7 +2,7 @@ import {inject, Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {LOGIN, SIGNUP, USERINFO} from '../../core/constants/api.const';
-import {LoginModel, SignUpModel} from './auth.model';
+import {IProfileModel, LoginModel, SignUpModel} from './auth.model';
 import {catchError, of} from 'rxjs';
 import {MessageService} from 'primeng/api';
 
@@ -12,7 +12,18 @@ import {MessageService} from 'primeng/api';
 export class AuthService implements OnInit {
     private readonly baseUrl = environment.baseUrl;
     private httpClient = inject(HttpClient);
-   private readonly messageService = inject(MessageService);
+    private readonly messageService = inject(MessageService);
+    private profile: IProfileModel = {
+        email: 'hai@gmail.com',
+        fullName: '',
+        phone: '',
+        dob: '',
+        gender: "other",
+        bio: '',
+        avatar: ''
+    }
+
+
     constructor() {
     }
 
@@ -36,7 +47,16 @@ export class AuthService implements OnInit {
         this.httpClient.get(`${this.baseUrl}${USERINFO}`)
             .subscribe((res: any) => {
                 console.log(res);
+                // this.setProfile(res)
             });
+    }
+
+    setProfile(profile: IProfileModel) {
+        this.profile = profile;
+    }
+
+    getProfile() {
+        return this.profile;
     }
 
     handleError(observable: any) {

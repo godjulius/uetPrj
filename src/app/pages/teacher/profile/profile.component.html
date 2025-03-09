@@ -1,0 +1,139 @@
+<section class="h-screen flex flex-col items-center mx-[1.5rem] md:mx-[5rem] py-[1rem]">
+    <div class="w-full text-center mb-8">
+        <h1 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Complete Your Profile</h1>
+    </div>
+
+    <div class="w-full  ">
+        <form [formGroup]="profileForm" #formInputs (ngSubmit)="saveProfile()" class="flex flex-col">
+            <div class="w-full flex flex-col md:flex-row gap-10">
+                <div class="w-full md:w-1/2 flex flex-col justify-center space-y-4 md:space-y-6">
+                    <!-- Full Name -->
+                    <div class="relative">
+                        <label for="fullName" class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">
+                            Full Name
+                        </label>
+                        <input pInputText id="fullName" formControlName="fullName" class="w-full" required
+                               [ngClass]="{'ng-dirty': isFieldInvalid('fullName')}"/>
+                        <p-message *ngIf="isFieldInvalid('fullName')" severity="error" variant="simple" size="small"
+                                   styleClass="absolute error-message">
+                            <span *ngIf="profileForm.get('fullName')?.errors?.['required'] ||
+                                profileForm.get('fullName')?.errors?.['minlength']"
+                            >
+                                Full name is required.
+                            </span>
+                            <span *ngIf="profileForm.get('fullName')?.errors?.['maxlength']">
+                                Full name must be at most 50 characters.
+                            </span>
+                        </p-message>
+                    </div>
+
+                    <!-- Email (Read-only) -->
+                    <div class="relative">
+                        <label for="email" class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">
+                            Email
+                        </label>
+                        <input pInputText id="email" class="w-full" [value]="email" disabled />
+                    </div>
+
+                    <!-- Phone Number -->
+                    <div class="relative">
+                        <label for="phone" class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">
+                            Phone Number
+                        </label>
+                        <input pInputText id="phone" formControlName="phone" class="w-full" required
+                               [ngClass]="{'ng-dirty': isFieldInvalid('phone')}"/>
+                        <p-message *ngIf="isFieldInvalid('phone')"
+                                   severity="error" variant="simple" size="small"
+                                   styleClass="absolute error-message">
+                            <span *ngIf="profileForm.get('phone')?.errors?.['required']">
+                                Phone number is required.
+                            </span>
+                            <span *ngIf="profileForm.get('phone')?.errors?.['pattern']">
+                                Invalid phone number format (must be 10-15 digits).
+                            </span>
+                        </p-message>
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <p-fluid class="card flex flex-wrap gap-4">
+                        <div class="flex-auto">
+                            <label for="dob" class="font-bold block mb-2"> Date of Birth </label>
+                            <p-datepicker formControlName="dob" [iconDisplay]="'input'" [showIcon]="true" inputId="dob"
+                                          [maxDate]="maxDate" [ngClass]="{'ng-dirty': isFieldInvalid('dob')}"></p-datepicker>
+                            <p-message *ngIf="isFieldInvalid('dob')" severity="error" variant="simple" size="small"
+                                       styleClass="absolute error-message">
+                                <span *ngIf="profileForm.get('dob')?.errors?.['required']">
+                                    Date of birth is required.
+                                </span>
+                            </p-message>
+                        </div>
+                    </p-fluid>
+
+                    <!-- Gender -->
+                    <div class="">
+                        <label for="gender" class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">
+                            Gender
+                        </label>
+                        <p-select id="gender" formControlName="gender"
+                                  [options]="genderOptions"
+                                  optionLabel="name"
+                                  inputId="gender"
+                                  [showClear]="true"
+                                  placeholder="Select Gender"
+                                  class="w-full" />
+
+                    </div>
+                </div>
+
+                <div class="w-full md:w-1/2 flex flex-col space-y-4 md:space-y-6">
+                    <!-- Avatar Upload -->
+                    <div class="relative flex flex-col items-start gap-4">
+                        <label for="profilePicture" class="block text-lg font-bold text-gray-900 dark:text-white">
+                            Profile Picture
+                        </label>
+                        <img [src]="avatarUrl || 'assets/images/CTY.png'" alt="Avatar" class="w-24 h-24 rounded-full border-2 border-gray-300 object-cover">
+                        <p-fileupload
+                            mode="basic"
+                            name="profilePicture"
+                            chooseIcon="pi pi-upload"
+                            url="https://www.primefaces.org/cdn/api/upload.php"
+                            accept="image/*"
+                            maxFileSize="5000000"
+                            (onUpload)="onBasicUploadAuto($event)"
+                            [auto]="true"
+                            chooseLabel="Upload"
+                        />
+                    </div>
+
+                    <!-- Bio -->
+                    <div class="relative">
+                        <label for="bio" class="block mb-2 text-lg font-bold text-gray-900 dark:text-white">
+                            Bio
+                        </label>
+                        <textarea id="bio" rows="5" cols="30" pTextarea formControlName="bio" [autoResize]="true"
+                                  class="w-full p-2 border rounded-lg resize-none"
+                                  placeholder="Write something about yourself..."
+                                  [ngClass]="{'ng-dirty': isFieldInvalid('bio')}">
+                        </textarea>
+
+                        <p-message *ngIf="isFieldInvalid('bio')" severity="error" variant="simple" size="small"
+                                   styleClass="absolute error-message">
+                            <span *ngIf="profileForm.get('bio')?.errors?.['maxlength']">
+                                Bio must be at most 500 characters.
+                            </span>
+                        </p-message>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="mt-4 w-20">
+                <p-button type="submit" styleClass="w-full">
+                    Save
+                </p-button>
+            </div>
+        </form>
+    </div>
+
+</section>
+
