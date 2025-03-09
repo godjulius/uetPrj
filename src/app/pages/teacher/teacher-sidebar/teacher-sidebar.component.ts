@@ -36,12 +36,15 @@ export class TeacherSidebarComponent implements OnInit {
     ngOnInit() {
         this.items = [
             {
-                label: 'Main',
+                label: 'User settings',
                 icon: 'pi pi-home',
-                command: () => {
-                    this.router.navigate(['/demo']);
-                }
-                // routerLink: '/demo',
+                items: [
+                    {
+                        label: 'User profile',
+                        icon: 'pi pi-pencil',
+                        routerLink: 'profile',
+                    },
+                ]
             },
             {
                 label: 'Demo components',
