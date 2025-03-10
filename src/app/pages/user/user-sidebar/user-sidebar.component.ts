@@ -10,7 +10,7 @@ import {MenuItem} from 'primeng/api';
 import {LayoutService} from '../../../shared/services/layout.service';
 
 @Component({
-  selector: 'app-teacher-sidebar',
+  selector: 'app-user-sidebar',
   standalone: true,
     imports: [
         Avatar,
@@ -22,10 +22,10 @@ import {LayoutService} from '../../../shared/services/layout.service';
         RouterLinkActive,
         RouterLink
     ],
-  templateUrl: './teacher-sidebar.component.html',
-  styleUrl: './teacher-sidebar.component.css'
+  templateUrl: './user-sidebar.component.html',
+  styleUrl: './user-sidebar.component.css'
 })
-export class TeacherSidebarComponent implements OnInit {
+export class UserSidebarComponent implements OnInit {
     items!: MenuItem[];
     visible: boolean = false;
     @ViewChild('drawerRef') drawerRef!: Drawer;
@@ -37,33 +37,28 @@ export class TeacherSidebarComponent implements OnInit {
         this.items = [
             {
                 label: 'User settings',
-                icon: 'pi pi-home',
+                icon: 'pi pi-user',
                 items: [
                     {
                         label: 'User profile',
-                        icon: 'pi pi-pencil',
+                        icon: 'pi pi-user-edit',
                         routerLink: 'profile',
                     },
                 ]
             },
             {
-                label: 'Demo components',
+                label: 'Courses',
                 icon: 'pi pi-palette',
                 items: [
                     {
-                        label: 'Demo inputs',
-                        icon: 'pi pi-pencil',
-                        routerLink: 'inputs',
+                        label: 'Attending courses',
+                        icon: 'pi pi-book',
+                        routerLink: 'attending-courses',
                     },
                     {
-                        label: 'Button Demo page',
-                        icon: 'pi pi-eraser',
-                        routerLink: 'buttons',
-                    },
-                    {
-                        label: 'Button Demo page',
-                        icon: 'pi pi-link',
-                        routerLink: 'cards',
+                        label: 'Your courses',
+                        icon: 'pi pi-list',
+                        routerLink: 'user-courses',
                     },
                 ]
             },

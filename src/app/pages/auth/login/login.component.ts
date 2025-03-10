@@ -59,10 +59,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
     }
 
     login() {
-        this.loading = true;
         if (this.loginForm.invalid) {
             return;
         }
+        this.loading = true;
         const account: LoginModel = {
             username: this.loginForm.value.email,
             password: this.loginForm.value.password
