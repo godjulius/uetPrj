@@ -4,15 +4,15 @@ import {Router} from '@angular/router';
 import {LayoutService} from '../../../shared/services/layout.service';
 
 @Component({
-  selector: 'app-teacher-header',
+  selector: 'app-user-header',
   standalone: true,
     imports: [
         HeaderUtilsComponent
     ],
-  templateUrl: './teacher-header.component.html',
-  styleUrl: './teacher-header.component.css'
+  templateUrl: './user-header.component.html',
+  styleUrl: './user-header.component.css'
 })
-export class TeacherHeaderComponent {
+export class UserHeaderComponent {
     constructor(private router: Router, private layoutService: LayoutService) {
     }
 
