@@ -1,0 +1,71 @@
+<div class="mt-10">
+    <h2 class="text-2xl font-semibold mb-4">New course</h2>
+    <a class="p-button" routerLink="../">
+        <span class="pi pi-arrow-left"></span>
+        Back
+    </a>
+    <p-button (click)="handleCreateCourse()" styleClass="m-4">
+        Create
+    </p-button>
+    <form class="flex flex-col gap-4" [formGroup]="courseForm" (ngSubmit)="handleCreateCourse()">
+        <p-card>
+            <div class="flex flex-col gap-4">
+
+                <div class="flex flex-col gap-2">
+                    <label for="name" class="text-lg font-semibold">Course's name</label>
+                    <input formControlName="name" pInputText id="name" class="w-full"/>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="description" class="text-lg font-semibold">Description</label>
+                    <textarea id="description" rows="5" cols="30" pTextarea></textarea>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="category" class="text-lg font-semibold">Category</label>
+                    <p-multiselect (onChange)="changeCategories()"
+                                   [maxSelectedLabels]="1" fluid [options]="categories" optionLabel="name"
+                                   display="comma" placeholder="Select categories" styleClass="w-full"
+                                   [loading]="loading"
+                                   formControlName="category"
+                    ></p-multiselect>
+                    <div class="flex gap-1 px-2 flex-wrap">
+                        @for (category of courseForm.get('category')?.value; track category.value) {
+                            <p-chip [label]="category.name" [removable]="true"
+                                    (onRemove)="handleRemoveCategory(category.value)" styleClass="h-[32px]"/>
+                        }
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2 md:flex-row">
+                    <div class="flex flex-col gap-2 w-full md:w-1/2">
+                        <label for="level" class="text-lg font-semibold">Level</label>
+                        <p-select inputId="level" formControlName="level" [options]="levels" optionLabel="name" placeholder="Select a level" class="" />
+                    </div>
+                    <div class="flex flex-col gap-2 w-full md:w-1/2">
+                        <label for="language" class="text-lg font-semibold">Language</label>
+                        <p-multiselect [options]="languages" formControlName="languages" optionLabel="name" placeholder="Select languages" [maxSelectedLabels]="3" styleClass=""></p-multiselect>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="price" class="text-lg font-semibold">Price ($)</label>
+                    <p-inputnumber inputId="price" formControlName="price" mode="decimal" locale="en-US" [minFractionDigits]="2"/>
+                </div>
+
+                <div class="flex flex-col gap-2 items-center">
+                    <input type="file" (change)="onFileSelected($event)" #fileInput hidden formControlName="thumbnail">
+                    <p-button type="button" (click)="fileInput.click()" styleClass="w-full">
+                        <span class="pi pi-image"></span>
+                        Choose course thumbnail
+                    </p-button>
+                    <img [src]="courseImageUrl || 'assets/images/course-skeleton.png'" alt="" class="w-full max-w-xl rounded-lg"/>
+                </div>
+            </div>
+        </p-card>
+
+        <p-card>
+            Course content
+        </p-card>
+    </form>
+</div>
