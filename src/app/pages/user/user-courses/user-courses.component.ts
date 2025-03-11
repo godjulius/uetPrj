@@ -8,6 +8,7 @@ import {Skeleton} from 'primeng/skeleton';
 import {ICourse} from '../../courses/courses.model';
 import {CoursesService} from '../../courses/courses.service';
 import {TooltipModule} from 'primeng/tooltip';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-user-courses',
@@ -19,7 +20,8 @@ import {TooltipModule} from 'primeng/tooltip';
         SelectButton,
         FormsModule,
         Skeleton,
-        TooltipModule
+        TooltipModule,
+        RouterLink
     ],
   templateUrl: './user-courses.component.html',
   styleUrl: './user-courses.component.css',
@@ -47,5 +49,9 @@ export class UserCoursesComponent implements OnInit{
 
     toggleLoading() {
         this.loading = !this.loading;
+    }
+
+    handleAddCourse() {
+        console.log('Add course')
     }
 }

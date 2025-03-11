@@ -2,6 +2,12 @@
     <p-dataview #dv [value]="data()" [layout]="layout" [rows]="5" [paginator]="true">
         <ng-template #header>
             <div class="flex justify-end gap-1">
+<!--                <p-button (click)="handleAddCourse()">-->
+<!--                    <i class="pi pi-plus"></i>-->
+<!--                </p-button>-->
+                <a routerLink="new" class="p-button">
+                    <i class="pi pi-plus"></i>
+                </a>
                 <p-button (click)="toggleLoading()">
                     <i class="pi pi-search"></i>
                 </p-button>
@@ -85,8 +91,8 @@
                                     <button pButton icon="pi pi-heart" [outlined]="true"></button>
                                     <button
                                         pButton
-                                        icon="pi pi-shopping-cart"
-                                        label="Buy Now"
+                                        icon="pi pi-pen-to-square"
+                                        label="Detail"
                                         class="flex-auto md:flex-initial whitespace-nowrap"
                                     ></button>
                                 </div>
@@ -168,8 +174,8 @@
                                     <div class="flex gap-2">
                                         <button
                                             pButton
-                                            icon="pi pi-shopping-cart"
-                                            label="Buy Now"
+                                            icon="pi pi-pen-to-square"
+                                            label="Detail"
                                             class="flex-auto whitespace-nowrap"
                                         ></button>
                                         <button pButton icon="pi pi-heart" outlined></button>

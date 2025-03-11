@@ -1,10 +1,14 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {ICourse} from './courses.model';
+import {environment} from '../../../environments/environment';
+import {HttpClient} from '@angular/common/http';
 
 @Injectable({
     providedIn: 'root'
 })
 export class CoursesService {
+    private readonly baseUrl = environment.baseUrl;
+    private httpClient = inject(HttpClient);
     courses: ICourse[] = [
         {
             id: 1,
@@ -120,8 +124,11 @@ export class CoursesService {
             });
         }
     }
+
+    createCourse(courseFormData: any) {
+        console.log(1)
+        this.httpClient.post(this.baseUrl, courseFormData).subscribe((res) => {
+            console.log(res)
+        })
+    }
 }
-
-const courses: ICourse[] = [
-
-]
