@@ -7,18 +7,20 @@ import {FormsModule} from '@angular/forms';
 import {Skeleton} from 'primeng/skeleton';
 import {ICourse} from '../../courses/courses.model';
 import {CoursesService} from '../../courses/courses.service';
+import {TooltipModule} from 'primeng/tooltip';
 
 @Component({
   selector: 'app-user-courses',
   standalone: true,
-  imports: [
-      DataView,
-      ButtonModule,
-      CommonModule,
-      SelectButton,
-      FormsModule,
-      Skeleton
-  ],
+    imports: [
+        DataView,
+        ButtonModule,
+        CommonModule,
+        SelectButton,
+        FormsModule,
+        Skeleton,
+        TooltipModule
+    ],
   templateUrl: './user-courses.component.html',
   styleUrl: './user-courses.component.css',
 })
