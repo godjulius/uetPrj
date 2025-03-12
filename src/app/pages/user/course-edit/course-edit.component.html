@@ -1,5 +1,4 @@
 <div class="mt-10">
-    <h2 class="text-2xl font-semibold mb-4">New course</h2>
     <a class="p-button" routerLink="../">
         <span class="pi pi-arrow-left"></span>
         Back
@@ -9,6 +8,7 @@
     </p-button>
     <form class="flex flex-col gap-4" [formGroup]="courseForm" (ngSubmit)="handleCreateCourse()">
         <p-card>
+            <h2 class="text-2xl font-semibold mb-4">New course</h2>
             <div class="flex flex-col gap-4">
 
                 <div class="flex flex-col gap-2">
@@ -65,7 +65,134 @@
         </p-card>
 
         <p-card>
-            Course content
+            <h2 class="text-2xl font-semibold mb-4">Course content</h2>
+            <div class="flex mb-4 gap-4">
+                @for(section of courseContent; track section) {
+                    <p-button (onClick)="active = section" [rounded]="true" [label]="section" styleClass="w-8 h-8 p-0" [outlined]="active !== section" />
+                }
+            </div>
+
+            <p-accordion [(value)]="active" [multiple]="false">
+            @for(section of courseContent; track section) {
+                <p-accordion-panel [value]="section">
+                    <p-accordion-header>
+                        Section {{ section }}
+                    </p-accordion-header>
+                    <p-accordion-content>
+                        <div class="flex flex-col gap-2">
+                            @for (lesson of courseContent; track lesson) {
+                                <p-fieldset [toggleable]="true" [collapsed]="true">
+                                    <ng-template #header>
+                                        <div class="flex items-center gap-2 px-2">
+                                            <span class="pi pi-home"></span>
+                                            <span class="font-bold">Lesson {{ lesson }}</span>
+                                        </div>
+                                    </ng-template>
+                                    <p-button outlined raised>
+                                        <span class="pi pi-file-edit"></span>
+                                    </p-button>
+                                    <div>
+                                        Lesson content
+                                    </div>
+                                </p-fieldset>
+                            }
+                        </div>
+                        <div class="mt-2 flex flex-wrap gap-2">
+                            <p-button raised text size="small" (click)="toggleCreateLessonDialog()">
+                                Add Lesson
+                            </p-button>
+                        </div>
+                    </p-accordion-content>
+                </p-accordion-panel>
+
+            }
+            </p-accordion>
         </p-card>
     </form>
 </div>
+
+<!-- Create lesson dialog -->
+<p-dialog
+    [(visible)]="isLessonDialogVisible"
+    [modal]="true"
+    [style]="{ width: '80vw', height: '80vh' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+>
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">
+                    New lesson
+                </span>
+        </div>
+    </ng-template>
+    <div class="h-full">
+        <p-stepper [value]="1">
+            <p-step-item [value]="1">
+                <p-step>Header I</p-step>
+                <p-step-panel>
+                    <ng-template #content let-activateCallback="activateCallback">
+                        <div class="flex flex-col h-48">
+                            <div
+                                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
+                            >
+                                Content I
+                            </div>
+                        </div>
+                        <div class="py-6">
+                            <p-button label="Next" (onClick)="activateCallback(2)" />
+                        </div>
+                    </ng-template>
+                </p-step-panel>
+            </p-step-item>
+
+            <p-step-item [value]="2">
+                <p-step>Header II</p-step>
+                <p-step-panel>
+                    <ng-template #content let-activateCallback="activateCallback">
+                        <div class="flex flex-col h-48">
+                            <div
+                                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
+                            >
+                                Content II
+                            </div>
+                        </div>
+                        <div class="flex py-6 gap-2">
+                            <p-button label="Back" severity="secondary" (onClick)="activateCallback(1)" />
+                            <p-button label="Next" (onClick)="activateCallback(3)" />
+                        </div>
+                    </ng-template>
+                </p-step-panel>
+            </p-step-item>
+
+            <p-step-item [value]="3">
+                <p-step>Header III</p-step>
+                <p-step-panel>
+                    <ng-template #content let-activateCallback="activateCallback">
+                        <div class="flex flex-col h-48">
+                            <div
+                                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
+                            >
+                                Content III
+                            </div>
+                        </div>
+                        <div class="py-6">
+                            <p-button label="Back" severity="secondary" (onClick)="activateCallback(2)" />
+                        </div>
+                    </ng-template>
+                </p-step-panel>
+            </p-step-item>
+        </p-stepper>
+    </div>
+    <ng-template #footer>
+        <p-button
+            label="Cancel"
+            severity="secondary"
+            (click)="isLessonDialogVisible = false" />
+        <p-button
+            label="Save"
+            raised
+            severity="contrast"
+            (click)="isLessonDialogVisible = false"
+        />
+    </ng-template>
+</p-dialog>

@@ -111,6 +111,9 @@
         display: none;
     }
 
+    .p-dialog-content {
+        padding: 0 4px;
+    }
 }
 
 .desktop-dashboard-sidebar {
@@ -133,4 +136,9 @@
     .icon-sidebar {
         display: none;
     }
+}
+
+
+.p-dialog-content {
+    height: 100%;
 }
