@@ -185,4 +185,8 @@ export class LandingHeaderComponent implements OnInit {
             this.searchKeyword = keyword;
         })
     }
+
+    navigateToDashBoard() {
+        this.router.navigate(['/user/profile']);
+    }
 }

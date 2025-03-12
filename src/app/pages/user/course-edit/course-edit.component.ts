@@ -11,6 +11,10 @@ import {ButtonModule} from 'primeng/button';
 import {CommonModule} from '@angular/common';
 import {RouterLink} from '@angular/router';
 import {CoursesService} from '../../courses/courses.service';
+import {AccordionModule} from 'primeng/accordion';
+import {FieldsetModule} from 'primeng/fieldset';
+import {Dialog} from 'primeng/dialog';
+import {StepperModule} from 'primeng/stepper';
 
 @Component({
   selector: 'app-course-edit',
@@ -27,7 +31,11 @@ import {CoursesService} from '../../courses/courses.service';
         ReactiveFormsModule,
         Select,
         ButtonModule,
-        RouterLink
+        RouterLink,
+        AccordionModule,
+        FieldsetModule,
+        Dialog,
+        StepperModule
     ],
   templateUrl: './course-edit.component.html',
   styleUrl: './course-edit.component.css'
@@ -77,6 +85,9 @@ export class CourseEditComponent implements OnInit{
     ]
     courseImageUrl!: string;
     courseImage!: File;
+    courseContent: any[] = [1, 2, 3, 4, 5];
+    active = 1
+    isLessonDialogVisible = false;
 
     ngOnInit() {
         this.courseForm = new FormGroup({
@@ -121,5 +132,9 @@ export class CourseEditComponent implements OnInit{
             this.courseImage = input.files[0];
             console.log(this.courseImage)
         }
+    }
+
+    toggleCreateLessonDialog() {
+        this.isLessonDialogVisible = !this.isLessonDialogVisible;
     }
 }
