@@ -185,11 +185,15 @@
                             >
                                 Add Lesson
                             </p-button>
-                            <p-button raised text size="small" (click)="toggleQuizDialog()">
+                            <p-button
+                                raised
+                                text
+                                size="small"
+                                (click)="toggleQuizDialog()"
+                            >
                                 Add Quiz
                             </p-button>
                         </div>
-
                     </p-accordion-content>
                 </p-accordion-panel>
 
@@ -304,8 +308,6 @@
         />
     </ng-template>
 </p-dialog>
-
-
 <p-dialog
     [(visible)]="isQuizDialogVisible"
     [modal]="true"

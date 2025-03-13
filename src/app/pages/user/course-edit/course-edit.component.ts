@@ -23,7 +23,7 @@ import { Dialog } from 'primeng/dialog';
 import { StepperModule } from 'primeng/stepper';
 import { SelectButton } from 'primeng/selectbutton';
 import { Editor } from 'primeng/editor';
-import {RadioButton} from 'primeng/radiobutton';
+import { RadioButton } from 'primeng/radiobutton';
 
 @Component({
     selector: 'app-course-edit',
@@ -45,9 +45,9 @@ import {RadioButton} from 'primeng/radiobutton';
         FieldsetModule,
         Dialog,
         StepperModule,
-        RadioButton,
         SelectButton,
         Editor,
+        RadioButton,
     ],
     templateUrl: './course-edit.component.html',
     styleUrl: './course-edit.component.css',
@@ -102,6 +102,7 @@ export class CourseEditComponent implements OnInit {
     active = 1;
     // Edit Lesson dialog
     isLessonDialogVisible = false;
+    isQuizDialogVisible = false;
     lessionOptions: any[] = [
         { label: 'Video', value: 'video' },
         { label: 'Document', value: 'document' },
@@ -110,8 +111,6 @@ export class CourseEditComponent implements OnInit {
     documentContent: string = '';
     currentStep = 1;
     constructor() {}
-    isQuizDialogVisible = false;
-    quizList: any[] = [];
 
     ngOnInit() {
         this.courseForm = new FormGroup({
@@ -130,6 +129,7 @@ export class CourseEditComponent implements OnInit {
                 validators: [Validators.required],
             }),
         });
+
         this.quizForm = new FormGroup({
             title: new FormControl('', Validators.required),
             description: new FormControl('', Validators.required),
