@@ -6,60 +6,133 @@
     <p-button (click)="handleCreateCourse()" styleClass="m-4">
         Create
     </p-button>
-    <form class="flex flex-col gap-4" [formGroup]="courseForm" (ngSubmit)="handleCreateCourse()">
+    <form
+        class="flex flex-col gap-4"
+        [formGroup]="courseForm"
+        (ngSubmit)="handleCreateCourse()"
+    >
         <p-card>
             <h2 class="text-2xl font-semibold mb-4">New course</h2>
             <div class="flex flex-col gap-4">
-
                 <div class="flex flex-col gap-2">
-                    <label for="name" class="text-lg font-semibold">Course's name</label>
-                    <input formControlName="name" pInputText id="name" class="w-full"/>
+                    <label for="name" class="text-lg font-semibold"
+                        >Course's name</label
+                    >
+                    <input
+                        formControlName="name"
+                        pInputText
+                        id="name"
+                        class="w-full"
+                    />
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label for="description" class="text-lg font-semibold">Description</label>
-                    <textarea id="description" rows="5" cols="30" pTextarea></textarea>
+                    <label for="description" class="text-lg font-semibold"
+                        >Description</label
+                    >
+                    <textarea
+                        id="description"
+                        rows="5"
+                        cols="30"
+                        pTextarea
+                    ></textarea>
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label for="category" class="text-lg font-semibold">Category</label>
-                    <p-multiselect (onChange)="changeCategories()"
-                                   [maxSelectedLabels]="1" fluid [options]="categories" optionLabel="name"
-                                   display="comma" placeholder="Select categories" styleClass="w-full"
-                                   [loading]="loading"
-                                   formControlName="category"
+                    <label for="category" class="text-lg font-semibold"
+                        >Category</label
+                    >
+                    <p-multiselect
+                        (onChange)="changeCategories()"
+                        [maxSelectedLabels]="1"
+                        fluid
+                        [options]="categories"
+                        optionLabel="name"
+                        display="comma"
+                        placeholder="Select categories"
+                        styleClass="w-full"
+                        [loading]="loading"
+                        formControlName="category"
                     ></p-multiselect>
                     <div class="flex gap-1 px-2 flex-wrap">
-                        @for (category of courseForm.get('category')?.value; track category.value) {
-                            <p-chip [label]="category.name" [removable]="true"
-                                    (onRemove)="handleRemoveCategory(category.value)" styleClass="h-[32px]"/>
+                        @for (category of courseForm.get('category')?.value;
+                        track category.value) {
+                        <p-chip
+                            [label]="category.name"
+                            [removable]="true"
+                            (onRemove)="handleRemoveCategory(category.value)"
+                            styleClass="h-[32px]"
+                        />
                         }
                     </div>
                 </div>
 
                 <div class="flex flex-col gap-2 md:flex-row">
                     <div class="flex flex-col gap-2 w-full md:w-1/2">
-                        <label for="level" class="text-lg font-semibold">Level</label>
-                        <p-select inputId="level" formControlName="level" [options]="levels" optionLabel="name" placeholder="Select a level" class="" />
+                        <label for="level" class="text-lg font-semibold"
+                            >Level</label
+                        >
+                        <p-select
+                            inputId="level"
+                            formControlName="level"
+                            [options]="levels"
+                            optionLabel="name"
+                            placeholder="Select a level"
+                            class=""
+                        />
                     </div>
                     <div class="flex flex-col gap-2 w-full md:w-1/2">
-                        <label for="language" class="text-lg font-semibold">Language</label>
-                        <p-multiselect [options]="languages" formControlName="languages" optionLabel="name" placeholder="Select languages" [maxSelectedLabels]="3" styleClass=""></p-multiselect>
+                        <label for="language" class="text-lg font-semibold"
+                            >Language</label
+                        >
+                        <p-multiselect
+                            [options]="languages"
+                            formControlName="languages"
+                            optionLabel="name"
+                            placeholder="Select languages"
+                            [maxSelectedLabels]="3"
+                            styleClass=""
+                        ></p-multiselect>
                     </div>
                 </div>
 
                 <div class="flex flex-col gap-2">
-                    <label for="price" class="text-lg font-semibold">Price ($)</label>
-                    <p-inputnumber inputId="price" formControlName="price" mode="decimal" locale="en-US" [minFractionDigits]="2"/>
+                    <label for="price" class="text-lg font-semibold"
+                        >Price ($)</label
+                    >
+                    <p-inputnumber
+                        inputId="price"
+                        formControlName="price"
+                        mode="decimal"
+                        locale="en-US"
+                        [minFractionDigits]="2"
+                    />
                 </div>
 
                 <div class="flex flex-col gap-2 items-center">
-                    <input type="file" (change)="onFileSelected($event)" #fileInput hidden formControlName="thumbnail">
-                    <p-button type="button" (click)="fileInput.click()" styleClass="w-full">
+                    <input
+                        type="file"
+                        (change)="onFileSelected($event)"
+                        #fileInput
+                        hidden
+                        formControlName="thumbnail"
+                    />
+                    <p-button
+                        type="button"
+                        (click)="fileInput.click()"
+                        styleClass="w-full"
+                    >
                         <span class="pi pi-image"></span>
                         Choose course thumbnail
                     </p-button>
-                    <img [src]="courseImageUrl || 'assets/images/course-skeleton.png'" alt="" class="w-full max-w-xl rounded-lg"/>
+                    <img
+                        [src]="
+                            courseImageUrl ||
+                            'assets/images/course-skeleton.png'
+                        "
+                        alt=""
+                        class="w-full max-w-xl rounded-lg"
+                    />
                 </div>
             </div>
         </p-card>
@@ -68,12 +141,18 @@
             <h2 class="text-2xl font-semibold mb-4">Course content</h2>
             <div class="flex mb-4 gap-4">
                 @for(section of courseContent; track section) {
-                    <p-button (onClick)="active = section" [rounded]="true" [label]="section" styleClass="w-8 h-8 p-0" [outlined]="active !== section" />
+                <p-button
+                    (onClick)="active = section"
+                    [rounded]="true"
+                    [label]="section"
+                    styleClass="w-8 h-8 p-0"
+                    [outlined]="active !== section"
+                />
                 }
             </div>
 
             <p-accordion [(value)]="active" [multiple]="false">
-            @for(section of courseContent; track section) {
+                @for(section of courseContent; track section) {
                 <p-accordion-panel [value]="section">
                     <p-accordion-header>
                         Section {{ section }}
@@ -81,24 +160,29 @@
                     <p-accordion-content>
                         <div class="flex flex-col gap-2">
                             @for (lesson of courseContent; track lesson) {
-                                <p-fieldset [toggleable]="true" [collapsed]="true">
-                                    <ng-template #header>
-                                        <div class="flex items-center gap-2 px-2">
-                                            <span class="pi pi-home"></span>
-                                            <span class="font-bold">Lesson {{ lesson }}</span>
-                                        </div>
-                                    </ng-template>
-                                    <p-button outlined raised>
-                                        <span class="pi pi-file-edit"></span>
-                                    </p-button>
-                                    <div>
-                                        Lesson content
+                            <p-fieldset [toggleable]="true" [collapsed]="true">
+                                <ng-template #header>
+                                    <div class="flex items-center gap-2 px-2">
+                                        <span class="pi pi-home"></span>
+                                        <span class="font-bold"
+                                            >Lesson {{ lesson }}</span
+                                        >
                                     </div>
-                                </p-fieldset>
+                                </ng-template>
+                                <p-button outlined raised>
+                                    <span class="pi pi-file-edit"></span>
+                                </p-button>
+                                <div>Lesson content</div>
+                            </p-fieldset>
                             }
                         </div>
                         <div class="mt-2 flex flex-wrap gap-2">
-                            <p-button raised text size="small" (click)="toggleCreateLessonDialog()">
+                            <p-button
+                                raised
+                                text
+                                size="small"
+                                (click)="toggleCreateLessonDialog()"
+                            >
                                 Add Lesson
                             </p-button>
                             <p-button raised text size="small" (click)="toggleQuizDialog()">
@@ -109,7 +193,7 @@
                     </p-accordion-content>
                 </p-accordion-panel>
 
-            }
+                }
             </p-accordion>
         </p-card>
     </form>
@@ -121,82 +205,102 @@
     [modal]="true"
     [style]="{ width: '80vw', height: '80vh' }"
     [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    (onHide)="clearLessonForm()"
 >
     <ng-template #header>
         <div class="inline-flex items-center justify-center gap-2">
-            <span class="font-bold whitespace-nowrap">
-                    New lesson
-                </span>
+            <span class="font-bold whitespace-nowrap"> New lesson </span>
         </div>
     </ng-template>
     <div class="h-full">
-        <p-stepper [value]="1">
-            <p-step-item [value]="1">
-                <p-step>Header I</p-step>
-                <p-step-panel>
-                    <ng-template #content let-activateCallback="activateCallback">
-                        <div class="flex flex-col h-48">
+        <p-stepper [value]="currentStep" [linear]="false">
+            <p-step-list>
+                <p-step [value]="1">Type</p-step>
+                <p-step [value]="2">Content</p-step>
+                <p-step [value]="3">Materials</p-step>
+            </p-step-list>
+            <p-step-panels>
+                <p-step-panel [value]="1">
+                    <ng-template
+                        #content
+                        let-activateCallback="activateCallback"
+                    >
+                        <div class="flex flex-col h-[400px]">
                             <div
-                                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
+                                class="h-full border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex flex-col gap-4 justify-center items-center font-medium"
                             >
-                                Content I
+                                <h2 class="text-2xl font-semibold">
+                                    Choose type of lesson
+                                </h2>
+                                <p-selectbutton
+                                    [(ngModel)]="typeOfNewLesson"
+                                    [options]="lessionOptions"
+                                    (click)="activateCallback(2)"
+                                />
                             </div>
-                        </div>
-                        <div class="py-6">
-                            <p-button label="Next" (onClick)="activateCallback(2)" />
                         </div>
                     </ng-template>
                 </p-step-panel>
-            </p-step-item>
 
-            <p-step-item [value]="2">
-                <p-step>Header II</p-step>
-                <p-step-panel>
-                    <ng-template #content let-activateCallback="activateCallback">
-                        <div class="flex flex-col h-48">
+                <p-step-panel [value]="2">
+                    <ng-template
+                        #content
+                        let-activateCallback="activateCallback"
+                    >
+                        <div class="flex flex-col h-[400px]">
                             <div
-                                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
+                                class="h-full border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
                             >
-                                Content II
+                                @if(typeOfNewLesson === 'video') { video } @else
+                                {
+                                <p-editor
+                                    [(ngModel)]="documentContent"
+                                    [style]="{ height: '350px' }"
+                                    class="w-full"
+                                />
+                                }
                             </div>
-                        </div>
-                        <div class="flex py-6 gap-2">
-                            <p-button label="Back" severity="secondary" (onClick)="activateCallback(1)" />
-                            <p-button label="Next" (onClick)="activateCallback(3)" />
                         </div>
                     </ng-template>
                 </p-step-panel>
-            </p-step-item>
 
-            <p-step-item [value]="3">
-                <p-step>Header III</p-step>
-                <p-step-panel>
-                    <ng-template #content let-activateCallback="activateCallback">
-                        <div class="flex flex-col h-48">
+                <p-step-panel [value]="3">
+                    <ng-template
+                        #content
+                        let-activateCallback="activateCallback"
+                    >
+                        <div class="flex flex-col h-[400px]">
                             <div
-                                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
+                                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex flex-col gap-4 justify-center items-center font-medium"
                             >
-                                Content III
+                                <h2 class="text-2xl font-semibold">
+                                    Link to materials
+                                </h2>
+                                <textarea
+                                    id="materials"
+                                    rows="5"
+                                    cols="30"
+                                    pTextarea
+                                    class="w-full p-0 md:w-1/2 md:p-8"
+                                ></textarea>
                             </div>
-                        </div>
-                        <div class="py-6">
-                            <p-button label="Back" severity="secondary" (onClick)="activateCallback(2)" />
                         </div>
                     </ng-template>
                 </p-step-panel>
-            </p-step-item>
+            </p-step-panels>
         </p-stepper>
     </div>
     <ng-template #footer>
         <p-button
             label="Cancel"
             severity="secondary"
-            (click)="isLessonDialogVisible = false" />
+            (click)="isLessonDialogVisible = false"
+        />
         <p-button
             label="Save"
             raised
             severity="contrast"
-            (click)="isLessonDialogVisible = false"
+            (click)="handleCreateLesson()"
         />
     </ng-template>
 </p-dialog>
