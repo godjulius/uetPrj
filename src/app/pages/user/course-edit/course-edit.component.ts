@@ -23,6 +23,7 @@ import { Dialog } from 'primeng/dialog';
 import { StepperModule } from 'primeng/stepper';
 import { SelectButton } from 'primeng/selectbutton';
 import { Editor } from 'primeng/editor';
+import { RadioButton } from 'primeng/radiobutton';
 
 @Component({
     selector: 'app-course-edit',
@@ -46,6 +47,7 @@ import { Editor } from 'primeng/editor';
         StepperModule,
         SelectButton,
         Editor,
+        RadioButton,
     ],
     templateUrl: './course-edit.component.html',
     styleUrl: './course-edit.component.css',
@@ -53,6 +55,7 @@ import { Editor } from 'primeng/editor';
 export class CourseEditComponent implements OnInit {
     private courseService = inject(CoursesService);
     courseForm!: FormGroup;
+    quizForm!: FormGroup;
     loading = false;
     categories = [
         { name: 'Development', value: 'development' },
@@ -99,6 +102,7 @@ export class CourseEditComponent implements OnInit {
     active = 1;
     // Edit Lesson dialog
     isLessonDialogVisible = false;
+    isQuizDialogVisible = false;
     lessionOptions: any[] = [
         { label: 'Video', value: 'video' },
         { label: 'Document', value: 'document' },
@@ -124,6 +128,16 @@ export class CourseEditComponent implements OnInit {
             thumbnail: new FormControl(null, {
                 validators: [Validators.required],
             }),
+        });
+
+        this.quizForm = new FormGroup({
+            title: new FormControl('', Validators.required),
+            description: new FormControl('', Validators.required),
+            answer1: new FormControl('', Validators.required),
+            answer2: new FormControl('', Validators.required),
+            answer3: new FormControl('', Validators.required),
+            answer4: new FormControl('', Validators.required),
+            isCorrect: new FormControl('', Validators.required), // Chọn 1 trong 4 đáp án
         });
     }
 
@@ -174,9 +188,27 @@ export class CourseEditComponent implements OnInit {
     handleCreateLesson() {
         console.log(this.documentContent);
     }
+
     clearLessonForm() {
         this.typeOfNewLesson = 'video';
         this.documentContent = '';
         this.currentStep = 1;
     }
+
+    toggleQuizDialog() {
+        this.isQuizDialogVisible = !this.isQuizDialogVisible;
+    }
+
+    setCorrectAnswer(answerKey: string) {
+        this.quizForm.patchValue({ isCorrect: answerKey });
+    }
+
+    handleCreateQuiz() {
+        if (this.quizForm.invalid) {
+            console.log('Quiz form is invalid');
+            return;
+        }
+        console.log('Quiz created:', this.quizForm.value);
+    }
+
 }
