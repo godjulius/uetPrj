@@ -101,7 +101,11 @@
                             <p-button raised text size="small" (click)="toggleCreateLessonDialog()">
                                 Add Lesson
                             </p-button>
+                            <p-button raised text size="small" (click)="toggleQuizDialog()">
+                                Add Quiz
+                            </p-button>
                         </div>
+
                     </p-accordion-content>
                 </p-accordion-panel>
 
@@ -196,3 +200,95 @@
         />
     </ng-template>
 </p-dialog>
+
+
+<p-dialog
+    [(visible)]="isQuizDialogVisible"
+    [modal]="true"
+    [style]="{ width: '60vw', height: '80vh' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+>
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">New Quiz</span>
+        </div>
+    </ng-template>
+
+    <div>
+        <form [formGroup]="quizForm" (ngSubmit)="handleCreateQuiz()">
+            <div class="flex flex-col gap-4">
+                <!-- Quiz Title -->
+                <div class="flex flex-col gap-2">
+                    <label for="quizTitle" class="text-lg font-semibold">Quiz Title</label>
+                    <input id="quizTitle" formControlName="title" pInputText class="w-full"/>
+                </div>
+
+                <!-- Quiz Description -->
+                <div class="flex flex-col gap-2">
+                    <label for="quizDescription" class="text-lg font-semibold">Description</label>
+                    <textarea id="quizDescription" rows="4" pTextarea formControlName="description"></textarea>
+                </div>
+
+                <!-- Answer Section -->
+                <div class="flex flex-col gap-2">
+                    <label class="text-lg font-semibold">Answers</label>
+                    <div class="border p-3 rounded">
+                        <div class="flex items-center gap-2">
+                            <p-radiobutton
+                                inputId="answer1"
+                                value="answer1"
+                                name="isCorrect"
+                                formControlName="isCorrect"
+                                (click)="setCorrectAnswer('answer1')">
+                            </p-radiobutton>
+                            <input pInputText formControlName="answer1" placeholder="Enter answer 1" class="w-full"/>
+                        </div>
+
+                        <div class="flex items-center gap-2 mt-2">
+                            <p-radiobutton
+                                inputId="answer2"
+                                value="answer2"
+                                name="isCorrect"
+                                formControlName="isCorrect"
+                                (click)="setCorrectAnswer('answer2')">
+                            </p-radiobutton>
+                            <input pInputText formControlName="answer2" placeholder="Enter answer 2" class="w-full"/>
+                        </div>
+
+                        <div class="flex items-center gap-2 mt-2">
+                            <p-radiobutton
+                                inputId="answer3"
+                                value="answer3"
+                                name="isCorrect"
+                                formControlName="isCorrect"
+                                (click)="setCorrectAnswer('answer3')">
+                            </p-radiobutton>
+                            <input pInputText formControlName="answer3" placeholder="Enter answer 3" class="w-full"/>
+                        </div>
+
+                        <div class="flex items-center gap-2 mt-2">
+                            <p-radiobutton
+                                inputId="answer4"
+                                value="answer4"
+                                name="isCorrect"
+                                formControlName="isCorrect"
+                                (click)="setCorrectAnswer('answer4')">
+                            </p-radiobutton>
+                            <input pInputText formControlName="answer4" placeholder="Enter answer 4" class="w-full"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <ng-template #footer>
+        <p-button label="Cancel" severity="secondary" (click)="isQuizDialogVisible = false" />
+        <p-button label="Save" raised severity="contrast" (click)="handleCreateQuiz()" />
+    </ng-template>
+</p-dialog>
+
+
+
+
+

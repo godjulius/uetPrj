@@ -1,7 +1,7 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {Card} from 'primeng/card';
 import { InputTextModule } from 'primeng/inputtext';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {TextareaModule} from 'primeng/textarea';
 import {InputNumber} from 'primeng/inputnumber';
 import {MultiSelectModule} from 'primeng/multiselect';
@@ -15,6 +15,7 @@ import {AccordionModule} from 'primeng/accordion';
 import {FieldsetModule} from 'primeng/fieldset';
 import {Dialog} from 'primeng/dialog';
 import {StepperModule} from 'primeng/stepper';
+import {RadioButton} from 'primeng/radiobutton';
 
 @Component({
   selector: 'app-course-edit',
@@ -35,7 +36,8 @@ import {StepperModule} from 'primeng/stepper';
         AccordionModule,
         FieldsetModule,
         Dialog,
-        StepperModule
+        StepperModule,
+        RadioButton
     ],
   templateUrl: './course-edit.component.html',
   styleUrl: './course-edit.component.css'
@@ -43,6 +45,7 @@ import {StepperModule} from 'primeng/stepper';
 export class CourseEditComponent implements OnInit{
     private courseService = inject(CoursesService);
     courseForm!: FormGroup
+    quizForm!: FormGroup;
     loading = false
     categories = [
         {name: 'Development', value: 'development'},
@@ -88,6 +91,8 @@ export class CourseEditComponent implements OnInit{
     courseContent: any[] = [1, 2, 3, 4, 5];
     active = 1
     isLessonDialogVisible = false;
+    isQuizDialogVisible = false;
+    quizList: any[] = [];
 
     ngOnInit() {
         this.courseForm = new FormGroup({
@@ -98,6 +103,18 @@ export class CourseEditComponent implements OnInit{
             price: new FormControl<number>(0, {validators: [Validators.required]}),
             thumbnail: new FormControl(null, {validators: [Validators.required]}),
         })
+
+        this.quizForm = new FormGroup({
+            title: new FormControl('', Validators.required),
+            description: new FormControl('', Validators.required),
+            answer1: new FormControl('', Validators.required),
+            answer2: new FormControl('', Validators.required),
+            answer3: new FormControl('', Validators.required),
+            answer4: new FormControl('', Validators.required),
+            isCorrect: new FormControl('', Validators.required), // Chọn 1 trong 4 đáp án
+        });
+
+
     }
 
     changeCategories() {
@@ -137,4 +154,20 @@ export class CourseEditComponent implements OnInit{
     toggleCreateLessonDialog() {
         this.isLessonDialogVisible = !this.isLessonDialogVisible;
     }
+    toggleQuizDialog() {
+        this.isQuizDialogVisible = !this.isQuizDialogVisible;
+    }
+
+    setCorrectAnswer(answerKey: string) {
+        this.quizForm.patchValue({ isCorrect: answerKey });
+    }
+
+    handleCreateQuiz() {
+        if (this.quizForm.invalid) {
+            console.log('Quiz form is invalid');
+            return;
+        }
+        console.log('Quiz created:', this.quizForm.value);
+    }
+
 }
