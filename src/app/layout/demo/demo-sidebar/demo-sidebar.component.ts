@@ -58,9 +58,9 @@ export class DemoSidebarComponent implements OnInit {
                         routerLink: 'buttons',
                     },
                     {
-                        label: 'Button Demo page',
-                        icon: 'pi pi-link',
-                        routerLink: 'cards',
+                        label: 'Text editor demo',
+                        icon: 'pi pi-file-word',
+                        routerLink: 'editor',
                     },
                 ]
             },
