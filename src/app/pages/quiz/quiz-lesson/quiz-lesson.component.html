@@ -1,0 +1,143 @@
+<p-dialog
+    [(visible)]="visible"
+    [modal]="true"
+    [style]="{ width: '60vw', height: '95vh' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    (onHide)="clearData()"
+>
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap">New Quiz</span>
+        </div>
+    </ng-template>
+
+    <div class="quiz-container">
+        <form [formGroup]="quizForm" (ngSubmit)="submitQuiz()">
+            <div class="flex flex-col gap-2">
+                <!-- Sticky Header -->
+                <div class="sticky top-0 z-10 bg-white p-2 border-b border-gray-300">
+                    <!-- Quiz Title -->
+                    <div class="flex items-center gap-4">
+                        <label for="quizTitle" class="text-xl font-semibold whitespace-nowrap">Quiz Title:</label>
+                        <input id="quizTitle"
+                               formControlName="quizTitle"
+                               placeholder="Enter quiz title"
+                               pInputText
+                               class="flex-1 text-lg border border-gray-300 rounded-md p-2"
+                               [ngClass]="{'ng-dirty': isFieldInvalid('quizTitle')}"
+                        />
+                    </div>
+
+                    <!-- Button Quiz Index -->
+                    <div class="flex gap-2 overflow-x-auto mt-2">
+                        <span *ngFor="let question of questions.controls; let i = index">
+                            <p-button
+                                (onClick)="setActiveQuestion(i)"
+                                [rounded]="true"
+                                [label]="(i + 1).toString()"
+                                styleClass="w-8 h-8 p-0 text-lg"
+                                [outlined]="active !== i"
+                            />
+                        </span>
+                    </div>
+                </div>
+
+                <div formArrayName="questions"
+                     class="flex flex-col gap-2"
+                >
+                    <div *ngFor="let question of questions.controls; let i = index"
+                         [formGroupName]="i"
+                         class="flex flex-col gap-2 border border-gray-200 p-2 rounded-lg"
+                         #questionContainer
+                    >
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg font-semibold" [id]="i + 1">Question {{ i + 1 }}</span>
+                                <p-selectbutton
+                                    size="small"
+                                    [options]="typeOptions"
+                                    formControlName="type"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    class="ml-4"
+                                >
+                                </p-selectbutton>
+                            </div>
+
+                            <p-button
+                                icon="pi pi-trash"
+                                severity="danger"
+                                text
+                                (click)="removeQuestion(i)">
+                            </p-button>
+                        </div>
+
+                        <!-- Question Name -->
+                        <div class="flex flex-col gap-2">
+                            <label for="questionName" class="font-semibold">Question Name</label>
+                            <textarea
+                                id="questionName"
+                                rows="3"
+                                pTextarea
+                                formControlName="questionName"
+                                class="text-lg"
+                                [ngClass]="{'ng-dirty': isFieldInvalid('questionName', i)}"
+                            >
+                            </textarea>
+                        </div>
+                        <!-- Answer -->
+                        <div class="flex flex-col gap-2">
+                            <span class="font-semibold">Answer</span>
+                            <div *ngFor="let num of [1, 2, 3, 4]; let j = index" class="flex items-center gap-2 mt-2">
+                                <ng-container *ngIf="question.get('type')?.value === 'single'; else multipleChoice">
+                                    <p-radiobutton
+                                        [inputId]="'answer' + num"
+                                        [value]="num"
+                                        formControlName="correctAnswer"
+                                    >
+                                    </p-radiobutton>
+                                </ng-container>
+
+                                <ng-template #multipleChoice>
+                                    <p-checkbox
+                                        [inputId]="'answer' + num"
+                                        [value]="num"
+                                        formControlName="correctAnswer"
+                                    >
+                                    </p-checkbox>
+                                </ng-template>
+
+                                <input
+                                    pInputText
+                                    [formControlName]="'answer' + num"
+                                    [placeholder]="'Enter answer ' + num"
+                                    class="w-full"
+                                    [ngClass]="{'ng-dirty': isFieldInvalid('answer' + num, i)}"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p-button label="Add Question" severity="secondary" (click)="addQuestion()"/>
+            </div>
+        </form>
+    </div>
+
+    <ng-template #footer>
+        <p-button
+            label="Cancel"
+            severity="secondary"
+            class="text-lg"
+            (click)="closeDialog()"
+        />
+        <p-button
+            label="Create Quiz"
+            raised severity="contrast"
+            type="submit"
+            class="text-lg"
+            (click)="submitQuiz()"
+        />
+    </ng-template>
+</p-dialog>
+
+<p-toast></p-toast>

@@ -24,6 +24,7 @@ import { StepperModule } from 'primeng/stepper';
 import { SelectButton } from 'primeng/selectbutton';
 import { Editor } from 'primeng/editor';
 import { RadioButton } from 'primeng/radiobutton';
+import {QuizLessonComponent} from '../../quiz/quiz-lesson/quiz-lesson.component';
 
 @Component({
     selector: 'app-course-edit',
@@ -47,7 +48,7 @@ import { RadioButton } from 'primeng/radiobutton';
         StepperModule,
         SelectButton,
         Editor,
-        RadioButton,
+        QuizLessonComponent,
     ],
     templateUrl: './course-edit.component.html',
     styleUrl: './course-edit.component.css',
@@ -129,16 +130,6 @@ export class CourseEditComponent implements OnInit {
                 validators: [Validators.required],
             }),
         });
-
-        this.quizForm = new FormGroup({
-            title: new FormControl('', Validators.required),
-            description: new FormControl('', Validators.required),
-            answer1: new FormControl('', Validators.required),
-            answer2: new FormControl('', Validators.required),
-            answer3: new FormControl('', Validators.required),
-            answer4: new FormControl('', Validators.required),
-            isCorrect: new FormControl('', Validators.required), // Chọn 1 trong 4 đáp án
-        });
     }
 
     changeCategories() {
@@ -198,17 +189,4 @@ export class CourseEditComponent implements OnInit {
     toggleQuizDialog() {
         this.isQuizDialogVisible = !this.isQuizDialogVisible;
     }
-
-    setCorrectAnswer(answerKey: string) {
-        this.quizForm.patchValue({ isCorrect: answerKey });
-    }
-
-    handleCreateQuiz() {
-        if (this.quizForm.invalid) {
-            console.log('Quiz form is invalid');
-            return;
-        }
-        console.log('Quiz created:', this.quizForm.value);
-    }
-
 }
