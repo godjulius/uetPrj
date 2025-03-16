@@ -83,8 +83,8 @@ export class CourseEditComponent implements OnInit {
     ];
 
     languages = [
-        { name: 'English', value: 'english' },
-        { name: 'Spanish', value: 'spanish' },
+        { name: 'English', value: 'en' },
+        { name: 'Vietnamese', value: 'vi' },
         { name: 'French', value: 'french' },
         { name: 'German', value: 'german' },
         { name: 'Italian', value: 'italian' },

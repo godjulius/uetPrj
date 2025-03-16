@@ -1,5 +1,13 @@
-import {Component, ElementRef, AfterViewInit, ViewChild, OnDestroy, Output, EventEmitter} from '@angular/core';
-import {Button} from 'primeng/button';
+import {
+    Component,
+    ElementRef,
+    AfterViewInit,
+    ViewChild,
+    OnDestroy,
+    Input,
+    OnChanges,
+    SimpleChanges
+} from '@angular/core';
 import EditorJS, {ToolConstructable} from '@editorjs/editorjs';
 import Header from '@editorjs/header';
 import ImageTool from '@editorjs/image';
@@ -10,22 +18,31 @@ import CodeTool from '@editorjs/code';
 // @ts-ignore
 import Marker from '@editorjs/marker';
 @Component({
-    selector: 'app-editor',
-    standalone: true,
-    imports: [
-        Button
-    ],
-    templateUrl: './editor.component.html',
-    styleUrl: './editor.component.css'
+  selector: 'app-editor-read-only',
+  standalone: true,
+  imports: [],
+  templateUrl: './editor-read-only.component.html',
+  styleUrl: './editor-read-only.component.css'
 })
-export class EditorComponent implements AfterViewInit, OnDestroy {
+export class EditorReadOnlyComponent implements AfterViewInit, OnDestroy , OnChanges{
     @ViewChild('editorContainer', { static: true }) editorContainer!: ElementRef;
-    @Output() onSave = new EventEmitter();
+    @Input() content: any;
     private editor!: EditorJS;
     isReadOnly = false;
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (this.content) {
+            console.log(this.content);
+            this.editor.render(this.content);
+        }
+    }
+
     ngAfterViewInit(): void {
+        console.log(this.content);
         this.editor = new EditorJS({
             holder: this.editorContainer.nativeElement,
+            readOnly: true,
+            data: this.content,
             tools: {
                 header: Header,
                 // list: List,
@@ -64,23 +81,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
                     shortcut: 'CMD+SHIFT+M',
                 }
             },
-            placeholder: 'Nhập nội dung của bạn...',
-            autofocus: true,
         });
-    }
-
-    saveContent() {
-        this.editor.save().then((outputData) => {
-            console.log('Dữ liệu đã lưu:', outputData);
-            this.onSave.emit(outputData);
-        }).catch((error) => {
-            console.log('Lỗi khi lưu dữ liệu:', error);
-        });
-    }
-
-    toggleReadOnly() {
-        this.isReadOnly = !this.isReadOnly;
-        this.editor.readOnly.toggle(); // Chuyển giữa chế độ đọc và chỉnh sửa
     }
 
     ngOnDestroy(): void {

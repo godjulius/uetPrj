@@ -28,7 +28,7 @@ import {MessageService} from 'primeng/api';
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.css'
 })
-export class SignUpComponent extends BaseComponent implements OnInit{
+export class SignUpComponent extends BaseComponent implements OnInit {
     registerForm!: FormGroup;
     authService = inject(AuthService)
     private router = inject(Router);

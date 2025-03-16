@@ -1,9 +1,9 @@
 import {inject, Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {LOGIN, SIGNUP, USERINFO} from '../../core/constants/api.const';
+import {AVATAR, LOGIN, PROFILE, SIGNUP, USERINFO} from '../../core/constants/api.const';
 import {IProfileModel, LoginModel, SignUpModel} from './auth.model';
-import {catchError, of} from 'rxjs';
+import {catchError, map, of} from 'rxjs';
 import {MessageService} from 'primeng/api';
 
 @Injectable({
@@ -17,12 +17,12 @@ export class AuthService implements OnInit {
         email: 'hai@gmail.com',
         fullName: '',
         phone: '',
-        dob: '',
+        date_of_birth: '',
         gender: "other",
         bio: '',
-        avatar: ''
+        id: ''
     }
-
+    avatarUrl: string | null = null;
 
     constructor() {
     }
@@ -47,16 +47,39 @@ export class AuthService implements OnInit {
         this.httpClient.get(`${this.baseUrl}${USERINFO}`)
             .subscribe((res: any) => {
                 console.log(res);
-                // this.setProfile(res)
+                this.setProfile(res)
             });
     }
 
     setProfile(profile: IProfileModel) {
         this.profile = profile;
+        console.log(this.profile);
+    }
+
+
+    updateProfile(profile: IProfileModel) {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${PROFILE}`, profile));
     }
 
     getProfile() {
         return this.profile;
+    }
+
+    getAvatarUrl() {
+        return this.httpClient.get(`${this.baseUrl}${AVATAR}`, { responseType: 'blob' })
+            .pipe(
+                map((res: any) => {
+                    const objectURL = URL.createObjectURL(res);
+                    this.avatarUrl = objectURL;
+                    return objectURL;
+                })
+            )
+    }
+
+    postAvatar(avatar: File) {
+        const formData = new FormData();
+        formData.append('file', avatar);
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${AVATAR}`, formData));
     }
 
     handleError(observable: any) {
