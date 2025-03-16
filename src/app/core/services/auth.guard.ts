@@ -29,7 +29,7 @@ export class LoginGuard implements CanActivate {
   canActivate(): boolean {
     const token = this.cookieService.getCookie(AUTH_TOKEN);
     if (token) {
-      this.router.navigate(['/']);
+      this.router.navigate(['/user/profile']);
       return false;
     } else {
       return true;
