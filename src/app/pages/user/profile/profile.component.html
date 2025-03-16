@@ -59,7 +59,7 @@
                         <div class="flex-auto">
                             <label for="dob" class="font-bold block mb-2"> Date of Birth </label>
                             <p-datepicker formControlName="dob" [iconDisplay]="'input'" [showIcon]="true" inputId="dob"
-                                          [maxDate]="maxDate" [ngClass]="{'ng-dirty': isFieldInvalid('dob')}"></p-datepicker>
+                                          [maxDate]="maxDate" [ngClass]="{'ng-dirty': isFieldInvalid('dob')}" ></p-datepicker>
                             <p-message *ngIf="isFieldInvalid('dob')" severity="error" variant="simple" size="small"
                                        styleClass="absolute error-message">
                                 <span *ngIf="profileForm.get('dob')?.errors?.['required']">
@@ -98,6 +98,7 @@
                             type="button"
                             (click)="fileInput.click()"
                             styleClass="w-full"
+                            size="small"
                         >
                             <span class="pi pi-image"></span>
                             Choose avatar
@@ -108,7 +109,7 @@
                             'assets/images/course-skeleton.png'
                         "
                             alt=""
-                            class="w-full max-w-xl rounded-lg"
+                            class="w-48 h-48 aspect-square rounded-lg rounded-lg"
                         />
                     </div>
 

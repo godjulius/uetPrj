@@ -1,10 +1,15 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {Component, inject, input, OnInit, ViewChild} from '@angular/core';
 import {ButtonModule} from 'primeng/button';
 import {CommonModule} from '@angular/common';
 import {DrawerModule} from 'primeng/drawer';
 import {Avatar} from 'primeng/avatar';
 import {Popover, PopoverModule} from 'primeng/popover';
-import {Dialog} from 'primeng/dialog';
+import {AuthService} from '../../pages/auth/auth.service';
+import {Router} from '@angular/router';
+import {MessageService} from 'primeng/api';
+import {IProfileModel} from '../../pages/auth/auth.model';
+import {CookieStorageService} from '../../core/services/cookie-storage.service';
+import {AUTH_TOKEN} from '../../core/constants/common.const';
 
 @Component({
     selector: 'app-header-utils',
@@ -19,8 +24,13 @@ import {Dialog} from 'primeng/dialog';
     templateUrl: './header-utils.component.html',
     styleUrl: './header-utils.component.css'
 })
-export class HeaderUtilsComponent {
+export class HeaderUtilsComponent implements OnInit {
     @ViewChild('languages') languages!: Popover;
+    isSettingVisible = input(true)
+    private authService = inject(AuthService)
+    private router = inject(Router);
+    private messageService = inject(MessageService);
+    private cookieStorageService = inject(CookieStorageService);
     isDarkTheme: boolean = false;
     settingDrawer: boolean = false;
     languagesList: any[] = [
@@ -35,12 +45,29 @@ export class HeaderUtilsComponent {
             icon: 'assets/images/flags/uk_flag.png',
         },
     ];
+    avatarUrl: string | null = null;
+    userProfile!: IProfileModel | undefined
 
     constructor() {
         this.checkDarkTheme();
-
     }
 
+    ngOnInit() {
+        if (this.cookieStorageService.getCookie(AUTH_TOKEN)) {
+            this.authService.profileObject.subscribe(
+                (profile: any) => {
+                    if (profile) {
+                        this.userProfile = profile;
+                    }
+                }
+            )
+            this.authService.avatarObject.subscribe((avatarUrl: any) => {
+                this.avatarUrl = avatarUrl;
+            })
+        } else {
+            this.userProfile = undefined
+        }
+    }
 
     checkDarkTheme() {
         if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
@@ -68,5 +95,12 @@ export class HeaderUtilsComponent {
 
     openDialogLanguage(event: any) {
         this.languages.toggle(event);
+    }
+
+    handleSignOut() {
+        this.authService.logout()
+        this.router.navigate(['/account/login']).then(() => {
+            this.messageService.add({severity: 'success', summary: 'Success', detail: 'Logout successfully'});
+        });
     }
 }

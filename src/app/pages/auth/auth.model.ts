@@ -11,8 +11,8 @@ export interface SignUpModel {
 export interface IProfileModel {
     email: string;
     fullName: string;
-    phone: string;
-    date_of_birth: Date | string;
+    phoneNumber: string;
+    dateOfBirth: Date | string;
     gender: 'male' | 'female' | 'other';
     bio?: string;
     id: string | null;

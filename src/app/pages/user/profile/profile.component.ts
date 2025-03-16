@@ -39,15 +39,15 @@ export class ProfileComponent extends BaseComponent implements OnInit{
     private router = inject(Router);
     private readonly messageService = inject(MessageService);
     loading = false;
-    email: string = this.authService.getProfile().email;
+    email: string = ''
     maxDate: Date = new Date();
     avatarUrl: string | null = null;
     genderOptions = [
-        { name: 'Male', value: 'male' },
-        { name: 'Female', value: 'female' },
-        { name: 'Other', value: 'other' }
+        { name: 'Male', value: 'Male' },
+        { name: 'Female', value: 'Female' },
+        { name: 'Other', value: 'Other' }
     ];
-
+    userProfile!: IProfileModel | undefined;
     constructor(private fb: FormBuilder) {
         super();
     }
@@ -61,16 +61,28 @@ export class ProfileComponent extends BaseComponent implements OnInit{
             bio: ['', [Validators.maxLength(500)]],
         });
         this.getProfile()
-        this.authService.getAvatarUrl().subscribe(
-            (res: any) => {
-                console.log(res)
-                this.avatarUrl = res;
-            }
-        )
     }
 
     getProfile() {
-        this.authService.getUserInfo()
+        this.authService.profileObject.subscribe(
+            (profile: any) => {
+                if (profile) {
+                    this.userProfile = profile;
+                    const genderVal = this.genderOptions.find((option) => option.value === profile.gender)
+                    this.profileForm.setValue({
+                        fullName: profile.fullName,
+                        phone: profile.phoneNumber,
+                        dob: new Date(profile.dateOfBirth),
+                        gender: genderVal,
+                        bio: profile.bio,
+                    })
+                    this.email = profile.email
+                }
+            }
+        )
+        this.authService.avatarObject.subscribe((avatarUrl: any) => {
+            this.avatarUrl = avatarUrl;
+        })
     }
 
     saveProfile() {
@@ -89,17 +101,19 @@ export class ProfileComponent extends BaseComponent implements OnInit{
         this.loading = true;
 
         const genderValue = this.profileForm.value.gender.value || 'other';
-
+        const date = new Date(this.profileForm.value.dob);
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+        const dd = String(date.getDate()).padStart(2, '0');
+        const formattedDate = `${yyyy}-${mm}-${dd}`;
         const profileData = {
             ...this.authService.getProfile(),
             fullName: this.profileForm.value.fullName,
-            phone: this.profileForm.value.phone,
-            date_of_birth: this.profileForm.value.dob,
+            phoneNumber: this.profileForm.value.phone,
+            dateOfBirth: formattedDate,
             gender: genderValue,
             bio: this.profileForm.value.bio,
         } as IProfileModel;
-
-        console.log(profileData);
 
         this.authService.updateProfile(profileData)
             .pipe(
@@ -111,6 +125,7 @@ export class ProfileComponent extends BaseComponent implements OnInit{
             .subscribe((res: any) => {
                 if (res) {
                     this.messageService.add({severity: 'success', summary: 'Success', detail: `Profile updated successfully`});
+                    this.authService.profileObject.next(res);
                 }
             })
         ;
@@ -127,7 +142,6 @@ export class ProfileComponent extends BaseComponent implements OnInit{
             this.avatarUrl = URL.createObjectURL(input.files[0]);
             this.authService.avatarUrl = this.avatarUrl;
             const avatarFile = input.files[0];
-            console.log(avatarFile);
             this.authService.postAvatar(avatarFile).
                 pipe(
                     finalize(() => {
@@ -137,7 +151,6 @@ export class ProfileComponent extends BaseComponent implements OnInit{
                 )
                 .subscribe((res: any) => {
                     if (res) {
-                        console.log(res)
                         this.messageService.add({severity: 'success', summary: 'Success', detail: `Avatar updated successfully`});
                     }
                 })

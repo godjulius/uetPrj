@@ -3,8 +3,10 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {AVATAR, LOGIN, PROFILE, SIGNUP, USERINFO} from '../../core/constants/api.const';
 import {IProfileModel, LoginModel, SignUpModel} from './auth.model';
-import {catchError, map, of} from 'rxjs';
+import {catchError, map, Observable, of, Subject} from 'rxjs';
 import {MessageService} from 'primeng/api';
+import {CookieStorageService} from '../../core/services/cookie-storage.service';
+import {AUTH_TOKEN} from '../../core/constants/common.const';
 
 @Injectable({
     providedIn: 'root'
@@ -13,18 +15,31 @@ export class AuthService implements OnInit {
     private readonly baseUrl = environment.baseUrl;
     private httpClient = inject(HttpClient);
     private readonly messageService = inject(MessageService);
-    private profile: IProfileModel = {
+    private readonly cookieStorageService = inject(CookieStorageService);
+    profile: IProfileModel = {
         email: 'hai@gmail.com',
         fullName: '',
-        phone: '',
-        date_of_birth: '',
+        phoneNumber: '',
+        dateOfBirth: '',
         gender: "other",
         bio: '',
         id: ''
     }
+    profileObject = new Subject();
     avatarUrl: string | null = null;
+    avatarObject = new Subject();
 
     constructor() {
+        this.getUserInfo()
+            .subscribe((res: any) => {
+                if (res) {
+                    this.profile = res;
+                    this.profileObject.next(res);
+                }
+            })
+        this.getAvatarUrl().subscribe((res: any) => {
+            this.avatarObject.next(res)
+        })
     }
 
     ngOnInit() {
@@ -44,21 +59,18 @@ export class AuthService implements OnInit {
     }
 
     getUserInfo() {
-        this.httpClient.get(`${this.baseUrl}${USERINFO}`)
-            .subscribe((res: any) => {
-                console.log(res);
-                this.setProfile(res)
-            });
-    }
-
-    setProfile(profile: IProfileModel) {
-        this.profile = profile;
-        console.log(this.profile);
+        return this.handleError(this.httpClient.get(`${this.baseUrl}${USERINFO}`))
     }
 
 
     updateProfile(profile: IProfileModel) {
-        return this.handleError(this.httpClient.post(`${this.baseUrl}${PROFILE}`, profile));
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${PROFILE}`, profile))
+            .pipe(
+                map((res: any) => {
+                    this.profileObject.next(res)
+                    return res;
+                })
+            )
     }
 
     getProfile() {
@@ -66,7 +78,7 @@ export class AuthService implements OnInit {
     }
 
     getAvatarUrl() {
-        return this.httpClient.get(`${this.baseUrl}${AVATAR}`, { responseType: 'blob' })
+        return this.httpClient.get(`${this.baseUrl}${AVATAR}`, {responseType: 'blob'})
             .pipe(
                 map((res: any) => {
                     const objectURL = URL.createObjectURL(res);
@@ -79,7 +91,13 @@ export class AuthService implements OnInit {
     postAvatar(avatar: File) {
         const formData = new FormData();
         formData.append('file', avatar);
-        return this.handleError(this.httpClient.post(`${this.baseUrl}${AVATAR}`, formData));
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${AVATAR}`, formData))
+            .pipe(
+                map((res: any) => {
+                    this.avatarObject.next(URL.createObjectURL(avatar));
+                    return res;
+                })
+            );
     }
 
     handleError(observable: any) {
@@ -91,5 +109,9 @@ export class AuthService implements OnInit {
                 return of(null);
             })
         );
+    }
+
+    logout() {
+        this.cookieStorageService.deleteCookie(AUTH_TOKEN);
     }
 }

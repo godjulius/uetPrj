@@ -67,11 +67,6 @@ export class SignUpComponent extends BaseComponent implements OnInit {
                 if (res) {
                     console.log(res);
                     this.messageService.add({severity: 'success', summary: 'Success', detail: `Account created successfully`});
-                    this.authService.setProfile({
-                        ...this.authService.getProfile(),
-                        email: this.registerForm.value.email,
-                    });
-
                     this.router.navigate(['/user/profile']);
                 }
             })
