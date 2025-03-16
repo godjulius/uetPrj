@@ -12,8 +12,8 @@ export interface IProfileModel {
     email: string;
     fullName: string;
     phone: string;
-    dob: Date | string;
+    date_of_birth: Date | string;
     gender: 'male' | 'female' | 'other';
     bio?: string;
-    avatar?: string | null;
+    id: string | null;
 }

@@ -20,6 +20,9 @@ import {FileUpload} from 'primeng/fileupload';
 import { TextareaModule } from 'primeng/textarea';
 import {Select} from 'primeng/select';
 import {AuthService} from '../../auth/auth.service';
+import {IProfileModel} from '../../auth/auth.model';
+import {finalize} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-profile',
@@ -56,10 +59,14 @@ export class ProfileComponent extends BaseComponent implements OnInit{
             dob: ['', Validators.required],
             gender: [undefined],
             bio: ['', [Validators.maxLength(500)]],
-            avatar: [null],
         });
-
         this.getProfile()
+        this.authService.getAvatarUrl().subscribe(
+            (res: any) => {
+                console.log(res)
+                this.avatarUrl = res;
+            }
+        )
     }
 
     getProfile() {
@@ -84,20 +91,29 @@ export class ProfileComponent extends BaseComponent implements OnInit{
         const genderValue = this.profileForm.value.gender.value || 'other';
 
         const profileData = {
-            email: this.email,
+            ...this.authService.getProfile(),
             fullName: this.profileForm.value.fullName,
             phone: this.profileForm.value.phone,
-            dob: this.profileForm.value.dob,
+            date_of_birth: this.profileForm.value.dob,
             gender: genderValue,
             bio: this.profileForm.value.bio,
-            avatar: this.avatarUrl
-        };
+        } as IProfileModel;
 
         console.log(profileData);
 
-        this.authService.setProfile(profileData);
-
-        this.router.navigate(['/teacher']);
+        this.authService.updateProfile(profileData)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                }),
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((res: any) => {
+                if (res) {
+                    this.messageService.add({severity: 'success', summary: 'Success', detail: `Profile updated successfully`});
+                }
+            })
+        ;
     }
 
     isFieldInvalid(field: string): boolean {
@@ -105,13 +121,26 @@ export class ProfileComponent extends BaseComponent implements OnInit{
         return control!.invalid && (control!.dirty || control!.touched);
     }
 
-    onBasicUploadAuto(event: any) {
-        console.log('Upload thành công:', event);
-        const uploadedFile = event.files[0];
-        if (uploadedFile) {
-            const imageUrl = uploadedFile.objectURL;
-            this.avatarUrl = imageUrl;
-            console.log('Image URL:', imageUrl);
+    onFileSelected(event: Event) {
+        const input = event.target as HTMLInputElement;
+        if (input.files && input.files.length > 0) {
+            this.avatarUrl = URL.createObjectURL(input.files[0]);
+            this.authService.avatarUrl = this.avatarUrl;
+            const avatarFile = input.files[0];
+            console.log(avatarFile);
+            this.authService.postAvatar(avatarFile).
+                pipe(
+                    finalize(() => {
+                        this.loading = false;
+                    }),
+                    takeUntilDestroyed(this.destroyRef)
+                )
+                .subscribe((res: any) => {
+                    if (res) {
+                        console.log(res)
+                        this.messageService.add({severity: 'success', summary: 'Success', detail: `Avatar updated successfully`});
+                    }
+                })
         }
     }
 }

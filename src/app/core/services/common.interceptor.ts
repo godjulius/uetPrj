@@ -27,7 +27,7 @@ export class CommonInterceptor implements HttpInterceptor {
         // Clone the request to add the new header
         let headers = request.headers ? request.headers : new HttpHeaders();
         if (authToken) {
-            headers = headers.append('Authorization', 'bearer ' + authToken);
+            headers = headers.append('Authorization', 'Bearer ' + authToken);
         }
         const cloneRequest = request.clone({headers})
         const authRequest = cloneRequest
