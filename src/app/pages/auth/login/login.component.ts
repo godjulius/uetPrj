@@ -78,6 +78,7 @@ export class LoginComponent extends BaseComponent implements OnInit {
                 if (res) {
                     this.cookieService.setCookie(AUTH_TOKEN, res.access_token, 10);
                     this.messageService.add({severity: 'success', summary: 'Success', detail: 'Login successfully'});
+                    this.router.navigate(['/user/profile']);
                 }
             })
     }

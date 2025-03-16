@@ -39,7 +39,7 @@
                 <span class="pi pi-search"></span>
                 <span pButtonLabel class="!font-normal hidden xl:inline-block">Search for anything</span>
             </p-button>
-            <app-header-utils></app-header-utils>
+            <app-header-utils [isSettingVisible]="false"></app-header-utils>
             <p-button label="login" severity="contrast" size="small" (click)="handleLogin()"/>
             <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" (click)="navigateToDashBoard()" class="cursor-pointer"/>
         </div>

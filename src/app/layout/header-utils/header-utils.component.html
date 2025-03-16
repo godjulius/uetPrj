@@ -11,22 +11,24 @@
         <p-button icon="pi pi-sun" size="small" variant="outlined" severity="contrast" styleClass="!w-8 h-8"
                   (click)="changeColorTheme()"></p-button>
     }
-    <p-button icon="pi pi-cog" size="small" variant="outlined" (click)="settingDrawer = true;" severity="contrast"
-              styleClass="!w-8 h-8"></p-button>
+    @if (isSettingVisible()) {
+        <p-button icon="pi pi-cog" size="small" variant="outlined" (click)="settingDrawer = true;" severity="contrast"
+                  styleClass="!w-8 h-8"></p-button>
+    }
 </div>
 
 <p-drawer [(visible)]="settingDrawer" position="right">
     <ng-template #header>
         <div class="flex items-center gap-2">
             <p-avatar
-                image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png"
+                [image]="avatarUrl || 'assets/images/default-avt.png'"
                 shape="circle"
             />
-            <span class="font-bold">Amy Elsner</span>
+            <span class="font-bold"> {{ userProfile?.fullName || userProfile?.email || '' }} </span>
         </div>
     </ng-template>
     <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit...
+        {{ userProfile?.bio || '' }}
     </p>
     <ng-template #footer>
         <div class="flex items-center gap-2">
@@ -38,6 +40,7 @@
                 class="w-full"
                 severity="danger"
                 text
+                (click)="handleSignOut()"
             ></button>
         </div>
     </ng-template>
