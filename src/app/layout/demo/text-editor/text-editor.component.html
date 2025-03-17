@@ -1,6 +1,6 @@
 <div class="mt-14 flex flex-col gap-4 justify-center items-center w-full">
     <p-card class="w-full">
-        <app-editor (onSave)="handleSaveContent($event)"></app-editor>
+        <app-editor (onSave)="handleSaveContent($event)" [isFunctionsVisible]="true"></app-editor>
     </p-card>
     <p-card class="w-full">
         <app-editor-read-only [content]="content"></app-editor-read-only>

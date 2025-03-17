@@ -1,7 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import { Button } from 'primeng/button';
-import { Card } from 'primeng/card';
 import { InputText } from 'primeng/inputtext';
 import { Message } from 'primeng/message';
 import {
@@ -28,15 +27,17 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   selector: 'app-profile',
   standalone: true,
     imports: [CommonModule, Button, InputText, Message, ReactiveFormsModule, RouterLink, TranslatePipe,
-        FormsModule, DatePickerModule, FluidModule, FileUpload, TextareaModule, Select
+        FormsModule, DatePickerModule, FluidModule, TextareaModule, Select
     ],
   templateUrl: './profile.component.html',
-  styleUrl: './profile.component.css'
+  styleUrl: './profile.component.css',
+    providers: [DatePipe]
 })
 export class ProfileComponent extends BaseComponent implements OnInit{
     profileForm!: FormGroup;
     authService = inject(AuthService);
     private router = inject(Router);
+    datePipe = inject(DatePipe);
     private readonly messageService = inject(MessageService);
     loading = false;
     email: string = ''
@@ -50,9 +51,6 @@ export class ProfileComponent extends BaseComponent implements OnInit{
     userProfile!: IProfileModel | undefined;
     constructor(private fb: FormBuilder) {
         super();
-    }
-
-    ngOnInit(): void {
         this.profileForm = this.fb.group({
             fullName: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
             phone: ['', [Validators.required, Validators.pattern('^[0-9]{10,15}$')]],
@@ -60,6 +58,10 @@ export class ProfileComponent extends BaseComponent implements OnInit{
             gender: [undefined],
             bio: ['', [Validators.maxLength(500)]],
         });
+        this.authService.profileObjectEmit()
+    }
+
+    ngOnInit(): void {
         this.getProfile()
     }
 
@@ -102,15 +104,12 @@ export class ProfileComponent extends BaseComponent implements OnInit{
 
         const genderValue = this.profileForm.value.gender.value || 'other';
         const date = new Date(this.profileForm.value.dob);
-        const yyyy = date.getFullYear();
-        const mm = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
-        const dd = String(date.getDate()).padStart(2, '0');
-        const formattedDate = `${yyyy}-${mm}-${dd}`;
+        const formatedDate = this.datePipe.transform(date, 'yyyy-MM-dd');
         const profileData = {
             ...this.authService.getProfile(),
             fullName: this.profileForm.value.fullName,
             phoneNumber: this.profileForm.value.phone,
-            dateOfBirth: formattedDate,
+            dateOfBirth: formatedDate,
             gender: genderValue,
             bio: this.profileForm.value.bio,
         } as IProfileModel;
