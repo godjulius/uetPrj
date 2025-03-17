@@ -1,46 +1,47 @@
 <div class="mt-10">
-    <a class="p-button" routerLink="../">
-        <span class="pi pi-arrow-left"></span>
-        Back
-    </a>
-    <p-button (click)="handleCreateCourse()" styleClass="m-4">
-        Create
-    </p-button>
     <form
         class="flex flex-col gap-4"
         [formGroup]="courseForm"
         (ngSubmit)="handleCreateCourse()"
     >
         <p-card>
-            <h2 class="text-2xl font-semibold mb-4">New course</h2>
+            <div class="flex justify-between">
+                <h2 class="text-2xl font-semibold mb-4">New course</h2>
+                <div>
+
+                    <a class="p-button p-button-sm" routerLink="../">
+                        <span class="pi pi-arrow-left"></span>
+                        Back
+                    </a>
+                    <p-button (click)="handleCreateCourse()" styleClass="m-4" size="small">
+                        Create
+                    </p-button>
+                </div>
+            </div>
             <div class="flex flex-col gap-4">
                 <div class="flex flex-col gap-2">
                     <label for="name" class="text-lg font-semibold"
-                        >Course's name</label
+                    >Course's name</label
                     >
                     <input
-                        formControlName="name"
+                        formControlName="title"
                         pInputText
                         id="name"
                         class="w-full"
+                        [ngClass]="{'ng-dirty ng-touched': courseForm.get('title')?.invalid}"
                     />
                 </div>
 
                 <div class="flex flex-col gap-2">
                     <label for="description" class="text-lg font-semibold"
-                        >Description</label
+                    >Description</label
                     >
-                    <textarea
-                        id="description"
-                        rows="5"
-                        cols="30"
-                        pTextarea
-                    ></textarea>
+                    <app-editor #description [defaultData]="descriptionData"></app-editor>
                 </div>
 
                 <div class="flex flex-col gap-2">
                     <label for="category" class="text-lg font-semibold"
-                        >Category</label
+                    >Category</label
                     >
                     <p-multiselect
                         (onChange)="changeCategories()"
@@ -53,16 +54,17 @@
                         styleClass="w-full"
                         [loading]="loading"
                         formControlName="category"
+                        [ngClass]="{'ng-dirty ng-touched': courseForm.get('category')?.invalid}"
                     ></p-multiselect>
                     <div class="flex gap-1 px-2 flex-wrap">
                         @for (category of courseForm.get('category')?.value;
-                        track category.value) {
-                        <p-chip
-                            [label]="category.name"
-                            [removable]="true"
-                            (onRemove)="handleRemoveCategory(category.value)"
-                            styleClass="h-[32px]"
-                        />
+                            track category.value) {
+                            <p-chip
+                                [label]="category.name"
+                                [removable]="true"
+                                (onRemove)="handleRemoveCategory(category.value)"
+                                styleClass="h-[32px]"
+                            />
                         }
                     </div>
                 </div>
@@ -70,7 +72,7 @@
                 <div class="flex flex-col gap-2 md:flex-row">
                     <div class="flex flex-col gap-2 w-full md:w-1/2">
                         <label for="level" class="text-lg font-semibold"
-                            >Level</label
+                        >Level</label
                         >
                         <p-select
                             inputId="level"
@@ -79,11 +81,12 @@
                             optionLabel="name"
                             placeholder="Select a level"
                             class=""
+                            [ngClass]="{'ng-dirty ng-touched': courseForm.get('level')?.invalid}"
                         />
                     </div>
                     <div class="flex flex-col gap-2 w-full md:w-1/2">
                         <label for="language" class="text-lg font-semibold"
-                            >Language</label
+                        >Language</label
                         >
                         <p-multiselect
                             [options]="languages"
@@ -92,13 +95,14 @@
                             placeholder="Select languages"
                             [maxSelectedLabels]="3"
                             styleClass=""
+                            [ngClass]="{'ng-dirty ng-touched': courseForm.get('languages')?.invalid}"
                         ></p-multiselect>
                     </div>
                 </div>
 
                 <div class="flex flex-col gap-2">
                     <label for="price" class="text-lg font-semibold"
-                        >Price ($)</label
+                    >Price ($)</label
                     >
                     <p-inputnumber
                         inputId="price"
@@ -106,7 +110,8 @@
                         mode="decimal"
                         locale="en-US"
                         [minFractionDigits]="2"
-                    />
+                        [ngClass]="{'ng-dirty ng-touched': courseForm.get('price')?.invalid}"
+                    ></p-inputnumber>
                 </div>
 
                 <div class="flex flex-col gap-2 items-center">
@@ -115,7 +120,6 @@
                         (change)="onFileSelected($event)"
                         #fileInput
                         hidden
-                        formControlName="thumbnail"
                     />
                     <p-button
                         type="button"
@@ -140,62 +144,62 @@
         <p-card>
             <h2 class="text-2xl font-semibold mb-4">Course content</h2>
             <div class="flex mb-4 gap-4">
-                @for(section of courseContent; track section) {
-                <p-button
-                    (onClick)="active = section"
-                    [rounded]="true"
-                    [label]="section"
-                    styleClass="w-8 h-8 p-0"
-                    [outlined]="active !== section"
-                />
+                @for (section of courseContent; track section) {
+                    <p-button
+                        (onClick)="active = section"
+                        [rounded]="true"
+                        [label]="section"
+                        styleClass="w-8 h-8 p-0"
+                        [outlined]="active !== section"
+                    />
                 }
             </div>
 
             <p-accordion [(value)]="active" [multiple]="false">
-                @for(section of courseContent; track section) {
-                <p-accordion-panel [value]="section">
-                    <p-accordion-header>
-                        Section {{ section }}
-                    </p-accordion-header>
-                    <p-accordion-content>
-                        <div class="flex flex-col gap-2">
-                            @for (lesson of courseContent; track lesson) {
-                            <p-fieldset [toggleable]="true" [collapsed]="true">
-                                <ng-template #header>
-                                    <div class="flex items-center gap-2 px-2">
-                                        <span class="pi pi-home"></span>
-                                        <span class="font-bold"
-                                            >Lesson {{ lesson }}</span
-                                        >
-                                    </div>
-                                </ng-template>
-                                <p-button outlined raised>
-                                    <span class="pi pi-file-edit"></span>
+                @for (section of courseContent; track section) {
+                    <p-accordion-panel [value]="section">
+                        <p-accordion-header>
+                            Section {{ section }}
+                        </p-accordion-header>
+                        <p-accordion-content>
+                            <div class="flex flex-col gap-2">
+                                @for (lesson of courseContent; track lesson) {
+                                    <p-fieldset [toggleable]="true" [collapsed]="true">
+                                        <ng-template #header>
+                                            <div class="flex items-center gap-2 px-2">
+                                                <span class="pi pi-home"></span>
+                                                <span class="font-bold"
+                                                >Lesson {{ lesson }}</span
+                                                >
+                                            </div>
+                                        </ng-template>
+                                        <p-button outlined raised>
+                                            <span class="pi pi-file-edit"></span>
+                                        </p-button>
+                                        <div>Lesson content</div>
+                                    </p-fieldset>
+                                }
+                            </div>
+                            <div class="mt-2 flex flex-wrap gap-2">
+                                <p-button
+                                    raised
+                                    text
+                                    size="small"
+                                    (click)="toggleCreateLessonDialog()"
+                                >
+                                    Add Lesson
                                 </p-button>
-                                <div>Lesson content</div>
-                            </p-fieldset>
-                            }
-                        </div>
-                        <div class="mt-2 flex flex-wrap gap-2">
-                            <p-button
-                                raised
-                                text
-                                size="small"
-                                (click)="toggleCreateLessonDialog()"
-                            >
-                                Add Lesson
-                            </p-button>
-                            <p-button
-                                raised
-                                text
-                                size="small"
-                                (click)="toggleQuizDialog()"
-                            >
-                                Add Quiz
-                            </p-button>
-                        </div>
-                    </p-accordion-content>
-                </p-accordion-panel>
+                                <p-button
+                                    raised
+                                    text
+                                    size="small"
+                                    (click)="toggleQuizDialog()"
+                                >
+                                    Add Quiz
+                                </p-button>
+                            </div>
+                        </p-accordion-content>
+                    </p-accordion-panel>
 
                 }
             </p-accordion>
@@ -255,13 +259,14 @@
                             <div
                                 class="h-full border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
                             >
-                                @if(typeOfNewLesson === 'video') { video } @else
-                                {
-                                <p-editor
-                                    [(ngModel)]="documentContent"
-                                    [style]="{ height: '350px' }"
-                                    class="w-full"
-                                />
+                                @if (typeOfNewLesson === 'video') {
+                                    video
+                                } @else {
+                                    <p-editor
+                                        [(ngModel)]="documentContent"
+                                        [style]="{ height: '350px' }"
+                                        class="w-full"
+                                    />
                                 }
                             </div>
                         </div>

@@ -30,6 +30,16 @@ export class AuthService implements OnInit {
     avatarObject = new Subject();
 
     constructor() {
+        if (this.cookieStorageService.getCookie(AUTH_TOKEN)) {
+            this.profileObjectEmit()
+        }
+    }
+
+    ngOnInit() {
+
+    }
+
+    profileObjectEmit() {
         this.getUserInfo()
             .subscribe((res: any) => {
                 if (res) {
@@ -40,10 +50,6 @@ export class AuthService implements OnInit {
         this.getAvatarUrl().subscribe((res: any) => {
             this.avatarObject.next(res)
         })
-    }
-
-    ngOnInit() {
-
     }
 
     login(account: LoginModel) {

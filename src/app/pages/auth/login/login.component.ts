@@ -1,4 +1,3 @@
-import {SessionStorageService} from '../../../core/services/session-storage.service';
 import {Component, inject, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators, ReactiveFormsModule} from '@angular/forms';
 import {ButtonModule} from 'primeng/button';
@@ -33,7 +32,6 @@ declare var google: any;
 export class LoginComponent extends BaseComponent implements OnInit {
     authService = inject(AuthService)
     private router = inject(Router);
-    sessionStorageService = inject(SessionStorageService)
     cookieService = inject(CookieStorageService)
     messageService = inject(MessageService)
     socialAuthService = inject(SocialAuthService)
@@ -78,7 +76,10 @@ export class LoginComponent extends BaseComponent implements OnInit {
                 if (res) {
                     this.cookieService.setCookie(AUTH_TOKEN, res.access_token, 10);
                     this.messageService.add({severity: 'success', summary: 'Success', detail: 'Login successfully'});
-                    this.router.navigate(['/user/profile']);
+                    this.router.navigate(['/user/profile'])
+                        .then(() => {
+                            // this.authService.profileObjectEmit();
+                        });
                 }
             })
     }

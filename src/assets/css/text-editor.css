@@ -38,3 +38,15 @@ h5.ce-header {
     margin-bottom: 4px;
     padding-left: 16px;
 }
+
+.ce-toolbar__content {
+    max-width: 1280px !important;
+}
+
+.ce-block__content {
+    max-width: 1280px !important;
+}
+
+.codex-editor__redactor {
+    padding-bottom: 100px !important;
+}
