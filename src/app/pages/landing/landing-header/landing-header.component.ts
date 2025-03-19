@@ -13,6 +13,9 @@ import {IconField} from 'primeng/iconfield';
 import {InputIcon} from 'primeng/inputicon';
 import {InputGroup} from 'primeng/inputgroup';
 import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {BaseComponent} from '../../../core/base.component';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
     selector: 'app-landing-header',
@@ -25,7 +28,7 @@ import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
     templateUrl: './landing-header.component.html',
     styleUrl: './landing-header.component.css'
 })
-export class LandingHeaderComponent implements OnInit {
+export class LandingHeaderComponent extends BaseComponent implements OnInit {
     @HostListener('window:scroll', ['$event'])
     onWindowScroll() {
         if (window.scrollY > 48) {
@@ -40,13 +43,16 @@ export class LandingHeaderComponent implements OnInit {
     searchKeyword: string = '';
     // use when user click enter immediately
     _searchKeyword: string = '';
-    constructor(private router: Router) {
-        this.searchSubjectSubs();
-    }
-
-
+    isLoggedIn = false;
     items: MegaMenuItem[] | undefined;
-
+    avatarUrl: string = '';
+    constructor(private router: Router, private authService: AuthService) {
+        super();
+        this.searchSubjectSubs();
+        this.isLoggedIn = this.authService.isLoggedin()
+        this.authService.getAvatarUrl()
+        this.getAvatarUrl()
+    }
 
 
     ngOnInit() {
@@ -101,6 +107,12 @@ export class LandingHeaderComponent implements OnInit {
                 root: true
             }
         ];
+    }
+
+    getAvatarUrl() {
+        this.authService.getAvatarUrl().subscribe((avtUrl) => {
+            this.avatarUrl = avtUrl;
+        })
     }
 
     handleLogin() {
@@ -179,7 +191,8 @@ export class LandingHeaderComponent implements OnInit {
         this.searchSubject
             .pipe(
                 debounceTime(500),
-                distinctUntilChanged()
+                distinctUntilChanged(),
+                takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((keyword) => {
             this.searchKeyword = keyword;

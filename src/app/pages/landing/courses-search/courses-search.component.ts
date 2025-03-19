@@ -6,6 +6,8 @@ import {IftaLabelModule} from 'primeng/iftalabel';
 import {ActivatedRoute} from '@angular/router';
 import {CoursesFilterComponent} from './courses-filter/courses-filter.component';
 import {CoursesSearchResultComponent} from './courses-search-result/courses-search-result.component';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {BaseComponent} from '../../../core/base.component';
 
 @Component({
   selector: 'app-courses-search',
@@ -17,13 +19,16 @@ import {CoursesSearchResultComponent} from './courses-search-result/courses-sear
   templateUrl: './courses-search.component.html',
   styleUrl: './courses-search.component.css'
 })
-export class CoursesSearchComponent implements OnInit {
+export class CoursesSearchComponent extends BaseComponent implements OnInit {
     token: string = '';
     constructor(private route: ActivatedRoute) {
+        super();
     }
 
     ngOnInit() {
-        this.route.queryParams.subscribe(params => {
+        this.route.queryParams
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe(params => {
             this.token = params['token'];
         });
     }

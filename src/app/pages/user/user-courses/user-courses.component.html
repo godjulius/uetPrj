@@ -1,5 +1,5 @@
 <div class="mt-10">
-    <p-dataview #dv [value]="data()" [layout]="layout" [rows]="5" [paginator]="true">
+    <p-dataview #dv [value]="data()" [layout]="layout">
         <ng-template #header>
             <div class="flex justify-end gap-1">
 <!--                <p-button (click)="handleAddCourse()">-->
@@ -100,6 +100,7 @@
                         </div>
                     </div>
                 </div>
+                <ng-container *ngTemplateOutlet="paginator"></ng-container>
             }
         </ng-template>
         <ng-template #grid let-items>
@@ -185,7 +186,13 @@
                         </div>
                     </div>
                 </div>
+                <ng-container *ngTemplateOutlet="paginator"></ng-container>
             }
         </ng-template>
     </p-dataview>
+
 </div>
+
+<ng-template #paginator>
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="120" [rowsPerPageOptions]="[5, 10, 20, 30]"/>
+</ng-template>

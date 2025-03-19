@@ -2,6 +2,9 @@ import {inject, Injectable} from '@angular/core';
 import {ICourse} from './courses.model';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
+import {catchError, of} from 'rxjs';
+import {MessageService} from 'primeng/api';
+import {ALL_CATEGORY, CATEGORY, COURSE} from '../../core/constants/api.const';
 
 @Injectable({
     providedIn: 'root'
@@ -9,6 +12,7 @@ import {HttpClient} from '@angular/common/http';
 export class CoursesService {
     private readonly baseUrl = environment.baseUrl;
     private httpClient = inject(HttpClient);
+    private messageService = inject(MessageService);
     courses: ICourse[] = [
         {
             id: 1,
@@ -126,9 +130,28 @@ export class CoursesService {
     }
 
     createCourse(courseFormData: any) {
-        console.log(1)
-        this.httpClient.post(this.baseUrl, courseFormData).subscribe((res) => {
-            console.log(res)
-        })
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}`, courseFormData));
     }
+
+    getCourseById(courseId: string) {
+        return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/${courseId}`));
+    }
+
+    getAllCategories() {
+        return this.handleError(this.httpClient.get(`${this.baseUrl}${ALL_CATEGORY}`));
+    }
+
+    addCategory(newCategory: string) {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${CATEGORY}`, { name: newCategory }));
+    }
+
+    handleError(observable: any) {
+        return observable.pipe(
+            catchError((error: any) => {
+                console.log(error);
+                return of(null);
+            })
+        );
+    }
+
 }

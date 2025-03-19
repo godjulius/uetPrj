@@ -66,7 +66,11 @@ export class ProfileComponent extends BaseComponent implements OnInit{
     }
 
     getProfile() {
-        this.authService.profileObject.subscribe(
+        this.authService.profileObject
+            .pipe(
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe(
             (profile: any) => {
                 if (profile) {
                     this.userProfile = profile;
@@ -82,7 +86,11 @@ export class ProfileComponent extends BaseComponent implements OnInit{
                 }
             }
         )
-        this.authService.avatarObject.subscribe((avatarUrl: any) => {
+        this.authService.avatarObject
+            .pipe(
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((avatarUrl: any) => {
             this.avatarUrl = avatarUrl;
         })
     }

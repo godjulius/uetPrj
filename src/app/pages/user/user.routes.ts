@@ -23,7 +23,7 @@ export const routes: Routes = [
                 component: AttendingCoursesComponent,
             },
             {
-                path: 'user-courses/edit',
+                path: 'user-courses/:courseId',
                 component: CourseEditComponent,
             },
             {

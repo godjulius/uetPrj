@@ -40,8 +40,11 @@
                 <span pButtonLabel class="!font-normal hidden xl:inline-block">Search for anything</span>
             </p-button>
             <app-header-utils [isSettingVisible]="false"></app-header-utils>
-            <p-button label="login" severity="contrast" size="small" (click)="handleLogin()"/>
-            <p-avatar image="https://primefaces.org/cdn/primeng/images/demo/avatar/amyelsner.png" shape="circle" (click)="navigateToDashBoard()" class="cursor-pointer"/>
+            @if(isLoggedIn) {
+                <p-avatar [image]="avatarUrl" shape="circle" (click)="navigateToDashBoard()" class="cursor-pointer border-2 border-black dark:border-white"/>
+            } @else {
+                <p-button label="login" severity="contrast" size="small" (click)="handleLogin()"/>
+            }
         </div>
     </ng-template>
 </p-megamenu>

@@ -51,7 +51,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
 
     googleSignInSubs() {
-        this.socialAuthService.authState.subscribe((user) => {
+        this.socialAuthService.authState
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((user) => {
             console.log(user);
         });
     }

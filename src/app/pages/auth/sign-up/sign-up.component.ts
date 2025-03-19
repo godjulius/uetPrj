@@ -20,6 +20,7 @@ import {AuthService} from '../auth.service';
 import {SignUpModel} from '../auth.model';
 import {finalize} from 'rxjs';
 import {MessageService} from 'primeng/api';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-sign-up',
@@ -61,7 +62,8 @@ export class SignUpComponent extends BaseComponent implements OnInit {
             .pipe(
                 finalize(() => {
                     this.loading = false;
-                })
+                }),
+                takeUntilDestroyed(this.destroyRef)
             )
             .subscribe((res: any) => {
                 if (res) {
