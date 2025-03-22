@@ -8,6 +8,8 @@ import {ButtonModule} from 'primeng/button';
 import {MenuItem, MenuItemCommandEvent} from 'primeng/api';
 import {PanelMenu} from 'primeng/panelmenu';
 import {ActivatedRoute, Router, RouterLink, RouterModule} from '@angular/router';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {BaseComponent} from '../../../core/base.component';
 
 @Component({
   selector: 'app-demo-sidebar',
@@ -25,11 +27,12 @@ import {ActivatedRoute, Router, RouterLink, RouterModule} from '@angular/router'
   templateUrl: './demo-sidebar.component.html',
   styleUrl: './demo-sidebar.component.css'
 })
-export class DemoSidebarComponent implements OnInit {
+export class DemoSidebarComponent extends BaseComponent implements OnInit {
     items!: MenuItem[];
     visible: boolean = false;
     @ViewChild('drawerRef') drawerRef!: Drawer;
     constructor(private layoutService: LayoutService, private router: Router, private route: ActivatedRoute) {
+        super()
         this.sidebarSubjectSubscribe();
     }
 
@@ -193,7 +196,11 @@ export class DemoSidebarComponent implements OnInit {
     }
 
     sidebarSubjectSubscribe() {
-        this.layoutService.sidebarSubject.subscribe((isCollapsed: boolean) => {
+        this.layoutService.sidebarSubject
+            .pipe(
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((isCollapsed: boolean) => {
             this.visible = isCollapsed;
         });
     }

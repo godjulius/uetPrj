@@ -1,44 +1,44 @@
-import {Component, OnInit, signal} from '@angular/core';
+import {Component, inject, OnInit, signal} from '@angular/core';
 import {ButtonModule} from 'primeng/button';
-import {Tag} from 'primeng/tag';
 import {CommonModule} from '@angular/common';
-import {Product} from '../../landingPage.model';
 import {ProductService} from '../../landingPage.service';
 import {DataView} from 'primeng/dataview';
+import {SelectButton} from 'primeng/selectbutton';
+import {Skeleton} from 'primeng/skeleton';
+import {CoursesService} from '../../../courses/courses.service';
+import {ICourse} from '../../../courses/courses.model';
+import {FormsModule} from '@angular/forms';
 
 @Component({
   selector: 'app-courses-search-result',
   standalone: true,
-    imports: [DataView, ButtonModule, Tag, CommonModule],
+    imports: [ButtonModule, CommonModule, DataView, SelectButton, Skeleton, FormsModule],
   templateUrl: './courses-search-result.component.html',
   styleUrl: './courses-search-result.component.css',
     providers: [ProductService]
 })
 export class CoursesSearchResultComponent implements OnInit {
-    products = signal<any>([]);
+    private courseService = inject(CoursesService);
+    loading = false;
+    layout: ('list' | 'grid') = 'list';
+    data = signal<ICourse[]>([] as ICourse[]);
 
-    constructor(private productService: ProductService) {}
+    options: ('list' | 'grid')[] = ['list', 'grid'];
+
+    constructor() {}
 
     ngOnInit() {
-        this.productService.getProducts().then(data => {
-            this.products.set(data)
-            console.log(data)
-        });
+        this.data.set(structuredClone(this.courseService.courses).reverse());
+    }
+    selectItem(item: any) {
+        console.log(item)
     }
 
-    getSeverity(product: Product) {
-        switch (product.inventoryStatus) {
-            case 'INSTOCK':
-                return 'success';
+    counterArray(n: number): any[] {
+        return Array(n);
+    }
 
-            case 'LOWSTOCK':
-                return 'warn';
-
-            case 'OUTOFSTOCK':
-                return 'danger';
-
-            default:
-                return undefined;
-        }
-    };
+    toggleLoading() {
+        this.loading = !this.loading;
+    }
 }

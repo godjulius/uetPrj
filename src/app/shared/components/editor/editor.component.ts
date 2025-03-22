@@ -69,7 +69,9 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
             placeholder: 'Nhập nội dung của bạn...',
             autofocus: true,
             onReady: () => {
-                this.editor.render(this.defaultData)
+                if (this.defaultData) {
+                    this.editor.render(this.defaultData)
+                }
             }
         });
     }

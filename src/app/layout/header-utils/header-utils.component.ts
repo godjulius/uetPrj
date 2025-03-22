@@ -10,6 +10,8 @@ import {MessageService} from 'primeng/api';
 import {IProfileModel} from '../../pages/auth/auth.model';
 import {CookieStorageService} from '../../core/services/cookie-storage.service';
 import {AUTH_TOKEN} from '../../core/constants/common.const';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {BaseComponent} from '../../core/base.component';
 
 @Component({
     selector: 'app-header-utils',
@@ -24,7 +26,7 @@ import {AUTH_TOKEN} from '../../core/constants/common.const';
     templateUrl: './header-utils.component.html',
     styleUrl: './header-utils.component.css'
 })
-export class HeaderUtilsComponent implements OnInit {
+export class HeaderUtilsComponent extends BaseComponent implements OnInit {
     @ViewChild('languages') languages!: Popover;
     isSettingVisible = input(true)
     private authService = inject(AuthService)
@@ -49,19 +51,28 @@ export class HeaderUtilsComponent implements OnInit {
     userProfile!: IProfileModel | undefined
 
     constructor() {
+        super()
         this.checkDarkTheme();
     }
 
     ngOnInit() {
         if (this.cookieStorageService.getCookie(AUTH_TOKEN)) {
-            this.authService.profileObject.subscribe(
+            this.authService.profileObject
+                .pipe(
+                    takeUntilDestroyed(this.destroyRef)
+                )
+                .subscribe(
                 (profile: any) => {
                     if (profile) {
                         this.userProfile = profile;
                     }
                 }
             )
-            this.authService.avatarObject.subscribe((avatarUrl: any) => {
+            this.authService.avatarObject
+                .pipe(
+                    takeUntilDestroyed(this.destroyRef)
+                )
+                .subscribe((avatarUrl: any) => {
                 this.avatarUrl = avatarUrl;
             })
         } else {

@@ -2,6 +2,7 @@ import {Routes} from '@angular/router';
 import {LandingPageComponent} from './landing-page/landing-page.component';
 import {LandingHomePageComponent} from './landing-home-page/landing-home-page.component';
 import {CoursesSearchComponent} from './courses-search/courses-search.component';
+import {CoursePreviewComponent} from './course-preview/course-preview.component';
 
 
 export const routes: Routes = [
@@ -16,6 +17,10 @@ export const routes: Routes = [
             {
                 path: 'courses',
                 component: CoursesSearchComponent
+            },
+            {
+                path: 'course/:id',
+                component: CoursePreviewComponent
             }
         ]
     }

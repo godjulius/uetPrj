@@ -1,4 +1,4 @@
-import {inject, Injectable, OnInit} from '@angular/core';
+import {DestroyRef, inject, Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {AVATAR, LOGIN, PROFILE, SIGNUP, USERINFO} from '../../core/constants/api.const';
@@ -7,6 +7,7 @@ import {catchError, map, Observable, of, Subject} from 'rxjs';
 import {MessageService} from 'primeng/api';
 import {CookieStorageService} from '../../core/services/cookie-storage.service';
 import {AUTH_TOKEN} from '../../core/constants/common.const';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +17,7 @@ export class AuthService implements OnInit {
     private httpClient = inject(HttpClient);
     private readonly messageService = inject(MessageService);
     private readonly cookieStorageService = inject(CookieStorageService);
+    private readonly destroyRef = inject(DestroyRef)
     profile: IProfileModel = {
         email: 'hai@gmail.com',
         fullName: '',
@@ -39,15 +41,24 @@ export class AuthService implements OnInit {
 
     }
 
+    isLoggedin() {
+        return !!this.cookieStorageService.getCookie(AUTH_TOKEN);
+    }
+
     profileObjectEmit() {
         this.getUserInfo()
+            .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((res: any) => {
                 if (res) {
                     this.profile = res;
                     this.profileObject.next(res);
                 }
             })
-        this.getAvatarUrl().subscribe((res: any) => {
+        this.getAvatarUrl()
+            .pipe(
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((res: any) => {
             this.avatarObject.next(res)
         })
     }
@@ -106,6 +117,10 @@ export class AuthService implements OnInit {
             );
     }
 
+    logout() {
+        this.cookieStorageService.deleteCookie(AUTH_TOKEN);
+    }
+
     handleError(observable: any) {
         return observable.pipe(
             catchError((error: any) => {
@@ -115,9 +130,5 @@ export class AuthService implements OnInit {
                 return of(null);
             })
         );
-    }
-
-    logout() {
-        this.cookieStorageService.deleteCookie(AUTH_TOKEN);
     }
 }

@@ -11,6 +11,8 @@ import {Dialog} from 'primeng/dialog';
 import {SelectButton} from 'primeng/selectbutton';
 import {MessageService} from 'primeng/api';
 import {Toast} from 'primeng/toast';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {BaseComponent} from '../../../core/base.component';
 
 
 @Component({
@@ -20,7 +22,7 @@ import {Toast} from 'primeng/toast';
     templateUrl: './quiz-lesson.component.html',
     styleUrl: './quiz-lesson.component.css'
 })
-export class QuizLessonComponent implements OnInit {
+export class QuizLessonComponent extends BaseComponent implements OnInit {
     @Input() visible = false;
     @Output() visibleChange = new EventEmitter<boolean>();
     @ViewChildren('questionContainer') questionContainers!: QueryList<ElementRef>;
@@ -36,6 +38,7 @@ export class QuizLessonComponent implements OnInit {
     ];
 
     constructor(private fb: FormBuilder, private messageService: MessageService) {
+        super()
         this.quiz = new Quiz();
     }
 
@@ -61,7 +64,11 @@ export class QuizLessonComponent implements OnInit {
             correctAnswer: new FormControl([], Validators.required)
         });
 
-        questionForm.get('type')?.valueChanges.subscribe((type) => {
+        questionForm.get('type')?.valueChanges
+            .pipe(
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((type) => {
             questionForm.get('correctAnswer')?.setValue([]);
         });
 

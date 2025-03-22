@@ -2,15 +2,10 @@ import {Component} from '@angular/core';
 import {BaseComponent} from '../../../core/base.component';
 import {Router, RouterModule} from '@angular/router';
 import {CommonModule} from '@angular/common';
-import {Toolbar} from 'primeng/toolbar';
 import {ButtonModule} from 'primeng/button';
 import {AvatarModule} from 'primeng/avatar';
-import {Ripple} from 'primeng/ripple';
-import {HeaderUtilsComponent} from '../../../layout/header-utils/header-utils.component';
 import {LandingHeaderComponent} from '../landing-header/landing-header.component';
-import {Dialog} from 'primeng/dialog';
-import {HeroComponent} from '../hero/hero.component';
-import {LandingCourseListComponent} from '../landing-course-list/landing-course-list.component';
+import {LandingFooterComponent} from "../landing-footer/landing-footer.component";
 
 @Component({
     selector: 'app-landing-page',
@@ -18,8 +13,8 @@ import {LandingCourseListComponent} from '../landing-course-list/landing-course-
     imports: [
         CommonModule,
         RouterModule,
-        Toolbar, AvatarModule, ButtonModule,
-        RouterModule, Ripple, HeaderUtilsComponent, LandingHeaderComponent, Dialog, HeroComponent, LandingCourseListComponent
+        AvatarModule, ButtonModule,
+        RouterModule, LandingHeaderComponent, LandingFooterComponent
 
     ],
     templateUrl: './landing-page.component.html',

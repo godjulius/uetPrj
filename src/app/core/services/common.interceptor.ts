@@ -37,6 +37,7 @@ export class CommonInterceptor implements HttpInterceptor {
             .pipe(
                 catchError((error: any) => {
                     if (error.status === 401) {
+                        console.log(1)
                       // Handle 401 error
                         if (this.cookieService.getCookie(AUTH_TOKEN)) {
                             this.messageService.add({severity: 'error', summary: 'Error', detail: `Unauthorized`});

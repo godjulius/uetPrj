@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {PrimeNG} from 'primeng/config';
 import {TranslateService} from '@ngx-translate/core';
 import {Toast} from 'primeng/toast';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 @Component({
     selector: 'app-root',
@@ -13,7 +14,7 @@ import {Toast} from 'primeng/toast';
 })
 export class AppComponent implements OnInit{
     title = 'Tiramisu bạc hà';
-
+    private destroyRef = inject(DestroyRef)
     constructor(private primeng: PrimeNG, private translateService: TranslateService) {
         this.checkDarkTheme();
     }
@@ -30,7 +31,11 @@ export class AppComponent implements OnInit{
 
     translate(lang: string) {
         this.translateService.use(lang);
-        this.translateService.get('primeng').subscribe(res => this.primeng.setTranslation(res));
+        this.translateService.get('primeng')
+            .pipe(
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe(res => this.primeng.setTranslation(res));
     }
 
 }

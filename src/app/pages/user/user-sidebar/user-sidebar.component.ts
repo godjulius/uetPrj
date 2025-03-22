@@ -8,6 +8,8 @@ import {Ripple} from "primeng/ripple";
 import {Router, RouterLink, RouterLinkActive} from "@angular/router";
 import {MenuItem} from 'primeng/api';
 import {LayoutService} from '../../../shared/services/layout.service';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {BaseComponent} from '../../../core/base.component';
 
 @Component({
   selector: 'app-user-sidebar',
@@ -25,11 +27,12 @@ import {LayoutService} from '../../../shared/services/layout.service';
   templateUrl: './user-sidebar.component.html',
   styleUrl: './user-sidebar.component.css'
 })
-export class UserSidebarComponent implements OnInit {
+export class UserSidebarComponent extends BaseComponent implements OnInit {
     items!: MenuItem[];
     visible: boolean = false;
     @ViewChild('drawerRef') drawerRef!: Drawer;
     constructor(private router: Router, private layoutService: LayoutService) {
+        super();
         this.sidebarSubjectSubscribe();
     }
 
@@ -191,7 +194,9 @@ export class UserSidebarComponent implements OnInit {
     }
 
     sidebarSubjectSubscribe() {
-        this.layoutService.sidebarSubject.subscribe((isCollapsed: boolean) => {
+        this.layoutService.sidebarSubject
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((isCollapsed: boolean) => {
             this.visible = isCollapsed;
         });
     }
