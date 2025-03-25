@@ -1,7 +1,7 @@
-<div class="mt-20 flex flex-col gap-12 mb-24 box-border">
+<div class="mt-20 flex flex-col gap-12 mb-24 box-border relative">
     <!-- Nền đen chứa phần header và thông tin cơ bản -->
     <div class="w-full min-h-[40vh] bg-neutral-900 text-white py-8">
-        <div class="mx-6 lg:mx-20 xl:mx-40">
+        <div class="mx-6 lg:mx-20 xl:mx-52">
             <h1 class="text-3xl font-bold mb-4">{{ course?.name }}</h1>
             <p class="mb-6 text-xl">{{ course?.description }}</p>
 
@@ -15,7 +15,7 @@
 
             <span class="font-medium mb-2">Created by: {{ course?.instructor }}</span>
 
-            <div class="flex items-center space-x-4 text-sm font-medium">
+            <div class="flex items-center space-x-4 text-base font-medium">
                 <span>Last Updated {{ course?.lastUpdated }}</span>
                 <span class="flex items-center">
                     <i class="pi pi-globe mr-2"></i> {{ course?.language }}
@@ -25,88 +25,90 @@
         </div>
     </div>
 
-    <div class="mx-6 lg:mx-20 xl:mx-40 flex gap-6 lg:gap-12" *ngIf="course">
-        <div class="w-[70%] space-y-6 flex flex-col gap-6">
-            <!-- What You Will Learn -->
-            <p-card header="What You'll Learn" class="shadow-lg">
-                <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
-                    <li *ngFor="let item of course?.whatYouWillLearn" class="flex items-center space-x-2">
-                        <i class="pi pi-check text-green-500 mr-2"></i>
-                        <span>{{ item }}</span>
-                    </li>
-                </ul>
-            </p-card>
+    <div class="mx-6 lg:mx-20 xl:mx-52" *ngIf="course">
+        <div class="flex gap-8">
+            <!-- Nội dung bên trái -->
+            <div class="w-2/3 space-y-6 flex flex-col gap-6">
+                <p-card header="What You'll Learn" class="shadow-lg">
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700">
+                        <li *ngFor="let item of course?.whatYouWillLearn" class="flex items-center space-x-2">
+                            <i class="pi pi-check text-green-500 mr-2"></i>
+                            <span>{{ item }}</span>
+                        </li>
+                    </ul>
+                </p-card>
 
-            <!-- Explore Related Topics -->
-            <p-card header="Explore Related Topics" class="shadow-lg">
-                <button pButton pRipple [label]="course.category" outlined class="text-gray-700" severity="contrast"></button>
-            </p-card>
+                <p-card header="Explore Related Topics" class="shadow-lg">
+                    <button pButton pRipple [label]="course.category" outlined class="text-gray-700" severity="contrast"></button>
+                </p-card>
 
-            <!-- Course Content -->
-            <p-card header="Course Content" class="shadow-lg">
-                <p-accordion [value]="['0']" [multiple]="true">
-                    <p-accordion-panel *ngFor="let section of course?.content; let i = index" [value]="i.toString()">
-                        <p-accordion-header>
-                            <div class="flex justify-between items-center w-full">
-                                <h3 class="text-lg font-semibold text-gray-800">
-                                    {{ section.sectionTitle }}
-                                </h3>
-                                <span class="text-gray-600 text-sm mr-4">
+                <p-card header="Course Content" class="shadow-lg">
+                    <p-accordion [value]="['0']" [multiple]="true">
+                        <p-accordion-panel *ngFor="let section of course?.content; let i = index" [value]="i.toString()">
+                            <p-accordion-header>
+                                <div class="flex justify-between items-center w-full">
+                                    <h3 class="text-lg font-semibold text-gray-800">
+                                        {{ section.sectionTitle }}
+                                    </h3>
+                                    <span class="text-gray-600 text-sm mr-4">
                                     {{ section.lessons.length }} lessons • {{ getTotalDuration(section.lessons) }}
                                 </span>
-                            </div>
-                        </p-accordion-header>
+                                </div>
+                            </p-accordion-header>
 
-                        <p-accordion-content>
+                            <p-accordion-content>
+                                <ul class="list-none space-y-2">
+                                    <li *ngFor="let lesson of section.lessons" class="flex items-center space-x-2">
+                                        <i class="pi pi-play-circle text-blue-500"></i>
+                                        <span>{{ lesson.title }} ({{ lesson.duration }})</span>
+                                        <span *ngIf="lesson.freePreview" class="text-green-600">[Free]</span>
+                                    </li>
+                                </ul>
+                            </p-accordion-content>
+                        </p-accordion-panel>
+                    </p-accordion>
+                </p-card>
+
+                <p-card header="Requirements" class="shadow-lg">
+                    <ul class="list-disc pl-5 space-y-2 text-gray-700">
+                        <li *ngFor="let requirement of course?.requirements">{{ requirement }}</li>
+                    </ul>
+                </p-card>
+
+                <p-card header="Description" class="shadow-lg">
+                    <span>{{ course.description }}</span>
+                </p-card>
+            </div>
+
+            <div class="w-1/3 ">
+                <div class="bg-white rounded-lg shadow-lg transition-all duration-300"
+                     [ngClass]="isSticky ? 'sticky top-24' : 'absolute block top-8'"
+                     [style.width]="calculateWidth()">
+                    <img [src]="'assets/images/course-skeleton.png'" alt="{{ course.name }}"
+                         class="rounded-t-lg w-full h-60 object-cover shadow-md"/>
+
+                    <div class="p-6">
+                        <p class="text-2xl font-bold text-gray-900">${{ course.price }}</p>
+
+                        <div class="flex items-stretch w-full mt-4 space-x-2">
+                            <button pButton pRipple label="Add to Cart" type="button" raised class="flex-1"></button>
+                            <button pButton pRipple icon="pi pi-heart" severity="danger" outlined raised></button>
+                        </div>
+
+                        <button pButton pRipple label="Buy Now" icon="pi pi-shopping-cart" outlined class="w-full mt-2 font-semibold"></button>
+
+                        <div class="mt-6 w-full">
                             <ul class="list-none space-y-2">
-                                <li *ngFor="let lesson of section.lessons" class="flex items-center space-x-2">
-                                    <i class="pi pi-play-circle text-blue-500"></i>
-                                    <span>{{ lesson.title }} ({{ lesson.duration }})</span>
-                                    <span *ngIf="lesson.freePreview" class="text-green-600">[Free]</span>
-                                </li>
+                                <li><strong>Level:</strong> {{ course.level }}</li>
+                                <li><strong>Duration:</strong> {{ course.duration }}</li>
+                                <li><strong>Language:</strong> {{ course.language }}</li>
+                                <li><strong>Students:</strong> {{ course.students }}</li>
                             </ul>
-                        </p-accordion-content>
-                    </p-accordion-panel>
-                </p-accordion>
-            </p-card>
-
-            <!-- Requirements -->
-            <p-card header="Requirements" class="shadow-lg">
-                <ul class="list-disc pl-5 space-y-2 text-gray-700">
-                    <li *ngFor="let requirement of course?.requirements">{{ requirement }}</li>
-                </ul>
-            </p-card>
-
-            <!-- Description  -->
-            <p-card header="Description" class="shadow-lg">
-                <span>{{ course.description }}</span>
-            </p-card>
-        </div>
-
-        <div class="w-[30%] flex flex-col items-center">
-            <div class="bg-white rounded-lg shadow-lg w-full sticky top-24">
-                <img [src]="'assets/images/course-skeleton.png'" alt="{{ course.name }}"
-                     class="rounded-t-lg w-full h-60 object-cover shadow-md"/>
-
-                <div class="p-6">
-                    <p class="text-2xl font-bold text-gray-900">${{ course.price }}</p>
-
-                    <div class="flex items-stretch w-full mt-4 space-x-2">
-                        <button pButton pRipple label="Add to Cart" type="button" raised class="flex-1"></button>
-                        <button pButton pRipple icon="pi pi-heart" severity="danger" outlined raised></button>
-                    </div>
-
-                    <button pButton pRipple label="Buy Now" icon="pi pi-shopping-cart" outlined class="w-full mt-2 font-semibold"></button>
-                    <div class="mt-6 w-full">
-                        <ul class="list-none space-y-2">
-                            <li><strong>Level:</strong> {{ course.level }}</li>
-                            <li><strong>Duration:</strong> {{ course.duration }}</li>
-                            <li><strong>Language:</strong> {{ course.language }}</li>
-                            <li><strong>Students:</strong> {{ course.students }}</li>
-                        </ul>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 </div>

@@ -1,4 +1,4 @@
-import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {Component, DestroyRef, HostListener, inject, OnInit} from '@angular/core';
 import {ICourse} from '../../courses/courses.model';
 import {ActivatedRoute} from '@angular/router';
 import {CoursesService} from '../../courses/courses.service';
@@ -22,6 +22,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 export class CoursePreviewComponent implements OnInit {
     course: ICourse | null = null;
     private destroyRef = inject(DestroyRef); // Inject DestroyRef
+    isSticky = false; // Biến kiểm tra trạng thái sticky
 
     constructor(private route: ActivatedRoute, private coursesService: CoursesService) {}
 
@@ -53,6 +54,19 @@ export class CoursePreviewComponent implements OnInit {
         const minutes = totalMinutes % 60;
 
         return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+    }
+
+    @HostListener('window:scroll', [])
+    onScroll(): void {
+        const scrollY = window.scrollY;
+        const triggerPoint = window.innerHeight * 0.4 + 40; // Điểm khi cuộn qua nền đen (~40% viewport)
+        this.isSticky = scrollY > triggerPoint;
+    }
+
+    calculateWidth(): string {
+        if (window.innerWidth >= 1280) return `calc((100vw - 416px - 32px) / 3)`;
+        if (window.innerWidth >= 1024) return `calc((100vw - 160px - 32px) / 3)`;
+        return `calc((100vw - 48px - 32px) / 3)`;
     }
 
     addToCart(): void {
