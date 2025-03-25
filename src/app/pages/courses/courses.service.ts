@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {ICourse} from './courses.model';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {catchError, of} from 'rxjs';
+import {catchError, Observable, of} from 'rxjs';
 import {MessageService} from 'primeng/api';
 import {ALL_CATEGORY, CATEGORY, COURSE} from '../../core/constants/api.const';
 
@@ -48,15 +48,23 @@ export class CoursesService {
             price: 39.99,
             rating: 4.8,
             students: 20000,
-            lessons: 30,
+            lessons: 45,
             image: "https://source.unsplash.com/400x300/?python",
             category: "Programming",
             instructor: "Jane Smith",
             level: "Intermediate",
             language: "English",
-            duration: "20h 30m",
-            requirements: ["Không cần kiến thức lập trình trước"],
-            whatYouWillLearn: ["Python Basics", "OOP", "Web Scraping", "Data Science"],
+            duration: "25h 45m",
+            requirements: ["Không cần kiến thức lập trình trước", "Cần có máy tính để thực hành"],
+            whatYouWillLearn: [
+                "Python Basics",
+                "OOP",
+                "Web Scraping",
+                "Data Science",
+                "Machine Learning với Python",
+                "Xử lý dữ liệu với Pandas và NumPy",
+                "Tạo API với Flask/Django"
+            ],
             lastUpdated: "2025-01-20",
             content: [
                 {
@@ -64,6 +72,53 @@ export class CoursesService {
                     lessons: [
                         { title: "Introduction to Python", duration: "12m", freePreview: true },
                         { title: "Installing Python and IDE", duration: "20m" }
+                    ]
+                },
+                {
+                    sectionTitle: "Python Fundamentals",
+                    lessons: [
+                        { title: "Variables and Data Types", duration: "15m" },
+                        { title: "Control Flow (if, else, loops)", duration: "25m" },
+                        { title: "Functions and Modules", duration: "18m", freePreview: true }
+                    ]
+                },
+                {
+                    sectionTitle: "Object-Oriented Programming",
+                    lessons: [
+                        { title: "Classes and Objects", duration: "22m" },
+                        { title: "Encapsulation, Inheritance, and Polymorphism", duration: "30m" }
+                    ]
+                },
+                {
+                    sectionTitle: "Working with Data",
+                    lessons: [
+                        { title: "Reading and Writing Files", duration: "15m" },
+                        { title: "Working with JSON and CSV", duration: "20m" },
+                        { title: "Using Pandas for Data Analysis", duration: "35m", freePreview: true }
+                    ]
+                },
+                {
+                    sectionTitle: "Web Scraping and APIs",
+                    lessons: [
+                        { title: "Introduction to Web Scraping", duration: "20m" },
+                        { title: "Scraping with BeautifulSoup", duration: "25m" },
+                        { title: "Making API Requests with Requests Library", duration: "18m" }
+                    ]
+                },
+                {
+                    sectionTitle: "Machine Learning Basics",
+                    lessons: [
+                        { title: "Introduction to Machine Learning", duration: "20m" },
+                        { title: "Using scikit-learn for ML Models", duration: "30m" },
+                        { title: "Building a Simple Linear Regression Model", duration: "25m" }
+                    ]
+                },
+                {
+                    sectionTitle: "Building Web Applications",
+                    lessons: [
+                        { title: "Introduction to Flask", duration: "20m", freePreview: true },
+                        { title: "Creating a REST API with Flask", duration: "35m" },
+                        { title: "Introduction to Django", duration: "30m" }
                     ]
                 }
             ]
@@ -135,6 +190,12 @@ export class CoursesService {
 
     getCourseById(courseId: string) {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/${courseId}`));
+    }
+
+    getCourseById1(index: number ): Observable<ICourse | null> {
+        // @ts-ignore
+        const course = this.courses[index] ?? null;
+        return of(course);
     }
 
     getAllCategories() {
