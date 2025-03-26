@@ -64,9 +64,9 @@ export class CoursePreviewComponent implements OnInit {
     }
 
     calculateWidth(): string {
-        if (window.innerWidth >= 1280) return `calc((100vw - 416px - 32px) / 3)`;
-        if (window.innerWidth >= 1024) return `calc((100vw - 160px - 32px) / 3)`;
-        return `calc((100vw - 48px - 32px) / 3)`;
+        if (window.innerWidth >= 1280) return `calc((100vw - 416px - 64px) / 3)`;
+        if (window.innerWidth >= 1024) return `calc((100vw - 160px - 64px) / 3)`;
+        return `calc((100vw - 64px - 64px) / 3)`;
     }
 
     addToCart(): void {
