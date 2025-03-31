@@ -286,4 +286,8 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             }
         });
     }
+
+    handleUpdateCourse() {
+        //Todo: update course
+    }
 }
