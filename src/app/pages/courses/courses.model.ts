@@ -1,22 +1,22 @@
 export interface ICourse {
-    id: number;
-    name: string;
-    description: string;
-    price: number;
-    rating: number; // Trung bình số sao đánh giá
-    students: number; // Số lượng học viên đã đăng ký
-    lessons: number; // Số bài học
-    image: string; // Ảnh đại diện khóa học
-    category: string; // Danh mục khóa học
-    instructor: string; // Tên giảng viên
-    level: 'Beginner' | 'Intermediate' | 'Advanced'; // Trình độ khóa học
-    language: string; // Ngôn ngữ giảng dạy
-    duration: string; // Tổng thời gian học (VD: "10h 30m")
-    requirements: string[]; // Yêu cầu đầu vào (VD: ["Biết lập trình cơ bản", "Cài đặt Node.js"])
-    whatYouWillLearn: string[]; // Những gì học viên sẽ học được
-    lastUpdated: string; // Ngày cập nhật gần nhất
+    id: number | undefined;
+    title: string | undefined;
+    description: any | undefined;
+    price: number | undefined;
+    rating: number | undefined; // Trung bình số sao đánh giá
+    students: number | undefined; // Số lượng học viên đã đăng ký
+    lessons: number | undefined; // Số bài học
+    thumbnail: string | undefined; // Ảnh đại diện khóa học
+    categories: string[] | undefined; // Danh mục khóa học
+    instructor: string | undefined; // Tên giảng viên
+    level: ('beginner' | 'intermediate' | 'advanced') | undefined; // Trình độ khóa học
+    language: string | undefined; // Ngôn ngữ giảng dạy
+    duration: string | undefined; // Tổng thời gian học (VD: "10h 30m")
+    requirements: string[] | undefined; // Yêu cầu đầu vào (VD: ["Biết lập trình cơ bản", "Cài đặt Node.js"])
+    whatYouWillLearn: string[] | undefined; // Những gì học viên sẽ học được
+    lastUpdated: string | undefined; // Ngày cập nhật gần nhất
     content: {
-        sectionTitle: string;
-        lessons: { title: string; duration: string; freePreview?: boolean }[]
-    }[]; // Nội dung khóa học theo từng phần
+        sectionTitle: string | undefined;
+        lessons: { title: string | undefined; duration: string | undefined; freePreview?: boolean | undefined }[]
+    }[] | undefined; // Nội dung khóa học theo từng phần
 }

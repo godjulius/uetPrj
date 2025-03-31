@@ -4,7 +4,7 @@ import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {catchError, of} from 'rxjs';
 import {MessageService} from 'primeng/api';
-import {ALL_CATEGORY, CATEGORY, COURSE} from '../../core/constants/api.const';
+import {ALL_CATEGORY, CATEGORY, COURSE, COURSE_ALL} from '../../core/constants/api.const';
 
 @Injectable({
     providedIn: 'root'
@@ -16,16 +16,16 @@ export class CoursesService {
     courses: ICourse[] = [
         {
             id: 1,
-            name: "React for Beginners",
+            title: "React for Beginners",
             description: "Học React từ cơ bản đến nâng cao với dự án thực tế.",
             price: 29.99,
             rating: 4.7,
             students: 15000,
             lessons: 25,
-            image: "https://source.unsplash.com/400x300/?react",
-            category: "Web Development",
+            thumbnail: "https://source.unsplash.com/400x300/?react",
+            categories: ["Web Development"],
             instructor: "John Doe",
-            level: "Beginner",
+            level: "beginner",
             language: "English",
             duration: "12h 45m",
             requirements: ["Biết HTML, CSS, JavaScript"],
@@ -43,16 +43,16 @@ export class CoursesService {
         },
         {
             id: 2,
-            name: "Mastering Python",
+            title: "Mastering Python",
             description: "Học Python từ cơ bản đến chuyên sâu, bao gồm AI và ML.",
             price: 39.99,
             rating: 4.8,
             students: 20000,
             lessons: 30,
-            image: "https://source.unsplash.com/400x300/?python",
-            category: "Programming",
+            thumbnail: "https://source.unsplash.com/400x300/?python",
+            categories: ["Programming"],
             instructor: "Jane Smith",
-            level: "Intermediate",
+            level: "intermediate",
             language: "English",
             duration: "20h 30m",
             requirements: ["Không cần kiến thức lập trình trước"],
@@ -70,16 +70,16 @@ export class CoursesService {
         },
         {
             id: 3,
-            name: "Fullstack Web Development",
+            title: "Fullstack Web Development",
             description: "Tạo website hoàn chỉnh với React, Node.js, MongoDB.",
             price: 49.99,
             rating: 4.9,
             students: 18000,
             lessons: 40,
-            image: "https://source.unsplash.com/400x300/?web",
-            category: "Web Development",
+            thumbnail: "https://source.unsplash.com/400x300/?web",
+            categories: ["Web Development"],
             instructor: "Mark Wilson",
-            level: "Advanced",
+            level: "advanced",
             language: "English",
             duration: "35h 10m",
             requirements: ["Biết JavaScript cơ bản"],
@@ -101,16 +101,16 @@ export class CoursesService {
         for (let i = 4; i <= 30; i++) {
             this.courses.push({
                 id: i,
-                name: `Course ${i}`,
+                title: `Course ${i}`,
                 description: `Khóa học số ${i} về công nghệ`,
                 price: Math.floor(Math.random() * 50) + 10, // Giá từ 10-60 USD
                 rating: Number((Math.random() * 2 + 3).toFixed(1)), // Rating từ 3.0 - 5.0
                 students: Math.floor(Math.random() * 20000) + 1000, // Học viên từ 1000-21000
                 lessons: Math.floor(Math.random() * 40) + 10, // Bài học từ 10-50
-                image: `https://source.unsplash.com/400x300/?technology,${i}`,
-                category: ["Web Development", "Data Science", "AI", "Mobile Development", "Cyber Security"][i % 5],
+                thumbnail: `https://source.unsplash.com/400x300/?technology,${i}`,
+                categories: [["Web Development", "Data Science", "AI", "Mobile Development", "Cyber Security"][i % 5]],
                 instructor: `Instructor ${i}`,
-                level: ["Beginner", "Intermediate", "Advanced"][i % 3] as "Beginner" | "Intermediate" | "Advanced",
+                level: ["beginner", "intermediate", "advanced"][i % 3] as "beginner" | "intermediate" | "advanced",
                 language: "English",
                 duration: `${Math.floor(Math.random() * 30) + 5}h ${Math.floor(Math.random() * 60)}m`,
                 requirements: [`Requirement for course ${i}`],
@@ -145,10 +145,17 @@ export class CoursesService {
         return this.handleError(this.httpClient.post(`${this.baseUrl}${CATEGORY}`, { name: newCategory }));
     }
 
+    getCourses(page: number, size: number) {
+        return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE_ALL}?page=${page}&size=${size}`));
+    }
+
     handleError(observable: any) {
         return observable.pipe(
             catchError((error: any) => {
                 console.log(error);
+                if (error.status === 409) {
+                    this.messageService.add({severity:'error', summary: 'Lỗi', detail: error.error.detail});
+                }
                 return of(null);
             })
         );

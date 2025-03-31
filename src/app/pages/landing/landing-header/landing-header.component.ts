@@ -9,13 +9,12 @@ import {HeaderUtilsComponent} from '../../../layout/header-utils/header-utils.co
 import {Dialog} from 'primeng/dialog';
 import {FormsModule} from '@angular/forms';
 import {InputTextModule} from 'primeng/inputtext';
-import {IconField} from 'primeng/iconfield';
-import {InputIcon} from 'primeng/inputicon';
 import {InputGroup} from 'primeng/inputgroup';
 import {debounceTime, distinctUntilChanged, Subject} from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {BaseComponent} from '../../../core/base.component';
 import {AuthService} from '../../auth/auth.service';
+import {IProfileModel} from '../../auth/auth.model';
 
 @Component({
     selector: 'app-landing-header',
@@ -23,7 +22,7 @@ import {AuthService} from '../../auth/auth.service';
     imports: [
         CommonModule,
         MegaMenu, ButtonModule, AvatarModule, RouterLink, RouterModule, HeaderUtilsComponent, Dialog,
-        InputIcon, IconField, InputTextModule, FormsModule, InputGroup
+        InputTextModule, FormsModule, InputGroup
     ],
     templateUrl: './landing-header.component.html',
     styleUrl: './landing-header.component.css'
@@ -45,13 +44,14 @@ export class LandingHeaderComponent extends BaseComponent implements OnInit {
     _searchKeyword: string = '';
     isLoggedIn = false;
     items: MegaMenuItem[] | undefined;
-    avatarUrl: string = '';
+    userProfile: IProfileModel | undefined;
     constructor(private router: Router, private authService: AuthService) {
         super();
         this.searchSubjectSubs();
         this.isLoggedIn = this.authService.isLoggedin()
-        this.authService.getAvatarUrl()
-        this.getAvatarUrl()
+        this.authService.profileObject.subscribe((_profile: IProfileModel) => {
+            this.userProfile = _profile;
+        })
     }
 
 
@@ -107,12 +107,6 @@ export class LandingHeaderComponent extends BaseComponent implements OnInit {
                 root: true
             }
         ];
-    }
-
-    getAvatarUrl() {
-        this.authService.getAvatarUrl().subscribe((avtUrl) => {
-            this.avatarUrl = avtUrl;
-        })
     }
 
     handleLogin() {

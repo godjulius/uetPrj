@@ -19,17 +19,16 @@ export class AuthService implements OnInit {
     private readonly cookieStorageService = inject(CookieStorageService);
     private readonly destroyRef = inject(DestroyRef)
     profile: IProfileModel = {
-        email: 'hai@gmail.com',
+        email: '...@gmail.com',
         fullName: '',
         phoneNumber: '',
         dateOfBirth: '',
         gender: "other",
         bio: '',
-        id: ''
+        id: '',
+        avatar: ''
     }
-    profileObject = new Subject();
-    avatarUrl: string | null = null;
-    avatarObject = new Subject();
+    profileObject = new Subject<IProfileModel>();
 
     constructor() {
         if (this.cookieStorageService.getCookie(AUTH_TOKEN)) {
@@ -54,13 +53,6 @@ export class AuthService implements OnInit {
                     this.profileObject.next(res);
                 }
             })
-        this.getAvatarUrl()
-            .pipe(
-                takeUntilDestroyed(this.destroyRef)
-            )
-            .subscribe((res: any) => {
-            this.avatarObject.next(res)
-        })
     }
 
     login(account: LoginModel) {
@@ -94,24 +86,13 @@ export class AuthService implements OnInit {
         return this.profile;
     }
 
-    getAvatarUrl() {
-        return this.httpClient.get(`${this.baseUrl}${AVATAR}`, {responseType: 'blob'})
-            .pipe(
-                map((res: any) => {
-                    const objectURL = URL.createObjectURL(res);
-                    this.avatarUrl = objectURL;
-                    return objectURL;
-                })
-            )
-    }
-
     postAvatar(avatar: File) {
         const formData = new FormData();
         formData.append('file', avatar);
         return this.handleError(this.httpClient.post(`${this.baseUrl}${AVATAR}`, formData))
             .pipe(
                 map((res: any) => {
-                    this.avatarObject.next(URL.createObjectURL(avatar));
+                    this.profileObject.next(res);
                     return res;
                 })
             );
