@@ -26,7 +26,7 @@ import { Editor } from 'primeng/editor';
 import {QuizLessonComponent} from '../../quiz/quiz-lesson/quiz-lesson.component';
 import {EditorComponent} from "../../../shared/components/editor/editor.component";
 import {MessageService} from 'primeng/api';
-import {catchError, finalize, of} from 'rxjs';
+import {finalize} from 'rxjs';
 import {BaseComponent} from '../../../core/base.component';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -225,10 +225,6 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                         this.loading = false;
                     }),
                     takeUntilDestroyed(this.destroyRef),
-                    catchError((error: any) => {
-                        console.log(error);
-                        return of(null);
-                    })
                 )
                 .subscribe((res: any) => {
                     this.messageService.add({severity: 'success', summary: 'Success', detail: `Course created successfully: ${res.title}, ${res.id}`});
