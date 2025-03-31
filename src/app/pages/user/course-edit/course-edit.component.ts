@@ -26,7 +26,7 @@ import { Editor } from 'primeng/editor';
 import {QuizLessonComponent} from '../../quiz/quiz-lesson/quiz-lesson.component';
 import {EditorComponent} from "../../../shared/components/editor/editor.component";
 import {MessageService} from 'primeng/api';
-import {finalize} from 'rxjs';
+import {catchError, finalize, of} from 'rxjs';
 import {BaseComponent} from '../../../core/base.component';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
@@ -80,16 +80,6 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     languages = [
         { name: 'English', value: 'en' },
         { name: 'Vietnamese', value: 'vi' },
-        { name: 'French', value: 'french' },
-        { name: 'German', value: 'german' },
-        { name: 'Italian', value: 'italian' },
-        { name: 'Portuguese', value: 'portuguese' },
-        { name: 'Russian', value: 'russian' },
-        { name: 'Dutch', value: 'dutch' },
-        { name: 'Japanese', value: 'japanese' },
-        { name: 'Chinese', value: 'chinese' },
-        { name: 'Arabic', value: 'arabic' },
-        { name: 'Turkish', value: 'turkish' },
     ];
     courseImageUrl!: string;
     courseImage!: File;
@@ -113,7 +103,6 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             this.isNewCourse = url.find((segment: any) => segment.path === 'new') !== undefined;
             if (!this.isNewCourse) {
                 this.courseId = this.activatedRoute.snapshot.paramMap.get('courseId') || '';
-                console.log(this.courseId);
             }
         })
     }
@@ -125,39 +114,14 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                 validators: [Validators.required],
             }),
             level: new FormControl('', { validators: [Validators.required] }),
-            languages: new FormControl([], {
+            language: new FormControl([], {
                 validators: [Validators.required],
             }),
             price: new FormControl<number>(0, {
                 validators: [Validators.required],
             }),
         });
-        this.courseForm.setValue(
-            {
-                "title": "React for Beginners",
-                "categories": [
-                ],
-                "level": {
-                    "name": "Beginner",
-                    "value": "beginner"
-                },
-                "languages": [
-                    {
-                        "name": "Vietnamese",
-                        "value": "vi"
-                    },
-                    {
-                        "name": "English",
-                        "value": "en"
-                    }
-                ],
-                "price": 123
-            }
-        )
         this.initData();
-        if (this.courseId) {
-            this.initCourseData()
-        }
     }
 
     ngAfterViewInit() {
@@ -174,6 +138,31 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             .subscribe((res: any) => {
                 if (res) {
                     this.categories = res;
+                    console.log(res);
+                    if (this.courseId) {
+                        this.initCourseData()
+                    } else {
+                        this.courseForm.setValue(
+                            {
+                                "title": "",
+                                "categories": [
+                                    {
+                                        "id": "6f1b8a4a-9ac0-44c5-84c8-234af5ea546f",
+                                        "name": "Development"
+                                    }
+                                ],
+                                "level": {
+                                    "name": "Intermediate",
+                                    "value": "intermediate"
+                                },
+                                "language": {
+                                    "name": "English",
+                                    "value": "en"
+                                },
+                                "price": 222
+                            }
+                        )
+                    }
                 }
             })
     }
@@ -188,7 +177,17 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
         )
             .subscribe((res: any) => {
                 if (res) {
-                    this.courseForm.patchValue(res);
+                    const _categories = this.categories.filter((category: any) => {
+                        return res.categories.includes(category.name)
+                    })
+                    const _language = this.languages.find((language: any) => language.value === res.language);
+                    const _level = this.levels.find((level: any) => level.value === res.level);
+                    this.courseForm.patchValue({
+                        ...res,
+                        categories: _categories,
+                        language: _language,
+                        level: _level,
+                    });
                     this.descriptionData = res.description;
                     this.courseImageUrl = res.image;
                 }
@@ -206,15 +205,17 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     }
 
     handleCreateCourse() {
+        if (this.courseForm.invalid) {
+            return;
+        }
         this.loading = true;
         const _categories = this.courseForm.get('categories')!.value.map((category: any) => category.name);
-        const _languages = this.courseForm.get('languages')!.value.map((language: any) => language.value);
         this.description.getEditorContent().then((outputData) => {
             // const _outputData = JSON.stringify(outputData);
             const course = {
                 ...this.courseForm.value,
                 categories: _categories,
-                languages: _languages,
+                language: this.courseForm.get('language')!.value.value,
                 level: this.courseForm.get('level')!.value.value,
                 description: outputData,
             }
@@ -223,7 +224,11 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                     finalize(() => {
                         this.loading = false;
                     }),
-                    takeUntilDestroyed(this.destroyRef)
+                    takeUntilDestroyed(this.destroyRef),
+                    catchError((error: any) => {
+                        console.log(error);
+                        return of(null);
+                    })
                 )
                 .subscribe((res: any) => {
                     this.messageService.add({severity: 'success', summary: 'Success', detail: `Course created successfully: ${res.title}, ${res.id}`});

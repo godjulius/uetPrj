@@ -47,7 +47,6 @@ export class HeaderUtilsComponent extends BaseComponent implements OnInit {
             icon: 'assets/images/flags/uk_flag.png',
         },
     ];
-    avatarUrl: string | null = null;
     userProfile!: IProfileModel | undefined
 
     constructor() {
@@ -68,13 +67,6 @@ export class HeaderUtilsComponent extends BaseComponent implements OnInit {
                     }
                 }
             )
-            this.authService.avatarObject
-                .pipe(
-                    takeUntilDestroyed(this.destroyRef)
-                )
-                .subscribe((avatarUrl: any) => {
-                this.avatarUrl = avatarUrl;
-            })
         } else {
             this.userProfile = undefined
         }
