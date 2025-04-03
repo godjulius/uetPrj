@@ -1,0 +1,45 @@
+<div class="h-[56px] w-screen bg-gray-950 flex justify-between text-white border-b border-neutral-200 px-4">
+    <div class="p-4 pl-0 h-full flex">
+        <a routerLink="/" class="flex items-center justify-center gap-2">
+            <span class="pi pi-angle-left"></span>
+            Home
+        </a>
+
+        <p-divider layout="vertical" styleClass="!pb-0"/>
+
+        <p class="line-clamp-1">
+            Next.js 15 & React - The Complete Guide
+        </p>
+    </div>
+    <div class="h-full flex items-center">
+        <div class="h-full flex items-center justify-center gap-1 text-sm relative cursor-pointer mr-4 hover:text-gray-300" (click)="progress.toggle($event)">
+            <p-knob [(ngModel)]="value" readonly valueTemplate="" [strokeWidth]="6" [size]="48"/>
+            <span class="pi pi-trophy absolute left-4"></span>
+            <div>
+<!--            <p-button severity="secondary" variant="outlined" label="Your Progress" icon="pi pi-angle-down" size="small" (onClick)="progress.toggle($event)"></p-button>-->
+            <p-popover #progress>
+                <div class="flex flex-col gap-4 text-sm">
+                   <strong>
+                       36 of 453 complete.
+                   </strong>
+                    <p>Finish course to get your certificate</p>
+                </div>
+            </p-popover>
+            </div>
+            Your Progress
+            <span class="pi pi-angle-down" style="font-size: 12px"></span>
+        </div>
+        <div class="h-full flex items-center gap-1">
+            <p-menu #actionMenu [model]="shareMenu" [popup]="true" />
+            <button class="p-2 text-white border border-white rounded-md h-10 text-sm font-bold flex items-center gap-1 hover:bg-gray-700"  (click)="actionMenu.toggle($event)">
+                Share
+                <span class="pi pi-angle-down" style="font-size: 14px"></span>
+            </button>
+
+            <p-menu #menu [model]="actionsMenu" [popup]="true" />
+            <button class="p-2 text-white border border-white rounded-md w-10 h-10 hover:bg-gray-700"  (click)="menu.toggle($event)">
+                <span class="pi pi-ellipsis-v" style="font-size: 14px"></span>
+            </button>
+        </div>
+    </div>
+</div>

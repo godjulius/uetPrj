@@ -66,17 +66,27 @@ export class ProfileComponent extends BaseComponent implements OnInit{
             )
             .subscribe(
             (profile: any) => {
+                console.log(profile);
                 if (profile) {
                     this.userProfile = profile;
-                    const genderVal = this.genderOptions.find((option) => option.value === profile.gender)
+                    let genderVal: {name: string, value: string} | null | undefined = this.genderOptions.find((option) => option.value === profile.gender)
+                    if (!genderVal) {
+                       genderVal =  null
+                    }
+                    let dob = profile.dateOfBirth;
+                    if (!dob) {
+                        dob = new Date();
+                        console.log(dob)
+                    }
                     this.profileForm.setValue({
                         fullName: profile.fullName,
                         phone: profile.phoneNumber,
-                        dob: new Date(profile.dateOfBirth),
+                        dob: dob,
                         gender: genderVal,
                         bio: profile.bio,
                     })
                     this.email = profile.email
+                    console.log(this.email)
                 }
             }
         )
