@@ -64,7 +64,7 @@
                                     <span
                                         class="font-medium text-surface-500 dark:text-surface-400 text-sm line-clamp-1">
                                         <ng-container *ngFor="let category of item.categories; let i = index">
-                                            {{ category + ', ' }}
+                                            {{ category + (i < item.categories.length - 1 ? ', ' : '') }}
                                         </ng-container>
                                     </span>
                                     <div
