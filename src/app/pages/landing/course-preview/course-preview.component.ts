@@ -56,11 +56,41 @@ export class CoursePreviewComponent implements OnInit {
         return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
     }
 
+    getTotalContent(): { totalSections: number; totalLessons: number; totalDuration: string } {
+        if (!this.course?.content) return { totalSections: 0, totalLessons: 0, totalDuration: '0m' };
+
+        let totalSections = this.course.content.length;
+        let totalLessons = 0;
+        let totalMinutes = 0;
+
+        this.course.content.forEach(section => {
+            totalLessons += section.lessons.length;
+            section.lessons.forEach(lesson => {
+                const match = lesson.duration.match(/(\d+)m/); // Lấy số phút từ chuỗi duration
+                if (match) {
+                    totalMinutes += parseInt(match[1], 10);
+                }
+            });
+        });
+
+        const hours = Math.floor(totalMinutes / 60);
+        const minutes = totalMinutes % 60;
+        const totalDuration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+
+        return { totalSections, totalLessons, totalDuration };
+    }
+
+
     @HostListener('window:scroll', [])
     onScroll(): void {
         const scrollY = window.scrollY;
-        const triggerPoint = window.innerHeight * 0.4 + 40; // Điểm khi cuộn qua nền đen (~40% viewport)
+        const triggerPoint = window.innerHeight * 0.4 + 40;
         this.isSticky = scrollY > triggerPoint;
+    }
+
+    @HostListener('window:resize', [])
+    onResize(): void {
+        this.calculateWidth();
     }
 
     calculateWidth(): string {
