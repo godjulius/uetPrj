@@ -1,0 +1,13 @@
+<div class="flex items-center space-x-1">
+    <ng-container *ngFor="let star of stars">
+        <div class="relative w-4 h-4">
+            <!-- Sao xám dạng outline (rỗng) -->
+            <i class="pi pi-star text-gray-300 absolute inset-0" style="font-size: 1rem"></i>
+
+            <!-- Sao vàng đầy màu -->
+            <div class="absolute inset-0 overflow-hidden" [style.width]="getStarFillWidth(star)">
+                <i class="pi pi-star-fill text-yellow-500" style="font-size: 1rem"></i>
+            </div>
+        </div>
+    </ng-container>
+</div>

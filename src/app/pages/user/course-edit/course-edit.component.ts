@@ -110,6 +110,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     ngOnInit() {
         this.courseForm = new FormGroup({
             title: new FormControl('', { validators: [Validators.required] }),
+            headline: new FormControl('', { validators: [Validators.required] }),
             categories: new FormControl([], {
                 validators: [Validators.required],
             }),
@@ -145,6 +146,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                         this.courseForm.setValue(
                             {
                                 "title": "",
+                                "headline": "",
                                 "categories": [
                                     {
                                         "id": "6f1b8a4a-9ac0-44c5-84c8-234af5ea546f",

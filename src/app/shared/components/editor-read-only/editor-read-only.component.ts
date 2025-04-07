@@ -29,11 +29,12 @@ export class EditorReadOnlyComponent implements AfterViewInit, OnDestroy , OnCha
     @Input() content: any;
     private editor!: EditorJS;
     isReadOnly = false;
-
+    isEditorReady = false;
     ngOnChanges(changes: SimpleChanges) {
-        if (this.content) {
-            console.log(this.content);
-            this.editor.render(this.content);
+        if (changes['defaultData']) {
+            if (this.isEditorReady) {
+                this.render(this.content);
+            }
         }
     }
 
@@ -86,5 +87,9 @@ export class EditorReadOnlyComponent implements AfterViewInit, OnDestroy , OnCha
 
     ngOnDestroy(): void {
         this.editor.destroy();
+    }
+
+    render(data: any) {
+        this.editor.render(data);
     }
 }

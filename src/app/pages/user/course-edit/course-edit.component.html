@@ -38,6 +38,19 @@
                 </div>
 
                 <div class="flex flex-col gap-2">
+                    <label for="headline" class="text-lg font-semibold"
+                    >Course's headline</label
+                    >
+                    <input
+                        formControlName="headline"
+                        pInputText
+                        id="headline"
+                        class="w-full"
+                        [ngClass]="{'ng-dirty ng-touched': courseForm.get('headline')?.invalid}"
+                    />
+                </div>
+
+                <div class="flex flex-col gap-2">
                     <label for="description" class="text-lg font-semibold"
                     >Description</label
                     >
