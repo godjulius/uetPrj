@@ -1,8 +1,9 @@
 // Preset the theme with your customizations for the PrimeNG components
 import { definePreset } from '@primeng/themes';
 import Lara from '@primeng/themes/lara';
-
-export const appPreset = definePreset(Lara, {
+import Aura from '@primeng/themes/aura';
+import Nora from '@primeng/themes/nora';
+export const appPreset = definePreset(Aura, {
     //Your customizations, see the following sections for examples
     semantic: {
         primary: {
@@ -41,7 +42,7 @@ export const appPreset = definePreset(Lara, {
     }
 });
 
-export const MyPreset = definePreset(Lara, {
+export const MyPreset = definePreset(Aura, {
     primitive: {
         borderRadius: {
             none: "0",

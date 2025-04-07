@@ -7,7 +7,7 @@ import {provideAnimationsAsync} from '@angular/platform-browser/animations/async
 import {providePrimeNG} from 'primeng/config';
 import {translateProviders} from './i18n.config';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptors, withInterceptorsFromDi} from '@angular/common/http';
-import {MyPreset} from './styles/app-preset';
+import {appPreset, MyPreset} from './styles/app-preset';
 import {CommonInterceptor} from './core/services/common.interceptor';
 import {MessageService} from 'primeng/api';
 // Third-party authentication providers
@@ -35,7 +35,7 @@ export const appConfig: ApplicationConfig = {
         // provideHttpClient(withInterceptors([commonInterceptor])),
         providePrimeNG({
             theme: {
-                preset: MyPreset,
+                preset: appPreset,
                 options: {
                     prefix: 'p',
                     darkModeSelector: '.dark',
@@ -44,7 +44,6 @@ export const appConfig: ApplicationConfig = {
 
                 },
             },
-            ripple: true,
             csp: {
                 nonce: '...'
             },
