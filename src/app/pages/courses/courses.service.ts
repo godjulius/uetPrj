@@ -2,7 +2,7 @@ import {inject, Injectable} from '@angular/core';
 import {ICourse} from './courses.model';
 import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
-import {catchError, of} from 'rxjs';
+import {catchError, Observable, of} from 'rxjs';
 import {MessageService} from 'primeng/api';
 import {ALL_CATEGORY, CATEGORY, COURSE, COURSE_ALL} from '../../core/constants/api.const';
 
@@ -17,6 +17,7 @@ export class CoursesService {
         {
             id: 1,
             title: "React for Beginners",
+            headline: "Khóa học React cơ bản",
             description: "Học React từ cơ bản đến nâng cao với dự án thực tế.",
             price: 29.99,
             rating: 4.7,
@@ -44,7 +45,239 @@ export class CoursesService {
         {
             id: 2,
             title: "Mastering Python",
-            description: "Học Python từ cơ bản đến chuyên sâu, bao gồm AI và ML.",
+            headline: "Master Angular (formerly \"Angular 2\") and build awesome, reactive web apps with the successor of Angular.js",
+            description: {
+                "time": 1743876952713,
+                "blocks": [
+                    {
+                        "id": "bMgnH9_f4P",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "There is a lot to learn about the Angular framework, which can be a bit daunting especially for beginners. But the good news is that there are some parts of the framework that are used much more often than others. In fact,&nbsp;<b>in Angular you will be using 10% of its features maybe 90% of the time!</b>"
+                        }
+                    },
+                    {
+                        "id": "VnDHk0G_Fw",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "If you are going to learn Angular, why not focus&nbsp;first&nbsp;on the features that you will be using all of the time, and leave the more advanced parts for later in your learning process?"
+                        }
+                    },
+                    {
+                        "id": "z1gcf23ciV",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "<b>Course Overview</b>"
+                        }
+                    },
+                    {
+                        "id": "eU1E8s-yfg",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "This course is a&nbsp;<b>beginner-friendly introduction</b>&nbsp;to the Angular framework. In this course, we are going to start by setting up your development environment, and we will use the Angular CLI to quickly scaffold a small Angular project from scratch."
+                        }
+                    },
+                    {
+                        "id": "-CYswT8EBn",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "Using this initial playground, we are then going to answer some of the most common Angular questions:"
+                        }
+                    },
+                    {
+                        "id": "8MHnouwFDG",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "<b>Why Angular</b>, what are its main advantages and key features? We will answer this by demonstrating how the change detection mechanism works, and introduce some of the Angular template syntax."
+                        }
+                    },
+                    {
+                        "id": "TbFpGSSvOR",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "We will then cover the most commonly used parts of the Angular framework that you are going to be using all the time: Components, Pipes, Services and Core directives, among others."
+                        }
+                    },
+                    {
+                        "id": "4ZWi1Eifkv",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "<b>Table of Contents</b>"
+                        }
+                    },
+                    {
+                        "id": "ic2fdETDHg",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "This course covers the following topics:"
+                        }
+                    },
+                    {
+                        "id": "iy8SARKUQC",
+                        "type": "list",
+                        "data": {
+                            "style": "unordered",
+                            "meta": {},
+                            "items": [
+                                {
+                                    "content": "Custom components with @Component",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "Components @Input and @Output, event Emitters",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "ngFor",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "ngIf",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "ngClass",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "ngStyle",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "ngSwitch",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "Built-In Pipes",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "Async Pipe",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "Custom Pipes",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "@Injectable and Custom Services",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "HTTP Client - GET POST PUT DELETE",
+                                    "meta": {},
+                                    "items": []
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "vciriLtJt9",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "<b>What Will You Learn In this Course?</b>"
+                        }
+                    },
+                    {
+                        "id": "nefT_MzHW2",
+                        "type": "paragraph",
+                        "data": {
+                            "text": "This course will give you a practical hands-on introduction to the Angular framework. After taking this course you will feel very comfortable navigating the code of an existing Angular application and finding your way around, and you will know how to build your own custom components."
+                        }
+                    },
+                    {
+                        "id": "HH2GtowZ6A",
+                        "type": "header",
+                        "data": {
+                            "text": "What you’ll learn",
+                            "level": 4
+                        }
+                    },
+                    {
+                        "id": "6lyZRCHmL4",
+                        "type": "list",
+                        "data": {
+                            "style": "unordered",
+                            "meta": {},
+                            "items": [
+                                {
+                                    "content": "Code in Github repository with downloadable ZIP files per section",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "Feel comfortable using the most commonly used features of the Angular framework",
+                                    "meta": {},
+                                    "items": []
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "ScHrkQbhRl",
+                        "type": "header",
+                        "data": {
+                            "text": "Are there any course requirements or prerequisites?",
+                            "level": 4
+                        }
+                    },
+                    {
+                        "id": "FB1Ywa6ezE",
+                        "type": "list",
+                        "data": {
+                            "style": "unordered",
+                            "meta": {},
+                            "items": [
+                                {
+                                    "content": "Just some HTML, CSS and Javascript",
+                                    "meta": {},
+                                    "items": []
+                                }
+                            ]
+                        }
+                    },
+                    {
+                        "id": "RRbZci1ywr",
+                        "type": "header",
+                        "data": {
+                            "text": "Who this course is for:",
+                            "level": 4
+                        }
+                    },
+                    {
+                        "id": "e-AvJVMxbc",
+                        "type": "list",
+                        "data": {
+                            "style": "unordered",
+                            "meta": {},
+                            "items": [
+                                {
+                                    "content": "Developers looking to get started quickly in the Angular framework",
+                                    "meta": {},
+                                    "items": []
+                                },
+                                {
+                                    "content": "Developers looking to learn first the most commonly used parts of Angular",
+                                    "meta": {},
+                                    "items": []
+                                }
+                            ]
+                        }
+                    }
+                ],
+                "version": "2.31.0-rc.7"
+            },
             price: 39.99,
             rating: 4.8,
             students: 20000,
@@ -55,8 +288,16 @@ export class CoursesService {
             level: "intermediate",
             language: "English",
             duration: "20h 30m",
-            requirements: ["Không cần kiến thức lập trình trước"],
-            whatYouWillLearn: ["Python Basics", "OOP", "Web Scraping", "Data Science"],
+            requirements: ["Không cần kiến thức lập trình trước", "Cần có máy tính để thực hành"],
+            whatYouWillLearn: [
+                "Python Basics",
+                "OOP",
+                "Web Scraping",
+                "Data Science",
+                "Machine Learning với Python",
+                "Xử lý dữ liệu với Pandas và NumPy",
+                "Tạo API với Flask/Django"
+            ],
             lastUpdated: "2025-01-20",
             content: [
                 {
@@ -65,12 +306,60 @@ export class CoursesService {
                         { title: "Introduction to Python", duration: "12m", freePreview: true },
                         { title: "Installing Python and IDE", duration: "20m" }
                     ]
+                },
+                {
+                    sectionTitle: "Python Fundamentals",
+                    lessons: [
+                        { title: "Variables and Data Types", duration: "15m" },
+                        { title: "Control Flow (if, else, loops)", duration: "25m" },
+                        { title: "Functions and Modules", duration: "18m", freePreview: true }
+                    ]
+                },
+                {
+                    sectionTitle: "Object-Oriented Programming",
+                    lessons: [
+                        { title: "Classes and Objects", duration: "22m" },
+                        { title: "Encapsulation, Inheritance, and Polymorphism", duration: "30m" }
+                    ]
+                },
+                {
+                    sectionTitle: "Working with Data",
+                    lessons: [
+                        { title: "Reading and Writing Files", duration: "15m" },
+                        { title: "Working with JSON and CSV", duration: "20m" },
+                        { title: "Using Pandas for Data Analysis", duration: "35m", freePreview: true }
+                    ]
+                },
+                {
+                    sectionTitle: "Web Scraping and APIs",
+                    lessons: [
+                        { title: "Introduction to Web Scraping", duration: "20m" },
+                        { title: "Scraping with BeautifulSoup", duration: "25m" },
+                        { title: "Making API Requests with Requests Library", duration: "18m" }
+                    ]
+                },
+                {
+                    sectionTitle: "Machine Learning Basics",
+                    lessons: [
+                        { title: "Introduction to Machine Learning", duration: "20m" },
+                        { title: "Using scikit-learn for ML Models", duration: "30m" },
+                        { title: "Building a Simple Linear Regression Model", duration: "25m" }
+                    ]
+                },
+                {
+                    sectionTitle: "Building Web Applications",
+                    lessons: [
+                        { title: "Introduction to Flask", duration: "20m", freePreview: true },
+                        { title: "Creating a REST API with Flask", duration: "35m" },
+                        { title: "Introduction to Django", duration: "30m" }
+                    ]
                 }
             ]
         },
         {
             id: 3,
             title: "Fullstack Web Development",
+            headline: "Khóa học phát triển web toàn diện",
             description: "Tạo website hoàn chỉnh với React, Node.js, MongoDB.",
             price: 49.99,
             rating: 4.9,
@@ -102,6 +391,7 @@ export class CoursesService {
             this.courses.push({
                 id: i,
                 title: `Course ${i}`,
+                headline: `Khóa học ${i} về công nghệ`,
                 description: `Khóa học số ${i} về công nghệ`,
                 price: Math.floor(Math.random() * 50) + 10, // Giá từ 10-60 USD
                 rating: Number((Math.random() * 2 + 3).toFixed(1)), // Rating từ 3.0 - 5.0
@@ -135,6 +425,12 @@ export class CoursesService {
 
     getCourseById(courseId: string) {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/${courseId}`));
+    }
+
+    getCourseById1(index: number ): Observable<ICourse | null> {
+        // @ts-ignore
+        const course = this.courses[index] ?? null;
+        return of(course);
     }
 
     getAllCategories() {

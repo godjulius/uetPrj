@@ -1,6 +1,7 @@
 export interface ICourse {
     id: number | undefined;
     title: string | undefined;
+    headline: string | undefined; // Tiêu đề khóa học
     description: any | undefined;
     price: number | undefined;
     rating: number | undefined; // Trung bình số sao đánh giá
