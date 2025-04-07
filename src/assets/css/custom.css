@@ -106,8 +106,12 @@
     backdrop-filter: blur(8px);
 }
 
-@media(max-width: 1024px) {
+@media(max-width: 1023px) {
     .desktop-dashboard-sidebar {
+        display: none;
+    }
+
+    .course-sidebar {
         display: none;
     }
 

@@ -36,6 +36,7 @@ export class LandingHeaderComponent extends BaseComponent implements OnInit {
             (document.getElementById('landing-header')?.firstChild! as HTMLDivElement).classList.remove('landing-header-sticky');
         }
     }
+
     @ViewChild('inputSearch') inputSearch!: ElementRef;
     searchSubject = new Subject<string>();
     showSearch: boolean = false;
@@ -45,6 +46,7 @@ export class LandingHeaderComponent extends BaseComponent implements OnInit {
     isLoggedIn = false;
     items: MegaMenuItem[] | undefined;
     userProfile: IProfileModel | undefined;
+
     constructor(private router: Router, private authService: AuthService) {
         super();
         this.searchSubjectSubs();
@@ -68,8 +70,11 @@ export class LandingHeaderComponent extends BaseComponent implements OnInit {
                                     label: 'Components', icon: 'pi pi-list', subtext: 'Demo components',
                                     routerLink: 'demo'
                                 },
+                                {
+                                    label: 'Learning page', icon: 'pi pi-file', subtext: 'Demo learning page',
+                                    routerLink: 'learning'
+                                },
                                 {label: 'Customers', icon: 'pi pi-users', subtext: 'Subtext of item'},
-                                {label: 'Case Studies', icon: 'pi pi-file', subtext: 'Subtext of item'}
                             ]
                         }
                     ],
@@ -162,12 +167,11 @@ export class LandingHeaderComponent extends BaseComponent implements OnInit {
     ];
 
 
-
     handleSearch() {
         this.handleToggleSearch()
 
         this.router.navigate(['/courses'], {
-            queryParams: { token: this._searchKeyword }
+            queryParams: {token: this._searchKeyword}
         })
     }
 
@@ -189,8 +193,8 @@ export class LandingHeaderComponent extends BaseComponent implements OnInit {
                 takeUntilDestroyed(this.destroyRef),
             )
             .subscribe((keyword) => {
-            this.searchKeyword = keyword;
-        })
+                this.searchKeyword = keyword;
+            })
     }
 
     navigateToDashBoard() {
