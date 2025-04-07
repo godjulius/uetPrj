@@ -21,7 +21,9 @@ import {CustomRatingComponent} from '../../../shared/components/custom-rating/cu
 export class CourseContentComponent implements OnInit{
     course: ICourse | null = null;
     private destroyRef = inject(DestroyRef);
-    constructor(private route: ActivatedRoute, private coursesService: CoursesService) {}
+    constructor(private route: ActivatedRoute, private coursesService: CoursesService) {
+
+    }
 
     ratings = {
         average: 4.2,
@@ -71,8 +73,9 @@ export class CourseContentComponent implements OnInit{
     ];
 
     ngOnInit(): void {
+        console.log('ngu a');
         const index = Number(this.route.snapshot.paramMap.get('id')); // Chuyển id thành số
-        console.log('index', index);
+        // console.log('index', index);
 
         if (!isNaN(index)) {
             this.coursesService.getCourseById1(index)

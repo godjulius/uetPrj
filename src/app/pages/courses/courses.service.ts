@@ -5,6 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, of} from 'rxjs';
 import {MessageService} from 'primeng/api';
 import {ALL_CATEGORY, CATEGORY, COURSE, COURSE_ALL} from '../../core/constants/api.const';
+import {Router} from '@angular/router';
 
 @Injectable({
     providedIn: 'root'
@@ -386,7 +387,7 @@ export class CoursesService {
         },
         // Tiếp tục tạo thêm khóa học khác...
     ];
-    constructor() {
+    constructor(private router: Router) {
         for (let i = 4; i <= 30; i++) {
             this.courses.push({
                 id: i,
@@ -449,6 +450,11 @@ export class CoursesService {
         return observable.pipe(
             catchError((error: any) => {
                 console.log(error);
+                if (error.status === 422) {
+                    console.log("hhh")
+                    this.messageService.add({severity:'error', summary: 'Lỗi', detail: error.error.detail});
+                    this.router.navigate(['/account/login']);
+                }
                 if (error.status === 409) {
                     this.messageService.add({severity:'error', summary: 'Lỗi', detail: error.error.detail});
                 }
