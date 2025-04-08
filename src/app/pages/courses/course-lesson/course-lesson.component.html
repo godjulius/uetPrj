@@ -5,7 +5,7 @@
                 allowfullscreen></iframe>
     </div>
     <div class="p-2">
-        <p-tabs [(value)]="activeIndex" [lazy]="true">
+        <p-tabs [(value)]="activeIndex">
             <p-tablist>
                 <p-tab value="0">Overview</p-tab>
                 <p-tab value="1">Reviews</p-tab>
@@ -13,12 +13,12 @@
             </p-tablist>
             <p-tabpanels>
                 <p-tabpanel value="0">
-                    @if (activeIndex == 0) {
+                    @if (activeIndex == '0') {
                         <app-course-content></app-course-content>
                     }
                 </p-tabpanel>
                 <p-tabpanel value="1">
-                    @if (activeIndex == 1) {
+                    @if (activeIndex == '1') {
                         <app-course-content></app-course-content>
                     }
                 </p-tabpanel>
