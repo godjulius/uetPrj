@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {LandingFooterComponent} from '../../landing/landing-footer/landing-footer.component';
 import {TabsModule} from 'primeng/tabs';
 import {CourseContentComponent} from '../course-content/course-content.component';
+import {VideoJsComponent} from '../../../shared/components/video-js/video-js.component';
 
 @Component({
   selector: 'app-course-lesson',
@@ -9,7 +10,8 @@ import {CourseContentComponent} from '../course-content/course-content.component
     imports: [
         LandingFooterComponent,
         TabsModule,
-        CourseContentComponent
+        CourseContentComponent,
+        VideoJsComponent
     ],
   templateUrl: './course-lesson.component.html',
   styleUrl: './course-lesson.component.css'

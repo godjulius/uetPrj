@@ -1,0 +1,71 @@
+:root {
+    --vjs-track-settings-color: #00d500; /* Màu chữ mặc định */
+}
+
+.dark {
+    --vjs-track-settings-color: #ffffff; /* Màu chữ trong chế độ tối */
+}
+
+.vjs-track-settings-colors,
+.vjs-track-settings-font {
+    color: var(--vjs-track-settings-color); /* Sử dụng biến màu chữ */
+    font-weight: 500;
+}
+
+
+.vjs-track-settings-controls button {
+    /* bg-blue-500 */
+    background-color: #3b82f6; /* Màu blue-500 của Tailwind */
+
+    /* text-white */
+    color: #000000;
+
+    /* font-bold */
+    font-weight: 700; /* Hoặc dùng: font-weight: bold; */
+
+    /* py-2 (padding top/bottom 0.5rem) & px-4 (padding left/right 1rem) */
+    padding: 0.5rem 1rem;
+
+    /* rounded (border-radius 0.25rem) */
+    border-radius: 0.25rem;
+
+    /* --- Các thuộc tính bổ sung cho trải nghiệm tốt hơn --- */
+    border: none; /* Bỏ viền mặc định của button */
+    cursor: pointer; /* Con trỏ chuột */
+    text-align: center; /* Căn giữa chữ (nếu cần) */
+    transition: background-color 0.2s ease-in-out; /* Hiệu ứng chuyển màu nền mượt mà */
+    outline: none; /* Bỏ viền focus mặc định (sẽ thêm kiểu focus tùy chỉnh) */
+    line-height: 1.5; /* Đảm bảo chiều cao dòng phù hợp */
+    display: inline-block; /* Hoặc block/flex tùy theo bố cục mong muốn */
+}
+
+/* --- Hiệu ứng Hover (tương ứng hover:bg-blue-700) --- */
+.vjs-track-settings-controls button:hover {
+    background-color: #1d4ed8; /* Màu blue-700 của Tailwind */
+}
+
+/* --- Kiểu khi Focus (Quan trọng cho accessibility) --- */
+/* Bạn có thể thêm kiểu focus tương tự như hover hoặc một kiểu khác biệt */
+.vjs-track-settings-controls button:focus {
+    /* Ví dụ: Thêm viền bao ngoài (ring) giống Tailwind */
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    /* Hoặc chỉ đơn giản là thay đổi màu nền giống hover */
+    /* background-color: #1d4ed8; */
+}
+
+/* --- (Tùy chọn) Kiểu khi nút bị nhấn (Active) --- */
+.vjs-track-settings-controls button:active {
+    /* Làm màu nền tối hơn một chút */
+    background-color: #1e40af; /* Ví dụ màu blue-800 */
+}
+
+/* --- (Tùy chọn) Kiểu khi nút bị vô hiệu hóa (Disabled) --- */
+.vjs-track-settings-controls button:disabled {
+    background-color: #93c5fd; /* Ví dụ màu blue-300 */
+    color: #e5e7eb; /* Màu gray-200 cho chữ */
+    cursor: not-allowed;
+    opacity: 0.7; /* Làm mờ đi */
+}
+.vjs-track-settings-controls button:disabled:hover {
+    background-color: #93c5fd; /* Giữ nguyên màu khi hover nếu bị disable */
+}
