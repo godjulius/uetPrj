@@ -453,7 +453,7 @@ export class CoursesService {
                 if (error.status === 422) {
                     console.log("hhh")
                     this.messageService.add({severity:'error', summary: 'Lỗi', detail: error.error.detail});
-                    this.router.navigate(['/account/login']);
+                    this.router.navigate(['/404']);
                 }
                 if (error.status === 409) {
                     this.messageService.add({severity:'error', summary: 'Lỗi', detail: error.error.detail});

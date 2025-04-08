@@ -73,10 +73,7 @@ export class CourseContentComponent implements OnInit{
     ];
 
     ngOnInit(): void {
-        console.log('ngu a');
-        const index = Number(this.route.snapshot.paramMap.get('id')); // Chuyển id thành số
-        // console.log('index', index);
-
+        const index = 1;
         if (!isNaN(index)) {
             this.coursesService.getCourseById1(index)
                 .pipe(takeUntilDestroyed(this.destroyRef))

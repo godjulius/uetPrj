@@ -15,5 +15,5 @@ import {CourseContentComponent} from '../course-content/course-content.component
   styleUrl: './course-lesson.component.css'
 })
 export class CourseLessonComponent {
-    activeIndex: number = 0;
+    activeIndex = '0';
 }
