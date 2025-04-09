@@ -24,7 +24,7 @@ export const routes: Routes = [
                 component: CoursePreviewComponent
             },
             {
-                path: 'user/:username',
+                path: 'instructor/:username',
                 component: InstructorComponent
             }
         ]
