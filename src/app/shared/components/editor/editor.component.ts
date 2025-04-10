@@ -119,6 +119,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy, OnChanges {
     }
 
     ngOnDestroy(): void {
-        this.editor.destroy();
+        if (this.isEditorReady) {
+            this.editor.destroy();
+        }
     }
 }

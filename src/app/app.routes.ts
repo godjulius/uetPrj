@@ -1,6 +1,7 @@
 import {Routes} from '@angular/router';
 import {AuthGuard, LoginGuard} from './core/services/auth.guard';
 import {LoginComponent} from './pages/auth/login/login.component';
+import {NotFoundComponent} from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
     {
@@ -28,6 +29,7 @@ export const routes: Routes = [
     {
         path: 'learning',
         loadChildren: () => import('./pages/courses/courses.routes').then(m => m.routes),
-    },{ path: '404', component: LoginComponent },
-    { path: '**', redirectTo: '404' }
+    },
+    {path: '404', component: NotFoundComponent},
+    {path: '**', redirectTo: '404'}
 ];
