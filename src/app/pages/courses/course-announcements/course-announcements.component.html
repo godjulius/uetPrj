@@ -1,0 +1,26 @@
+<div class="w-full mb-24 mx-auto max-w-[60rem] px-4">
+    <div class="p-6 max-w-[60rem]">
+        <div *ngFor="let announcement of announcements" class="mb-6 border-b pb-4">
+            <div class="flex items-center gap-3 mb-2">
+                <img [src]="announcement.user.avatar" class="rounded-full w-10 h-10"/>
+                <div>
+                    <h3 class="font-bold text-lg">{{ announcement.title }}</h3>
+                    <div class="text-sm text-gray-500 flex">
+                        <p
+                            class="underline cursor-pointer text-blue-600 hover:text-blue-800 transition"
+                            (click)="onInstructorClick(announcement.user)"
+                        >
+                            {{ announcement.user.name }}
+                        </p>
+                        <span class="ml-1">• {{ announcement.createdAt | date:'medium' }}</span>
+
+                    </div>
+
+                </div>
+            </div>
+            <div class="announcement-content">
+                <app-editor-read-only [content]="announcement.content"></app-editor-read-only>
+            </div>
+        </div>
+    </div>
+</div>
