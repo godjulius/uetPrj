@@ -1,0 +1,19 @@
+<div class="p-4 border rounded bg-white shadow">
+    <h2 class="text-lg font-semibold mb-3">Course Notes</h2>
+
+    <div class="mb-2">
+        <p class="text-sm text-gray-600">Current time: {{ currentTime | number: '1.0-0' }}s</p>
+        <textarea [(ngModel)]="noteText" class="w-full p-2 border rounded mb-2" rows="2"
+                  placeholder="Type your note here..."
+                  (focus)="pauseVideo.emit()"></textarea>
+        <button (click)="addNote()" class="bg-blue-500 text-white px-4 py-1 rounded hover:bg-blue-600">Add Note</button>
+    </div>
+
+    <ul class="mt-4 space-y-2">
+        <li *ngFor="let note of notes" class="border-b pb-2">
+            <span class="text-blue-600 font-semibold cursor-pointer" (click)="goToNote(note.time)">
+                {{ note.time | number: '1.0-0' }}s
+            </span>: {{ note.text }}
+        </li>
+    </ul>
+</div>
