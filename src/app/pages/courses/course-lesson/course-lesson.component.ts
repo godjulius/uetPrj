@@ -37,4 +37,8 @@ export class CourseLessonComponent {
     pauseVideo() {
         this.videoComponent?.player?.pause?.();
     }
+
+    resumeVideo() {
+        this.videoComponent?.player?.play?.();
+    }
 }

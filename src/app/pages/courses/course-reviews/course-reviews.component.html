@@ -27,11 +27,34 @@
         </div>
     </div>
 
-    <p class="mx-2">Thời gian hiện tại của video: {{ videoCurrentTime | number:'1.0-2' }} giây</p>
-
-
     <div class="border-t border-gray-300 dark:border-gray-700 p-6" id="reviews">
         <p class="font-bold text-3xl mb-6 text-gray-900 dark:text-gray-100">Reviews</p>
+
+        <div class=" p-4 border rounded bg-white shadow-sm mb-6">
+            <h3 class="text-lg font-semibold mb-2">Leave a Review</h3>
+
+            <div class="mb-3">
+                <label class="block text-sm font-medium mb-1">Your Rating</label>
+                <p-rating [(ngModel)]="newReview.rating"></p-rating>
+            </div>
+
+            <!-- Chỉ hiển thị khi đã chọn số sao -->
+            <div *ngIf="newReview.rating > 0">
+                <div class="mb-3">
+                    <label class="block text-sm font-medium mb-1">Your Name:</label>
+                    <input type="text" pInputText [(ngModel)]="newReview.name" class="w-full"
+                           placeholder="Your name..."/>
+                </div>
+
+                <div class="mb-3">
+                    <label class="block text-sm font-medium mb-1">Your Review</label>
+                    <textarea pTextarea [(ngModel)]="newReview.content" rows="4" class="w-full"
+                              placeholder="Write your feedback..."></textarea>
+                </div>
+
+                <button pButton pRipple (click)="submitReview()">Submit Review</button>
+            </div>
+        </div>
 
         <div class="mb-6">
             <label for="ratingFilter" class="block font-semibold text-gray-700 dark:text-gray-200 mb-2">Filter

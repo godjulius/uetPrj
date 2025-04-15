@@ -9,12 +9,17 @@ import {CoursesService} from '../courses.service';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {FormsModule} from '@angular/forms';
 import {SelectModule} from 'primeng/select';
+import {InputText} from 'primeng/inputtext';
+import {Textarea} from 'primeng/textarea';
+import {RippleModule} from 'primeng/ripple';
+import {ButtonModule} from 'primeng/button';
 
 @Component({
     selector: 'app-course-reviews',
     standalone: true,
     imports: [
-        CustomRatingComponent, DecimalPipe, CommonModule, ProgressBar, Rating, FormsModule, SelectModule,
+        CustomRatingComponent, DecimalPipe, CommonModule, ProgressBar, Rating,
+        FormsModule, SelectModule, InputText, Textarea, RippleModule, ButtonModule,
     ],
     templateUrl: './course-reviews.component.html',
     styleUrl: './course-reviews.component.css'
@@ -65,6 +70,16 @@ export class CourseReviewsComponent implements OnInit {
             review.liked = false;
         }
     }
+
+    newReview = {
+        initials: 'DM',
+        name: 'Do Mixi',
+        rating: 0,
+        timeAgo: 'just now',
+        content: '',
+        liked: false,
+        disliked: false,
+    };
 
     reviews = [
         {
@@ -149,7 +164,6 @@ export class CourseReviewsComponent implements OnInit {
         }
     ];
 
-
     ngOnInit(): void {
         this.filteredReviews = this.reviews;
 
@@ -162,6 +176,44 @@ export class CourseReviewsComponent implements OnInit {
                 console.log("course", this.course);
             });
 
+    }
+
+    getInitials(name: string): string {
+        return name
+            .split(' ')
+            .map(word => word[0])
+            .join('')
+            .toUpperCase();
+    }
+
+    submitReview() {
+        if (!this.newReview.rating || !this.newReview.content.trim()) return;
+
+        const reviewToAdd = {
+            ...this.newReview,
+            initials: this.getInitials(this.newReview.name || 'You'),
+            timeAgo: 'just now',
+            liked: false,
+            disliked: false
+        };
+
+        // Thêm review mới vào đầu danh sách
+        this.reviews.unshift(reviewToAdd);
+
+        // Cập nhật danh sách hiển thị
+        this.selectedRatingFilter = null;
+        this.filterReviews();
+
+        // Reset form
+        this.newReview = {
+            initials: 'DM',
+            name: 'Do Mixi',
+            rating: 0,
+            content: '',
+            timeAgo: 'just now',
+            liked: false,
+            disliked: false,
+        };
     }
 
     filterReviews() {

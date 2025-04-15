@@ -14,7 +14,8 @@ export class CourseNotesComponent {
 
     @Output() seekTo = new EventEmitter<number>();
     @Output() pauseVideo = new EventEmitter<void>();
-    
+    @Output() resumeVideo = new EventEmitter<void>();
+
     notes: { time: number, text: string }[] = [];
     noteText: string = '';
 
@@ -22,6 +23,7 @@ export class CourseNotesComponent {
         if (this.noteText.trim()) {
             this.notes.push({time: this.currentTime, text: this.noteText.trim()});
             this.noteText = '';
+            this.resumeVideo.emit();
         }
     }
 
