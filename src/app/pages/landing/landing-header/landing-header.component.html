@@ -41,7 +41,7 @@
             </p-button>
             <app-header-utils [isSettingVisible]="false"></app-header-utils>
             @if(isLoggedIn) {
-                <p-avatar [image]="avatarUrl" shape="circle" (click)="navigateToDashBoard()" class="cursor-pointer border-2 border-black dark:border-white"/>
+                <p-avatar [image]="userProfile?.avatar ? (userProfile?.avatar) : 'assets/images/default-avt.png'" shape="circle" (click)="navigateToDashBoard()" class="cursor-pointer border-2 border-black dark:border-white"/>
             } @else {
                 <p-button label="login" severity="contrast" size="small" (click)="handleLogin()"/>
             }

@@ -12,9 +12,15 @@
                         <span class="pi pi-arrow-left"></span>
                         Back
                     </a>
-                    <p-button (click)="handleCreateCourse()" styleClass="m-4" size="small" [loading]="loading">
-                        {{ isNewCourse ? 'Create' : 'Save' }}
-                    </p-button>
+                    @if(isNewCourse) {
+                        <p-button (click)="handleCreateCourse()" styleClass="m-4" size="small" [loading]="loading">
+                            Create
+                        </p-button>
+                    } @else {
+                        <p-button (click)="handleCreateCourse(true)" styleClass="m-4" size="small" [loading]="loading">
+                            Save
+                        </p-button>
+                    }
                 </div>
             </div>
             <div class="flex flex-col gap-4">
@@ -28,6 +34,19 @@
                         id="name"
                         class="w-full"
                         [ngClass]="{'ng-dirty ng-touched': courseForm.get('title')?.invalid}"
+                    />
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <label for="headline" class="text-lg font-semibold"
+                    >Course's headline</label
+                    >
+                    <input
+                        formControlName="headline"
+                        pInputText
+                        id="headline"
+                        class="w-full"
+                        [ngClass]="{'ng-dirty ng-touched': courseForm.get('headline')?.invalid}"
                     />
                 </div>
 
@@ -91,15 +110,15 @@
                         <label for="language" class="text-lg font-semibold"
                         >Language</label
                         >
-                        <p-multiselect
+                        <p-select
+                            inputId="language"
+                            formControlName="language"
                             [options]="languages"
-                            formControlName="languages"
                             optionLabel="name"
-                            placeholder="Select languages"
-                            [maxSelectedLabels]="3"
-                            styleClass=""
+                            placeholder="Select a language"
+                            class=""
                             [ngClass]="{'ng-dirty ng-touched': courseForm.get('languages')?.invalid}"
-                        ></p-multiselect>
+                        />
                     </div>
                 </div>
 
@@ -149,11 +168,11 @@
             <p-card>
                 <h2 class="text-2xl font-semibold mb-4">Course content</h2>
                 <div class="flex mb-4 gap-4">
-                    @for (section of courseContent; track section) {
+                    @for (section of courseContent; track section; let index = $index) {
                         <p-button
                             (onClick)="active = section"
                             [rounded]="true"
-                            [label]="section"
+                            [label]="(index + 1) + ''"
                             styleClass="w-8 h-8 p-0"
                             [outlined]="active !== section"
                         />

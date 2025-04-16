@@ -21,7 +21,7 @@
     <ng-template #header>
         <div class="flex items-center gap-2">
             <p-avatar
-                [image]="avatarUrl || 'assets/images/default-avt.png'"
+                [image]="userProfile?.avatar ? (userProfile?.avatar) : 'assets/images/default-avt.png'"
                 shape="circle"
             />
             <span class="font-bold"> {{ userProfile?.fullName || userProfile?.email || '' }} </span>

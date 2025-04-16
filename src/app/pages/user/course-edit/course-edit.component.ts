@@ -80,20 +80,47 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     languages = [
         { name: 'English', value: 'en' },
         { name: 'Vietnamese', value: 'vi' },
-        { name: 'French', value: 'french' },
-        { name: 'German', value: 'german' },
-        { name: 'Italian', value: 'italian' },
-        { name: 'Portuguese', value: 'portuguese' },
-        { name: 'Russian', value: 'russian' },
-        { name: 'Dutch', value: 'dutch' },
-        { name: 'Japanese', value: 'japanese' },
-        { name: 'Chinese', value: 'chinese' },
-        { name: 'Arabic', value: 'arabic' },
-        { name: 'Turkish', value: 'turkish' },
     ];
     courseImageUrl!: string;
     courseImage!: File;
-    courseContent: any[] = [1, 2, 3, 4, 5];
+    courseContent: any[] = [
+        {
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "sectionTitle": "Chương 1: Giới thiệu",
+            "lessons": [
+                {
+                    "id": "1f88f671-6762-4ccb-bd24-8e74e49b60c9",
+                    "title": "Giới thiệu khóa học",
+                    "duration": 120,
+                    "freePreview": true,
+                    "link": "https://example.com/lesson-1",
+                    "type": "video"
+                },
+                {
+                    "id": "c7b6fc55-0752-445c-8ffa-f2afe1c02dc2",
+                    "title": "Tổng quan tài liệu",
+                    "duration": 0,
+                    "freePreview": false,
+                    "link": "https://example.com/lesson-2",
+                    "type": "document"
+                }
+            ]
+        },
+        {
+            "id": "d438700b-9250-4f43-a2a9-9dfbabb611f2",
+            "sectionTitle": "Chương 2: Cơ bản về HTML",
+            "lessons": [
+                {
+                    "id": "da6cd6a6-0bdf-4666-8a7d-c862e2a11929",
+                    "title": "HTML là gì?",
+                    "duration": 180,
+                    "freePreview": true,
+                    "link": "https://example.com/lesson-3",
+                    "type": "video"
+                }
+            ]
+        }
+    ];
     active = 1;
     // Edit Lesson dialog
     isLessonDialogVisible = false;
@@ -113,7 +140,6 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             this.isNewCourse = url.find((segment: any) => segment.path === 'new') !== undefined;
             if (!this.isNewCourse) {
                 this.courseId = this.activatedRoute.snapshot.paramMap.get('courseId') || '';
-                console.log(this.courseId);
             }
         })
     }
@@ -121,43 +147,19 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     ngOnInit() {
         this.courseForm = new FormGroup({
             title: new FormControl('', { validators: [Validators.required] }),
+            headline: new FormControl('', { validators: [Validators.required] }),
             categories: new FormControl([], {
                 validators: [Validators.required],
             }),
             level: new FormControl('', { validators: [Validators.required] }),
-            languages: new FormControl([], {
+            language: new FormControl([], {
                 validators: [Validators.required],
             }),
             price: new FormControl<number>(0, {
                 validators: [Validators.required],
             }),
         });
-        this.courseForm.setValue(
-            {
-                "title": "React for Beginners",
-                "categories": [
-                ],
-                "level": {
-                    "name": "Beginner",
-                    "value": "beginner"
-                },
-                "languages": [
-                    {
-                        "name": "Vietnamese",
-                        "value": "vi"
-                    },
-                    {
-                        "name": "English",
-                        "value": "en"
-                    }
-                ],
-                "price": 123
-            }
-        )
         this.initData();
-        if (this.courseId) {
-            this.initCourseData()
-        }
     }
 
     ngAfterViewInit() {
@@ -174,6 +176,32 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             .subscribe((res: any) => {
                 if (res) {
                     this.categories = res;
+                    console.log(res);
+                    if (this.courseId) {
+                        this.initCourseData()
+                    } else {
+                        this.courseForm.setValue(
+                            {
+                                "title": "",
+                                "headline": "",
+                                "categories": [
+                                    {
+                                        "id": "6f1b8a4a-9ac0-44c5-84c8-234af5ea546f",
+                                        "name": "Development"
+                                    }
+                                ],
+                                "level": {
+                                    "name": "Intermediate",
+                                    "value": "intermediate"
+                                },
+                                "language": {
+                                    "name": "English",
+                                    "value": "en"
+                                },
+                                "price": 222
+                            }
+                        )
+                    }
                 }
             })
     }
@@ -188,7 +216,17 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
         )
             .subscribe((res: any) => {
                 if (res) {
-                    this.courseForm.patchValue(res);
+                    const _categories = this.categories.filter((category: any) => {
+                        return res.categories.includes(category.name)
+                    })
+                    const _language = this.languages.find((language: any) => language.value === res.language);
+                    const _level = this.levels.find((level: any) => level.value === res.level);
+                    this.courseForm.patchValue({
+                        ...res,
+                        categories: _categories,
+                        language: _language,
+                        level: _level,
+                    });
                     this.descriptionData = res.description;
                     this.courseImageUrl = res.image;
                 }
@@ -205,34 +243,58 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             );
     }
 
-    handleCreateCourse() {
+    handleCreateCourse(update: boolean = false) {
+        if (this.courseForm.invalid) {
+            return;
+        }
         this.loading = true;
         const _categories = this.courseForm.get('categories')!.value.map((category: any) => category.name);
-        const _languages = this.courseForm.get('languages')!.value.map((language: any) => language.value);
         this.description.getEditorContent().then((outputData) => {
             // const _outputData = JSON.stringify(outputData);
             const course = {
                 ...this.courseForm.value,
                 categories: _categories,
-                languages: _languages,
+                language: this.courseForm.get('language')!.value.value,
                 level: this.courseForm.get('level')!.value.value,
                 description: outputData,
             }
-            this.courseService.createCourse(course)
-                .pipe(
-                    finalize(() => {
-                        this.loading = false;
-                    }),
-                    takeUntilDestroyed(this.destroyRef)
-                )
-                .subscribe((res: any) => {
-                    this.messageService.add({severity: 'success', summary: 'Success', detail: `Course created successfully: ${res.title}, ${res.id}`});
-                    this.router.navigate(['/user/user-courses'])
-                });
+            if (update) {
+                this.updateCourse(course);
+            } else {
+                this.createCourse(course);
+            }
+
         })
             .catch((error) => {
                 console.log(error);
             })
+    }
+
+    createCourse(course: any) {
+        this.courseService.createCourse(course)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                }),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((res: any) => {
+                this.messageService.add({severity: 'success', summary: 'Success', detail: `Course created successfully: ${res.title}, ${res.id}`});
+                this.router.navigate(['/user/user-courses'])
+            });
+    }
+
+    updateCourse(course: any) {
+        this.courseService.updateCourse(course, this.courseId)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                }),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((res: any) => {
+                this.messageService.add({severity: 'success', summary: 'Success', detail: `Update course successfully: ${res.title}, ${res.id}`});
+            });
     }
 
     onFileSelected(event: Event) {

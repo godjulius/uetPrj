@@ -21,6 +21,8 @@ import {SignUpModel} from '../auth.model';
 import {finalize} from 'rxjs';
 import {MessageService} from 'primeng/api';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {CookieStorageService} from '../../../core/services/cookie-storage.service';
+import {AUTH_TOKEN} from '../../../core/constants/common.const';
 
 @Component({
   selector: 'app-sign-up',
@@ -34,6 +36,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
     authService = inject(AuthService)
     private router = inject(Router);
     private readonly messageService = inject(MessageService)
+    private cookieStorageService = inject(CookieStorageService);
     loading = false;
     constructor(private fb: FormBuilder) {
         super();
@@ -68,6 +71,7 @@ export class SignUpComponent extends BaseComponent implements OnInit {
             .subscribe((res: any) => {
                 if (res) {
                     console.log(res);
+                    this.cookieStorageService.setCookie(AUTH_TOKEN, res.access_token, 1);
                     this.messageService.add({severity: 'success', summary: 'Success', detail: `Account created successfully`});
                     this.router.navigate(['/user/profile']);
                 }

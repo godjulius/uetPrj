@@ -4,6 +4,8 @@
 @import "assets/css/colors.css";
 @import "assets/css/custom.css";
 @import "assets/css/text-editor.css";
+@import 'video.js/dist/video-js.css';
+@import "assets/css/videojs-custom.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;

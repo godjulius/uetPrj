@@ -1,0 +1,142 @@
+<div class="w-[30vw] max-w-[400px] sticky top-0 course-sidebar">
+    <div class="flex justify-between items-center px-4 py-3 border-2">
+        <p class="font-semibold">Course content</p>
+        <button class="w-8 h-8 rounded-md hover:bg-gray-200 flex justify-center items-center cursor-pointer"
+             pTooltip="Close panel" tooltipPosition="left" (click)="handleCloseSidebar()">
+            <span class="pi pi-times" style="font-size: 10px;"></span>
+        </button>
+    </div>
+    <div class="overflow-y-auto h-screen">
+        <!--        <div>-->
+        <!--            <div class="p-4 border-b-2">-->
+        <!--                <div>-->
+        <!--                    <h2 class="flex justify-between items-center font-semibold">-->
+        <!--                        Section 1: Getting started-->
+        <!--                        <span class="pi pi-angle-down"></span>-->
+        <!--                    </h2>-->
+        <!--                    <p class="text-xs">9 / 10 | 22min</p>-->
+        <!--                </div>-->
+        <!--                <div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
+        <p-accordion [value]="['0']" [multiple]="true">
+            <p-accordion-panel value="0">
+                <p-accordion-header>
+                    <div class="flex flex-col">
+                        <h2 class="flex justify-between items-center font-semibold">
+                            Section 1: Getting started
+                        </h2>
+                        <p class="text-xs">9 / 10 | 22min</p>
+                    </div>
+                </p-accordion-header>
+                <p-accordion-content>
+                    <div>
+                        <div class="flex items-center gap-2 text-sm mr-3">
+                            <div class="w-4 h-4 rounded bg-indigo-500 text-white flex justify-center items-center">
+                                <span class="pi pi-check" style="font-size: 10px;"></span>
+                            </div>
+                            1. Introduction to the course
+                        </div>
+                        <div class="flex justify-between pl-6">
+                            <div class="flex items-center gap-2">
+                                <span class="pi pi-play-circle"></span>
+                                <span class="text-gray-500 text-xs">1min</span>
+                            </div>
+                            <div>
+<!--                                <p-button label="Resources" variant="outlined" size="small" icon="pi pi-folder-open" (onClick)="openResourcePopover($event)"/>-->
+                                <button pButton class="p-button-outlined p-button-sm" (click)="openResourcePopover($event)">
+                                    <span class="pi pi-folder-open"></span>
+                                    Resources
+                                    <span class="pi pi-angle-down"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordion-content>
+            </p-accordion-panel>
+            <p-accordion-panel value="1">
+                <p-accordion-header>
+                    <div class="flex flex-col">
+                        <h2 class="flex justify-between items-center font-semibold">
+                            Section 2: Getting starteddddddddddddd
+                        </h2>
+                        <p class="text-xs">9 / 10 | 22min</p>
+                    </div>
+                </p-accordion-header>
+                <p-accordion-content>
+                    <div>
+                        <div class="flex items-center gap-2 text-sm mr-3">
+                            <div class="w-4 h-4 rounded bg-indigo-500 text-white flex justify-center items-center">
+                                <span class="pi pi-check" style="font-size: 10px;"></span>
+                            </div>
+                            2. Introduction to the course
+                        </div>
+                        <div class="flex justify-between pl-6">
+                            <div class="flex items-center gap-2">
+                                <span class="pi pi-play-circle"></span>
+                                <span class="text-gray-500 text-xs">1min</span>
+                            </div>
+                            <div>
+                                <!--                                <p-button label="Resources" variant="outlined" size="small" icon="pi pi-folder-open" (onClick)="openResourcePopover($event)"/>-->
+                                <button pButton class="p-button-outlined p-button-sm" (click)="openResourcePopover($event)">
+                                    <span class="pi pi-folder-open"></span>
+                                    Resources
+                                    <span class="pi pi-angle-down"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordion-content>
+            </p-accordion-panel>
+            <p-accordion-panel value="2">
+                <p-accordion-header>
+                    <div class="flex flex-col">
+                        <h2 class="flex justify-between items-center font-semibold line-clamp-1">
+                            Section 3: Getting started
+                        </h2>
+                        <p class="text-xs">9 / 10 | 22min</p>
+                    </div>
+                </p-accordion-header>
+                <p-accordion-content>
+                    <div>
+                        <div class="flex items-center gap-2 text-sm mr-3">
+                            <div class="w-4 h-4 rounded bg-indigo-500 text-white flex justify-center items-center">
+                                <span class="pi pi-check" style="font-size: 10px;"></span>
+                            </div>
+                            3. Introduction to the course
+                        </div>
+                        <div class="flex justify-between pl-6">
+                            <div class="flex items-center gap-2">
+                                <span class="pi pi-play-circle"></span>
+                                <span class="text-gray-500 text-xs">1min</span>
+                            </div>
+                            <div>
+                                <!--                                <p-button label="Resources" variant="outlined" size="small" icon="pi pi-folder-open" (onClick)="openResourcePopover($event)"/>-->
+                                <button pButton class="p-button-outlined p-button-sm" (click)="openResourcePopover($event)">
+                                    <span class="pi pi-folder-open"></span>
+                                    Resources
+                                    <span class="pi pi-angle-down"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </p-accordion-content>
+            </p-accordion-panel>
+
+        </p-accordion>
+    </div>
+</div>
+
+<p-popover #resourcesPopover>
+    <div class="flex flex-col gap-4 text-sm">
+        <a href="" target="_blank" class="flex items-center gap-3">
+            <span class="pi pi-external-link"></span>
+            Starting project (Github)
+        </a>
+        <a href="" target="_blank" class="flex items-center gap-3">
+            <span class="pi pi-external-link"></span>
+            Starting project (Google Drive)
+        </a>
+    </div>
+</p-popover>

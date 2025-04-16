@@ -16,4 +16,5 @@ export interface IProfileModel {
     gender: 'male' | 'female' | 'other';
     bio?: string;
     id: string | null;
+    avatar: string | undefined;
 }

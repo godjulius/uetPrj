@@ -1,4 +1,14 @@
-import {Component, ElementRef, AfterViewInit, ViewChild, OnDestroy, Output, EventEmitter, Input} from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    AfterViewInit,
+    ViewChild,
+    OnDestroy,
+    Output,
+    EventEmitter,
+    Input,
+    SimpleChanges, OnChanges
+} from '@angular/core';
 import {Button} from 'primeng/button';
 import EditorJS, {ToolConstructable} from '@editorjs/editorjs';
 import Header from '@editorjs/header';
@@ -18,13 +28,22 @@ import Marker from '@editorjs/marker';
     templateUrl: './editor.component.html',
     styleUrl: './editor.component.css'
 })
-export class EditorComponent implements AfterViewInit, OnDestroy {
+export class EditorComponent implements AfterViewInit, OnDestroy, OnChanges {
     @ViewChild('editorContainer', { static: true }) editorContainer!: ElementRef;
     @Input() isFunctionsVisible = false
     @Input() defaultData: any;
     @Output() onSave = new EventEmitter();
     private editor!: EditorJS;
     isReadOnly = false;
+    isEditorReady = false;
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['defaultData']) {
+            if (this.isEditorReady) {
+                this.render(this.defaultData);
+            }
+        }
+    }
+
     ngAfterViewInit(): void {
         this.editor = new EditorJS({
             holder: this.editorContainer.nativeElement,
@@ -69,6 +88,7 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
             placeholder: 'Nhập nội dung của bạn...',
             autofocus: true,
             onReady: () => {
+                this.isEditorReady = true;
                 if (this.defaultData) {
                     this.editor.render(this.defaultData)
                 }
@@ -99,6 +119,8 @@ export class EditorComponent implements AfterViewInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.editor.destroy();
+        if (this.isEditorReady) {
+            this.editor.destroy();
+        }
     }
 }

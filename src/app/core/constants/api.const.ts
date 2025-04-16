@@ -6,3 +6,4 @@ export const AVATAR = '/user/me/avatar';
 export const CATEGORY = '/course/category';
 export const ALL_CATEGORY = '/course/category/all';
 export const COURSE = '/course';
+export const COURSE_ALL = '/course/all';

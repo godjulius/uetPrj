@@ -1,1 +1,61 @@
-<p>course-lesson works!</p>
+<div class="">
+    <div class="w-full h-[40vh] md:h-[60vh] lg:h-[70vh] relative">
+        <!--        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dJsOmXrJpVw"-->
+        <!--                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"-->
+        <!--                allowfullscreen></iframe>-->
+            <app-video-js></app-video-js>
+        @if(!courseLayoutService.isSidebarOpen) {
+            <button (click)="handleOpenSidebar()"
+                    class="!absolute top-2 right-2 p-button p-component p-button-outlined p-button-sm z-[1001] !text-white">
+                Open Sidebar
+            </button>
+        }
+    </div>
+    <div class="p-2">
+        <p-tabs [(value)]="activeIndex">
+            <p-tablist>
+                <p-tab value="0">Overview</p-tab>
+                <p-tab value="1">Reviews</p-tab>
+                <p-tab value="2">Announcements</p-tab>
+            </p-tablist>
+            <p-tabpanels>
+                <p-tabpanel value="0">
+                    @if (activeIndex == '0') {
+                        <app-course-content></app-course-content>
+                    }
+                </p-tabpanel>
+                <p-tabpanel value="1">
+                    @if (activeIndex == '1') {
+                        <app-course-content></app-course-content>
+                    }
+                </p-tabpanel>
+                <p-tabpanel value="2">
+                    <p class="m-0">
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                        deleniti
+                        atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
+                        similique
+                        sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum
+                        quidem rerum
+                        facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
+                        cumque nihil
+                        impedit quo minus.
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                        deleniti
+                        atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
+                        similique
+                        sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum
+                        quidem rerum
+                        facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
+                        cumque nihil
+                        impedit quo minus.
+                    </p>
+                </p-tabpanel>
+
+            </p-tabpanels>
+        </p-tabs>
+    </div>
+
+
+</div>
+<app-landing-footer></app-landing-footer>

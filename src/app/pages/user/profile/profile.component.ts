@@ -9,13 +9,10 @@ import {
     ReactiveFormsModule,
     Validators
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
 import { BaseComponent } from '../../../core/base.component';
 import { DatePickerModule } from 'primeng/datepicker';
 import { MessageService } from 'primeng/api';
 import { FluidModule } from 'primeng/fluid';
-import {FileUpload} from 'primeng/fileupload';
 import { TextareaModule } from 'primeng/textarea';
 import {Select} from 'primeng/select';
 import {AuthService} from '../../auth/auth.service';
@@ -26,8 +23,7 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-profile',
   standalone: true,
-    imports: [CommonModule, Button, InputText, Message, ReactiveFormsModule, RouterLink, TranslatePipe,
-        FormsModule, DatePickerModule, FluidModule, TextareaModule, Select
+    imports: [CommonModule, Button, InputText, Message, ReactiveFormsModule, FormsModule, DatePickerModule, FluidModule, TextareaModule, Select
     ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.css',
@@ -36,13 +32,11 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 export class ProfileComponent extends BaseComponent implements OnInit{
     profileForm!: FormGroup;
     authService = inject(AuthService);
-    private router = inject(Router);
     datePipe = inject(DatePipe);
     private readonly messageService = inject(MessageService);
     loading = false;
     email: string = ''
     maxDate: Date = new Date();
-    avatarUrl: string | null = null;
     genderOptions = [
         { name: 'Male', value: 'Male' },
         { name: 'Female', value: 'Female' },
@@ -72,27 +66,30 @@ export class ProfileComponent extends BaseComponent implements OnInit{
             )
             .subscribe(
             (profile: any) => {
+                console.log(profile);
                 if (profile) {
                     this.userProfile = profile;
-                    const genderVal = this.genderOptions.find((option) => option.value === profile.gender)
+                    let genderVal: {name: string, value: string} | null | undefined = this.genderOptions.find((option) => option.value === profile.gender)
+                    if (!genderVal) {
+                       genderVal =  null
+                    }
+                    let dob = profile.dateOfBirth;
+                    if (!dob) {
+                        dob = new Date();
+                        console.log(dob)
+                    }
                     this.profileForm.setValue({
                         fullName: profile.fullName,
                         phone: profile.phoneNumber,
-                        dob: new Date(profile.dateOfBirth),
+                        dob: dob,
                         gender: genderVal,
                         bio: profile.bio,
                     })
                     this.email = profile.email
+                    console.log(this.email)
                 }
             }
         )
-        this.authService.avatarObject
-            .pipe(
-                takeUntilDestroyed(this.destroyRef)
-            )
-            .subscribe((avatarUrl: any) => {
-            this.avatarUrl = avatarUrl;
-        })
     }
 
     saveProfile() {
@@ -146,8 +143,6 @@ export class ProfileComponent extends BaseComponent implements OnInit{
     onFileSelected(event: Event) {
         const input = event.target as HTMLInputElement;
         if (input.files && input.files.length > 0) {
-            this.avatarUrl = URL.createObjectURL(input.files[0]);
-            this.authService.avatarUrl = this.avatarUrl;
             const avatarFile = input.files[0];
             this.authService.postAvatar(avatarFile).
                 pipe(
