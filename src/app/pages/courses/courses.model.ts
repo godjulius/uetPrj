@@ -12,12 +12,12 @@ export interface ICourse {
     instructor: string | undefined; // Tên giảng viên
     level: ('beginner' | 'intermediate' | 'advanced') | undefined; // Trình độ khóa học
     language: string | undefined; // Ngôn ngữ giảng dạy
-    duration: string | undefined; // Tổng thời gian học (VD: "10h 30m")
+    duration: number | undefined; // Tổng thời gian học (VD: "10h 30m")
     requirements: string[] | undefined; // Yêu cầu đầu vào (VD: ["Biết lập trình cơ bản", "Cài đặt Node.js"])
     whatYouWillLearn: string[] | undefined; // Những gì học viên sẽ học được
     lastUpdated: string | undefined; // Ngày cập nhật gần nhất
-    content: {
+    contents: {
         sectionTitle: string | undefined;
-        lessons: { title: string | undefined; duration: string | undefined; freePreview?: boolean | undefined }[]
+        lessons: { title: string | undefined; duration: number | undefined; freePreview?: boolean | undefined }[]
     }[] | undefined; // Nội dung khóa học theo từng phần
 }
