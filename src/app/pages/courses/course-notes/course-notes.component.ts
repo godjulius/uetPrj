@@ -1,11 +1,14 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {FormsModule} from '@angular/forms';
+import {Textarea} from 'primeng/textarea';
+import {ButtonDirective} from 'primeng/button';
+import {Ripple} from 'primeng/ripple';
 
 @Component({
     selector: 'app-course-notes',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, Textarea, ButtonDirective, Ripple],
     templateUrl: './course-notes.component.html',
     styleUrl: './course-notes.component.css'
 })

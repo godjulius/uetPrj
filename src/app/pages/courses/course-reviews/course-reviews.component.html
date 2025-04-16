@@ -1,8 +1,10 @@
+<!-- Phần feedback chính -->
 <div class="w-full mb-24 mx-auto max-w-[60rem] px-4" *ngIf="course">
     <div class="p-6 max-w-[60rem]">
         <p class="font-bold text-3xl mb-6 text-gray-900 dark:text-gray-100">Student feedback</p>
+
         <div class="flex flex-col md:flex-row gap-4">
-            <div class="flex flex-col w-full md:w-1/5 md:border-r border-gray-300 dark:border-gray-700 gap-2">
+            <div class="flex flex-col w-full md:w-1/5 md:border-r border-gray-300 dark:border-gray-600 gap-2">
                 <p class="text-5xl font-bold text-yellow-500">{{ ratings.average.toFixed(1) }}</p>
                 <app-custom-rating [rating]="ratings.average"></app-custom-rating>
                 <p class="text-lg font-bold text-yellow-500">Course Rating</p>
@@ -18,7 +20,7 @@
                     </div>
                     <div class="flex items-center gap-2 w-32 justify-start mx-2">
                         <p-rating [readonly]="true" [stars]="5" [ngModel]="rate.stars"></p-rating>
-                        <span class="text-sm text-gray-600 dark:text-gray-400 w-10 text-right">
+                        <span class="text-sm text-gray-600 dark:text-gray-300 w-10 text-right">
               {{ ((rate.count / ratings.total) * 100) | number:'1.0-0' }}%
             </span>
                     </div>
@@ -27,28 +29,31 @@
         </div>
     </div>
 
-    <div class="border-t border-gray-300 dark:border-gray-700 p-6" id="reviews">
+    <!-- Phần Reviews -->
+    <div class="border-t border-gray-300 dark:border-gray-600 p-6 " id="reviews">
         <p class="font-bold text-3xl mb-6 text-gray-900 dark:text-gray-100">Reviews</p>
 
-        <div class=" p-4 border rounded bg-white shadow-sm mb-6">
-            <h3 class="text-lg font-semibold mb-2">Leave a Review</h3>
+        <!-- Form đánh giá -->
+        <div class="p-4 border dark:border-gray-600 rounded shadow-sm mb-6">
+            <h3 class="text-lg font-semibold mb-2 text-gray-900 dark:text-gray-100">Leave a Review</h3>
 
             <div class="mb-3">
-                <label class="block text-sm font-medium mb-1">Your Rating</label>
+                <label class="block text-sm font-medium mb-1 text-gray-800 dark:text-gray-200">Your Rating</label>
                 <p-rating [(ngModel)]="newReview.rating"></p-rating>
             </div>
 
-            <!-- Chỉ hiển thị khi đã chọn số sao -->
             <div *ngIf="newReview.rating > 0">
                 <div class="mb-3">
-                    <label class="block text-sm font-medium mb-1">Your Name:</label>
-                    <input type="text" pInputText [(ngModel)]="newReview.name" class="w-full"
+                    <label class="block text-sm font-medium mb-1 text-gray-800 dark:text-gray-200">Your Name:</label>
+                    <input type="text" pInputText [(ngModel)]="newReview.name"
+                           class="w-full  dark:text-white"
                            placeholder="Your name..."/>
                 </div>
 
                 <div class="mb-3">
-                    <label class="block text-sm font-medium mb-1">Your Review</label>
-                    <textarea pTextarea [(ngModel)]="newReview.content" rows="4" class="w-full"
+                    <label class="block text-sm font-medium mb-1 text-gray-800 dark:text-gray-200">Your Review</label>
+                    <textarea pTextarea [(ngModel)]="newReview.content" rows="4"
+                              class="w-full  dark:text-white"
                               placeholder="Write your feedback..."></textarea>
                 </div>
 
@@ -56,9 +61,11 @@
             </div>
         </div>
 
+        <!-- Bộ lọc -->
         <div class="mb-6">
-            <label for="ratingFilter" class="block font-semibold text-gray-700 dark:text-gray-200 mb-2">Filter
-                ratings</label>
+            <label for="ratingFilter" class="block font-semibold text-gray-700 dark:text-gray-200 mb-2">
+                Filter ratings
+            </label>
             <p-select
                 inputId="ratingFilter"
                 class="w-60"
@@ -71,30 +78,32 @@
             ></p-select>
         </div>
 
-        <div *ngFor="let review of filteredReviews" class="mb-6 border-b border-gray-300 dark:border-gray-700 pb-4">
+        <!-- Các review -->
+        <div *ngFor="let review of filteredReviews"
+             class="mb-6 border-b border-gray-300 dark:border-gray-600 pb-4">
             <div class="flex mb-2">
                 <div class="hidden md:block">
                     <div
-                        class="w-12 h-12 rounded-full bg-yellow-100 dark:bg-yellow-200 flex items-center justify-center text-yellow-800 font-bold mr-4">
+                        class="w-12 h-12 rounded-full bg-yellow-100 dark:bg-yellow-300 text-yellow-800 flex items-center justify-center font-bold mr-4">
                         {{ review.initials }}
                     </div>
                 </div>
                 <div>
                     <p class="font-semibold mb-2 text-gray-900 dark:text-gray-100">{{ review.name }}</p>
-                    <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
+                    <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-300 mb-2">
                         <app-custom-rating [rating]="review.rating"></app-custom-rating>
-                        <span class="text-sm text-gray-400 dark:text-gray-500">{{ review.timeAgo }}</span>
+                        <span class="text-sm text-gray-400 dark:text-gray-400">{{ review.timeAgo }}</span>
                     </div>
                     <p class="text-gray-700 dark:text-gray-200 mb-2">{{ review.content }}</p>
-                    <p class="text-sm text-gray-500 dark:text-gray-400 mb-2">Was this review helpful?</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-300 mb-2">Was this review helpful?</p>
                     <div class="flex gap-4">
                         <!-- Like -->
                         <button
                             (click)="toggleLike(review)"
                             class="text-sm border rounded-full h-12 w-12 flex justify-center items-center transition"
                             [ngClass]="{
-                  'text-white bg-blue-600 border-blue-600': review.liked,
-                  'text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900 border-blue-600': !review.liked
+                'text-white bg-blue-600 border-blue-600': review.liked,
+                'text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900 border-blue-600': !review.liked
               }"
                         >
                             <i class="pi pi-thumbs-up"></i>
@@ -105,8 +114,8 @@
                             (click)="toggleDislike(review)"
                             class="text-sm border rounded-full h-12 w-12 flex justify-center items-center transition"
                             [ngClass]="{
-                  'text-white bg-red-600 border-red-600': review.disliked,
-                  'text-red-600 hover:bg-red-50 dark:hover:bg-red-900 border-red-600': !review.disliked
+                'text-white bg-red-600 border-red-600': review.disliked,
+                'text-red-600 hover:bg-red-50 dark:hover:bg-red-900 border-red-600': !review.disliked
               }"
                         >
                             <i class="pi pi-thumbs-down"></i>
