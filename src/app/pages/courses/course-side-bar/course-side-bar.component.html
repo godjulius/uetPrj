@@ -1,10 +1,10 @@
 <div class="w-[30vw] max-w-[400px] sticky top-0 course-sidebar">
     <div class="flex justify-between items-center px-4 py-3 border-2">
         <p class="font-semibold">Course content</p>
-        <div class="w-8 h-8 rounded-md hover:bg-gray-200 flex justify-center items-center cursor-pointer"
-             pTooltip="Close panel" tooltipPosition="left">
+        <button class="w-8 h-8 rounded-md hover:bg-gray-200 flex justify-center items-center cursor-pointer"
+             pTooltip="Close panel" tooltipPosition="left" (click)="handleCloseSidebar()">
             <span class="pi pi-times" style="font-size: 10px;"></span>
-        </div>
+        </button>
     </div>
     <div class="overflow-y-auto h-screen">
         <!--        <div>-->

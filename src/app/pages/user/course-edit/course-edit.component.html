@@ -17,7 +17,7 @@
                             Create
                         </p-button>
                     } @else {
-                        <p-button (click)="handleUpdateCourse()" styleClass="m-4" size="small" [loading]="loading">
+                        <p-button (click)="handleCreateCourse(true)" styleClass="m-4" size="small" [loading]="loading">
                             Save
                         </p-button>
                     }
@@ -168,11 +168,11 @@
             <p-card>
                 <h2 class="text-2xl font-semibold mb-4">Course content</h2>
                 <div class="flex mb-4 gap-4">
-                    @for (section of courseContent; track section) {
+                    @for (section of courseContent; track section; let index = $index) {
                         <p-button
                             (onClick)="active = section"
                             [rounded]="true"
-                            [label]="section"
+                            [label]="(index + 1) + ''"
                             styleClass="w-8 h-8 p-0"
                             [outlined]="active !== section"
                         />

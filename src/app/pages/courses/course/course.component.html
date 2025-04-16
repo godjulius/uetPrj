@@ -4,5 +4,7 @@
 <!--        <router-outlet></router-outlet>-->
         <app-course-lesson/>
     </div>
+    @if(courseLayoutService.isSidebarOpen) {
     <app-course-side-bar></app-course-side-bar>
+    }
 </div>
