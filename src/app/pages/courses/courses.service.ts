@@ -37,8 +37,8 @@ export class CoursesService {
                 {
                     sectionTitle: "Introduction",
                     lessons: [
-                        { title: "What is React?", duration: 2000, freePreview: true },
-                        { title: "Setup Development Environment", duration: 2000 }
+                        {title: "What is React?", duration: 2000, freePreview: true},
+                        {title: "Setup Development Environment", duration: 2000}
                     ]
                 }
             ]
@@ -304,21 +304,21 @@ export class CoursesService {
                 {
                     sectionTitle: "Web Scraping and APIs",
                     lessons: [
-                        { title: "Introduction to Web Scraping", duration: 2000 },
+                        {title: "Introduction to Web Scraping", duration: 2000},
                     ]
                 },
                 {
                     sectionTitle: "Machine Learning Basics",
                     lessons: [
-                        { title: "Introduction to Machine Learning", duration: 2000 },
+                        {title: "Introduction to Machine Learning", duration: 2000},
                     ]
                 },
                 {
                     sectionTitle: "Building Web Applications",
                     lessons: [
-                        { title: "Introduction to Flask", duration: 2000, freePreview: true },
-                        { title: "Creating a REST API with Flask", duration: 2000 },
-                        { title: "Introduction to Django", duration: 2000 }
+                        {title: "Introduction to Flask", duration: 2000, freePreview: true},
+                        {title: "Creating a REST API with Flask", duration: 2000},
+                        {title: "Introduction to Django", duration: 2000}
                     ]
                 }
             ]
@@ -345,14 +345,15 @@ export class CoursesService {
                 {
                     sectionTitle: "Introduction",
                     lessons: [
-                        { title: "What is Fullstack Development?", duration: 2000, freePreview: true },
-                        { title: "Project Setup", duration: 2000 }
+                        {title: "What is Fullstack Development?", duration: 2000, freePreview: true},
+                        {title: "Project Setup", duration: 2000}
                     ]
                 }
             ]
         },
         // Tiếp tục tạo thêm khóa học khác...
     ];
+
     constructor(private router: Router) {
         for (let i = 4; i <= 30; i++) {
             this.courses.push({
@@ -377,8 +378,8 @@ export class CoursesService {
                     {
                         sectionTitle: `Introduction to Course ${i}`,
                         lessons: [
-                            { title: `Lesson 1 of Course ${i}`, duration: 2000, freePreview: i % 3 === 0 },
-                            { title: `Lesson 2 of Course ${i}`, duration: 2000 }
+                            {title: `Lesson 1 of Course ${i}`, duration: 2000, freePreview: i % 3 === 0},
+                            {title: `Lesson 2 of Course ${i}`, duration: 2000}
                         ]
                     }
                 ]
@@ -398,7 +399,7 @@ export class CoursesService {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/${courseId}`));
     }
 
-    getCourseById1(index: number ): Observable<ICourse | null> {
+    getCourseById1(index: number): Observable<ICourse | null> {
         // @ts-ignore
         const course = this.courses[index] ?? null;
         return of(course);
@@ -409,11 +410,29 @@ export class CoursesService {
     }
 
     addCategory(newCategory: string) {
-        return this.handleError(this.httpClient.post(`${this.baseUrl}${CATEGORY}`, { name: newCategory }));
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${CATEGORY}`, {name: newCategory}));
     }
 
     getCourses(page: number, size: number) {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE_ALL}?page=${page}&size=${size}`));
+    }
+
+    addSection(courseId: string, section: any) {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/${courseId}/section`, section));
+    }
+
+    addLesson(sectionId: string, lesson: any) {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/section/${sectionId}/lesson`, lesson));
+    }
+
+    postVideo(lessonId: string, video: File) {
+        const formData = new FormData();
+        formData.append('file', video);
+        console.log(lessonId);
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/lesson/${lessonId}/video`, formData, {
+            reportProgress: true,
+            observe: 'events'
+        }));
     }
 
     handleError(observable: any) {
@@ -422,11 +441,11 @@ export class CoursesService {
                 console.log(error);
                 if (error.status === 422) {
                     console.log("hhh")
-                    this.messageService.add({severity:'error', summary: 'Lỗi', detail: error.error.detail});
+                    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: error.error.detail});
                     this.router.navigate(['/404']);
                 }
                 if (error.status === 409) {
-                    this.messageService.add({severity:'error', summary: 'Lỗi', detail: error.error.detail});
+                    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: error.error.detail});
                 }
                 return of(null);
             })
