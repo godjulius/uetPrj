@@ -31,6 +31,7 @@
         "@larscom/ngx-translate-module-loader": "^4.0.0",
         "@ngx-translate/core": "^16.0.4",
         "@primeng/themes": "^18.0.2",
+        "@types/videojs-hls-quality-selector": "^1.1.3",
         "primeicons": "^7.0.0",
         "primeng": "^18.0.2",
         "quill": "^2.0.3",

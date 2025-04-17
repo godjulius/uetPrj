@@ -19,9 +19,9 @@
             mode="advanced"
             [multiple]="false"
             [customUpload]="true"
-            (onProgress)="viewProgress($event)"
             (uploadHandler)="handleUploadVideo($event)"
             [files]="selectedVideos || []"
+            [disabled]="loading"
         >
             <ng-template #content>
                 <div class="flex items-center justify-center flex-col">
@@ -30,9 +30,20 @@
                 </div>
             </ng-template>
         </p-fileUpload>
-<!--        @if (!loading) {-->
-            <p-progressbar [value]="uploadProgress" styleClass="mt-2"></p-progressbar>
-<!--        }-->
+        @if (loading) {
+            <div class="mt-2">
+                <p>File name: <span>{{ uploadingVideo?.name }}</span></p>
+                <p>File size: <span>{{ uploadingVideo?.size }} bytes</span></p>
+                <p>File type: <span>{{ uploadingVideo?.type }}</span></p>
+            </div>
+            <div class="flex mt-2 gap-2 justify-center items-center">
+
+                <span class="pi pi-cloud-upload"></span>
+                <div class="grow">
+                    <p-progressbar [value]="uploadProgress"></p-progressbar>
+                </div>
+            </div>
+        }
     </div>
     <ng-template #footer>
         <p-button
