@@ -1,6 +1,16 @@
-import {Component, ElementRef, Input, OnDestroy, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+    AfterViewInit,
+    Component,
+    ElementRef,
+    Input,
+    OnDestroy,
+    OnInit,
+    ViewChild,
+    ViewEncapsulation
+} from '@angular/core';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
+import 'videojs-hls-quality-selector';
 
 @Component({
     selector: 'app-video-js',
@@ -10,7 +20,7 @@ import Player from 'video.js/dist/types/player';
     styleUrl: './video-js.component.css',
     encapsulation: ViewEncapsulation.None
 })
-export class VideoJsComponent implements OnInit, OnDestroy {
+export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChild('target', {static: true}) target!: ElementRef;
 
     // See options: https://videojs.com/guides/options
@@ -20,8 +30,10 @@ export class VideoJsComponent implements OnInit, OnDestroy {
         autoplay: false,
         sources: [
             {
-                src: 'https://vjs.zencdn.net/v/oceans.mp4',
-                type: 'video/mp4'
+                // src: 'https://vjs.zencdn.net/v/oceans.mp4',
+                // type: 'video/mp4'
+                src: 'https://d37u0eh7zt2bro.cloudfront.net/course/video/eaf5376f-82c8-4e03-bdb9-f8863808b5a6/hls.m3u8',
+                type: 'application/x-mpegURL'
             }
         ],
         tracks: [
@@ -32,12 +44,6 @@ export class VideoJsComponent implements OnInit, OnDestroy {
                 label: 'English',
                 default: true
             },
-            {
-                kind: 'subtitles',
-                src: 'https://vjs.zencdn.net/v/oceans.vi.vtt',
-                srclang: 'vi',
-                label: 'Tiếng Việt'
-            }
         ],
         playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 2],
         fill: true,
@@ -132,9 +138,14 @@ export class VideoJsComponent implements OnInit, OnDestroy {
     ) {
     }
 
-    // Instantiate a Video.js player OnInit
     ngOnInit() {
+
+    }
+
+    // Instantiate a Video.js player OnInit
+    ngAfterViewInit() {
         this.player = videojs(this.target.nativeElement, this.options, function onPlayerReady() {
+        // this.player = videojs('video-js', this.options, function onPlayerReady() {
             console.log('onPlayerReady', this);
             this.on('contextmenu', function(event: any) {
                 // Prevent the default right-click context menu
@@ -143,6 +154,9 @@ export class VideoJsComponent implements OnInit, OnDestroy {
 
                 // You could potentially show your own custom menu here if desired
             });
+        });
+        (this.player as any).hlsQualitySelector({
+            displayCurrentQuality: true,
         });
     }
 

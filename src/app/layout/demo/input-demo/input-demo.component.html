@@ -1,4 +1,17 @@
 <div class="mt-14">
+    <p-card header="Basic input group" styleClass="mb-8">
+        <p-fileupload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($event)" [multiple]="true" accept="image/*" maxFileSize="1000000" mode="advanced">
+            <ng-template #empty>
+                <div>Drag and drop files to here to upload.</div>
+            </ng-template>
+            <ng-template #content>
+                <div>Drag and drop files to here to upload.</div>
+                <ul *ngIf="uploadedFiles.length">
+                    <li *ngFor="let file of uploadedFiles">{{ file.name }} - {{ file.size }} bytes</li>
+                </ul>
+            </ng-template>
+        </p-fileupload>
+    </p-card>
     <h1 class="font-bold text-5xl mb-8">
         Input group
     </h1>
