@@ -7,7 +7,7 @@ import {FileProgressEvent, FileSelectEvent, FileUpload, FileUploadHandlerEvent, 
 import {CommonModule} from '@angular/common';
 import {CoursesService} from '../../../courses/courses.service';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {finalize} from 'rxjs';
+import {finalize, Observable, Subscription} from 'rxjs';
 import {ProgressBar} from 'primeng/progressbar';
 import {HttpEvent, HttpEventType} from '@angular/common/http';
 
@@ -32,26 +32,37 @@ export class LessonComponentComponent implements OnChanges {
     courseService = inject(CoursesService)
     private destroy$ = inject(DestroyRef)
     selectedVideos: File[] | null = null;
+    uploadingVideo: File | null = null;
     loading = false;
     uploadProgress = 0;
-    ngOnChanges(changes:SimpleChanges) {
+    uploadSubs!: Subscription;
+
+    ngOnChanges(changes: SimpleChanges) {
         if (changes['visible']) {
         }
     }
 
 
     clearLessonForm() {
+        if (this.uploadSubs) {
+            // this.uploadSubs.unsubscribe();
+        }
         this.visibleChange.emit(false);
     }
 
     handleUploadVideo(event: FileUploadHandlerEvent) {
+        this.selectedVideos = []
         console.log(event)
         this.loading = true;
-        this.courseService.postVideo(this.lessonId ,event.files[0])
+        this.uploadingVideo = event.files[0];
+        console.log(this.uploadingVideo)
+        this.uploadSubs = this.courseService.postVideo(this.lessonId, event.files[0])
             .pipe(
                 takeUntilDestroyed(this.destroy$),
                 finalize(() => {
                     this.loading = false
+                    console.log('Upload complete!')
+                    this.uploadProgress = 0;
                 })
             )
             .subscribe({
@@ -69,14 +80,5 @@ export class LessonComponentComponent implements OnChanges {
                     console.error('Upload failed.', err);
                 }
             });
-            // .subscribe((res: any) => {
-            //     console.log(res)
-            //     this.selectedVideos = []
-            // })
-    }
-
-    viewProgress(e: FileProgressEvent) {
-        console.log("event: ",e)
-        console.log(e.progress);
     }
 }
