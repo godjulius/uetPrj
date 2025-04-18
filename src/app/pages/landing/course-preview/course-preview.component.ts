@@ -37,18 +37,6 @@ export class CoursePreviewComponent implements OnInit {
                 this.course = data;
                 console.log("course", this.course);
             });
-
-        // const index = Number(this.route.snapshot.paramMap.get('id')); // Chuyển id thành số
-        // console.log('index', index);
-        //
-        // if (!isNaN(index)) {
-        //     this.coursesService.getCourseById1(index)
-        //         .pipe(takeUntilDestroyed(this.destroyRef))
-        //         .subscribe((data: ICourse | null) => {
-        //         this.course = data;
-        //         console.log("course", this.course);
-        //     });
-        // }
     }
 
     getTotalDuration(lessons: any[]): string {
