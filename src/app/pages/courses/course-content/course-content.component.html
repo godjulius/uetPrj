@@ -52,18 +52,18 @@
                     <span class="font-medium">
                         Skill level: {{ course.level }}
                     </span>
-                        <span class="font-medium">
+                    <span class="font-medium">
                         Student: {{ course.students | number }}
                     </span>
-                        <span class="font-medium">
+                    <span class="font-medium">
                         Languages: {{ course.language }}
                     </span>
                 </div>
                 <div class="flex flex-col flex-1">
                     <span class="font-medium">
-                        Lectures: {{ course.content?.length }}
+                        Lectures: {{ course.contents?.length }}
                     </span>
-                        <span class="font-medium">
+                    <span class="font-medium">
                         Video: {{ course.duration || 0 }} total length
                     </span>
                 </div>
@@ -75,7 +75,8 @@
         <div class="border-t border-gray-300 p-6 max-w-[60rem]">
             <p class="font-bold text-3xl mb-4">Student feedback</p>
             <div class="flex flex-col md:flex-row gap-4">
-                <div class="flex flex-col md:items-center md:justify-center w-full md:w-1/5 md:border-r border-gray-300">
+                <div
+                    class="flex flex-col md:items-center md:justify-center w-full md:w-1/5 md:border-r border-gray-300">
                     <p class="text-5xl font-bold text-yellow-500">{{ ratings.average.toFixed(1) }}</p>
                     <p class="text-gray-600 text-lg">Course Rating</p>
                     <p class="text-sm text-gray-500 mt-2">{{ ratings.total }} ratings</p>
@@ -108,7 +109,8 @@
         <div *ngFor="let review of reviews" class="mb-6 border-b pb-4">
             <div class="flex mb-2">
                 <div class="hidden md:block">
-                    <div class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-800 font-bold mr-4">
+                    <div
+                        class="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center text-yellow-800 font-bold mr-4">
                         {{ review.initials }}
                     </div>
                 </div>
@@ -144,7 +146,7 @@
         </div>
     </ng-container>
 
-<!--    <p-card class="w-full" *ngIf="course.description">-->
-<!--        <app-editor-read-only [content]="course.description"></app-editor-read-only>-->
-<!--    </p-card>-->
+    <!--    <p-card class="w-full" *ngIf="course.description">-->
+    <!--        <app-editor-read-only [content]="course.description"></app-editor-read-only>-->
+    <!--    </p-card>-->
 </div>

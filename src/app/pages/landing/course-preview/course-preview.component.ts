@@ -4,50 +4,58 @@ import {ActivatedRoute} from '@angular/router';
 import {CoursesService} from '../../courses/courses.service';
 import {CommonModule} from '@angular/common';
 import {CardModule} from 'primeng/card';
-import {ButtonDirective} from 'primeng/button';
+import {Button, ButtonDirective} from 'primeng/button';
 import {Ripple} from 'primeng/ripple';
 import {Accordion, AccordionContent, AccordionHeader, AccordionPanel} from 'primeng/accordion';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {LanguageNamePipe} from '../../../shared/pipes/language-name.pipe';
+import {EditorReadOnlyComponent} from '../../../shared/components/editor-read-only/editor-read-only.component';
+import {DurationFormatPipe} from '../../../shared/pipes/duration.pipe';
 
 @Component({
-  selector: 'app-course-preview',
-  standalone: true,
+    selector: 'app-course-preview',
+    standalone: true,
     imports: [
         CommonModule, CardModule, ButtonDirective, Ripple, Accordion, AccordionPanel,
-        AccordionHeader, AccordionContent
+        AccordionHeader, AccordionContent, LanguageNamePipe, EditorReadOnlyComponent, Button, DurationFormatPipe
     ],
-  templateUrl: './course-preview.component.html',
-  styleUrl: './course-preview.component.css'
+    templateUrl: './course-preview.component.html',
+    styleUrl: './course-preview.component.css'
 })
 export class CoursePreviewComponent implements OnInit {
     course: ICourse | null = null;
     private destroyRef = inject(DestroyRef); // Inject DestroyRef
     isSticky = false; // Biến kiểm tra trạng thái sticky
 
-    constructor(private route: ActivatedRoute, private coursesService: CoursesService) {}
+    constructor(private route: ActivatedRoute, private coursesService: CoursesService) {
+    }
 
     ngOnInit(): void {
-        const index = Number(this.route.snapshot.paramMap.get('id')); // Chuyển id thành số
-        console.log('index', index);
-
-        if (!isNaN(index)) {
-            this.coursesService.getCourseById1(index)
-                .pipe(takeUntilDestroyed(this.destroyRef))
-                .subscribe((data: ICourse | null) => {
+        this.coursesService.getCourseById(this.route.snapshot.params['id'])
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((data: ICourse | null) => {
                 this.course = data;
                 console.log("course", this.course);
             });
-        }
+
+        // const index = Number(this.route.snapshot.paramMap.get('id')); // Chuyển id thành số
+        // console.log('index', index);
+        //
+        // if (!isNaN(index)) {
+        //     this.coursesService.getCourseById1(index)
+        //         .pipe(takeUntilDestroyed(this.destroyRef))
+        //         .subscribe((data: ICourse | null) => {
+        //         this.course = data;
+        //         console.log("course", this.course);
+        //     });
+        // }
     }
 
-    getTotalDuration(lessons: { duration: string }[]): string {
+    getTotalDuration(lessons: any[]): string {
         let totalMinutes = 0;
 
         lessons.forEach(lesson => {
-            const match = lesson.duration.match(/(\d+)m/); // Lấy số phút
-            if (match) {
-                totalMinutes += parseInt(match[1], 10);
-            }
+            totalMinutes += lesson.duration || 0;
         });
 
         const hours = Math.floor(totalMinutes / 60);
@@ -57,19 +65,16 @@ export class CoursePreviewComponent implements OnInit {
     }
 
     getTotalContent(): { totalSections: number; totalLessons: number; totalDuration: string } {
-        if (!this.course?.content) return { totalSections: 0, totalLessons: 0, totalDuration: '0m' };
+        if (!this.course?.contents) return {totalSections: 0, totalLessons: 0, totalDuration: '0m'};
 
-        let totalSections = this.course.content.length;
+        let totalSections = this.course.contents.length;
         let totalLessons = 0;
         let totalMinutes = 0;
 
-        this.course.content.forEach(section => {
+        this.course.contents.forEach(section => {
             totalLessons += section.lessons.length;
             section.lessons.forEach(lesson => {
-                const match = lesson.duration.match(/(\d+)m/); // Lấy số phút từ chuỗi duration
-                if (match) {
-                    totalMinutes += parseInt(match[1], 10);
-                }
+                totalMinutes += lesson.duration || 0
             });
         });
 
@@ -77,7 +82,7 @@ export class CoursePreviewComponent implements OnInit {
         const minutes = totalMinutes % 60;
         const totalDuration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
 
-        return { totalSections, totalLessons, totalDuration };
+        return {totalSections, totalLessons, totalDuration};
     }
 
 
@@ -101,7 +106,7 @@ export class CoursePreviewComponent implements OnInit {
 
     addToCart(): void {
         if (this.course) {
-            console.log(`Đã thêm khóa học "${this.course.name}" vào giỏ hàng!`);
+            console.log(`Đã thêm khóa học "${this.course.title}" vào giỏ hàng!`);
         }
     }
 }
