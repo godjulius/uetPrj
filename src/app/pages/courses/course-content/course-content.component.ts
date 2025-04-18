@@ -6,21 +6,22 @@ import {ICourse} from '../courses.model';
 import {CommonModule} from '@angular/common';
 import {EditorReadOnlyComponent} from '../../../shared/components/editor-read-only/editor-read-only.component';
 import {Card} from 'primeng/card';
-import { ProgressBarModule } from 'primeng/progressbar';
+import {ProgressBarModule} from 'primeng/progressbar';
 import {Rating} from 'primeng/rating';
 import {FormsModule} from '@angular/forms';
 import {CustomRatingComponent} from '../../../shared/components/custom-rating/custom-rating.component';
 
 @Component({
-  selector: 'app-course-content',
-  standalone: true,
+    selector: 'app-course-content',
+    standalone: true,
     imports: [CommonModule, EditorReadOnlyComponent, Card, ProgressBarModule, Rating, FormsModule, CustomRatingComponent],
-  templateUrl: './course-content.component.html',
-  styleUrl: './course-content.component.css'
+    templateUrl: './course-content.component.html',
+    styleUrl: './course-content.component.css'
 })
-export class CourseContentComponent implements OnInit{
+export class CourseContentComponent implements OnInit {
     course: ICourse | null = null;
     private destroyRef = inject(DestroyRef);
+
     constructor(private route: ActivatedRoute, private coursesService: CoursesService) {
 
     }
@@ -29,11 +30,11 @@ export class CourseContentComponent implements OnInit{
         average: 4.2,
         total: 250,
         breakdown: [
-            { stars: 5, count: 150 },
-            { stars: 4, count: 50 },
-            { stars: 3, count: 25 },
-            { stars: 2, count: 15 },
-            { stars: 1, count: 10 }
+            {stars: 5, count: 150},
+            {stars: 4, count: 50},
+            {stars: 3, count: 25},
+            {stars: 2, count: 15},
+            {stars: 1, count: 10}
         ]
     };
 
@@ -74,15 +75,15 @@ export class CourseContentComponent implements OnInit{
 
     ngOnInit(): void {
         const index = 1;
-        if (!isNaN(index)) {
-            this.coursesService.getCourseById1(index)
-                .pipe(takeUntilDestroyed(this.destroyRef))
-                .subscribe((data: ICourse | null) => {
-                    this.course = data;
-                    console.log("course", this.course);
-                    // const html = this.course?.description ?? '';
-                    // this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(html);
-                });
-        }
+        // if (!isNaN(index)) {
+        //     this.coursesService.getCourseById1(index)
+        //         .pipe(takeUntilDestroyed(this.destroyRef))
+        //         .subscribe((data: ICourse | null) => {
+        //             this.course = data;
+        //             console.log("course", this.course);
+        //             // const html = this.course?.description ?? '';
+        //             // this.safeDescription = this.sanitizer.bypassSecurityTrustHtml(html);
+        //         });
+        // }
     }
 }
