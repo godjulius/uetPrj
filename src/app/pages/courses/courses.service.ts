@@ -399,12 +399,6 @@ export class CoursesService {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/${courseId}`));
     }
 
-    getCourseById1(index: number): Observable<ICourse | null> {
-        // @ts-ignore
-        const course = this.courses[index] ?? null;
-        return of(course);
-    }
-
     getAllCategories() {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${ALL_CATEGORY}`));
     }
