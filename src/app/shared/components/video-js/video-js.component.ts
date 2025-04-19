@@ -6,11 +6,16 @@ import {
     OnDestroy,
     OnInit,
     ViewChild,
-    ViewEncapsulation
+    ViewEncapsulation,
 } from '@angular/core';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
-import 'videojs-hls-quality-selector';
+// import 'videojs-hls-quality-selector';
+import 'videojs-hls-quality-selector/src/plugin';
+
+interface IPlayer extends Player {
+    hlsQualitySelector: any;
+}
 
 @Component({
     selector: 'app-video-js',
@@ -18,14 +23,13 @@ import 'videojs-hls-quality-selector';
     imports: [],
     templateUrl: './video-js.component.html',
     styleUrl: './video-js.component.css',
-    encapsulation: ViewEncapsulation.None
+    encapsulation: ViewEncapsulation.None,
 })
 export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
-    @ViewChild('target', {static: true}) target!: ElementRef;
+    @ViewChild('target', { static: true }) target!: ElementRef;
 
     // See options: https://videojs.com/guides/options
-    @Input() options: any
-        = {
+    @Input() options: any = {
         controls: true,
         autoplay: false,
         sources: [
@@ -33,8 +37,8 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // src: 'https://vjs.zencdn.net/v/oceans.mp4',
                 // type: 'video/mp4'
                 src: 'https://d37u0eh7zt2bro.cloudfront.net/course/video/eaf5376f-82c8-4e03-bdb9-f8863808b5a6/hls.m3u8',
-                type: 'application/x-mpegURL'
-            }
+                type: 'application/x-mpegURL',
+            },
         ],
         tracks: [
             {
@@ -42,7 +46,7 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
                 src: 'https://vjs.zencdn.net/v/oceans.vtt',
                 srclang: 'en',
                 label: 'English',
-                default: true
+                default: true,
             },
         ],
         playbackRates: [0.5, 0.75, 1, 1.25, 1.5, 2],
@@ -51,7 +55,7 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
             skipButtons: {
                 forward: 5,
                 backward: 5,
-            }
+            },
         },
         // --- Thêm cấu hình userActions.hotkeys vào đây ---
         userActions: {
@@ -64,7 +68,10 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
                 // Quan trọng: Chỉ xử lý hotkey nếu focus đang nằm trong player
                 // Kiểm tra xem phần tử đang được focus có phải là player hoặc con của player không
                 const activeEl = document.activeElement;
-                if (!player.el().contains(activeEl) && player.el() !== activeEl) {
+                if (
+                    !player.el().contains(activeEl) &&
+                    player.el() !== activeEl
+                ) {
                     // Nếu focus không nằm trong player, bỏ qua không xử lý hotkey
                     // Bạn có thể thêm logic phức tạp hơn nếu cần kiểm tra focus trên control bar cụ thể
                     return;
@@ -96,7 +103,9 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
                     case 'ArrowLeft':
                         event.preventDefault(); // Ngăn hành động mặc định của trình duyệt
                         const currentTimeLeft = player.currentTime();
-                        player.currentTime(Math.max(0, currentTimeLeft - seekStep)); // Tua lại seekStep giây, không đi dưới 0
+                        player.currentTime(
+                            Math.max(0, currentTimeLeft - seekStep)
+                        ); // Tua lại seekStep giây, không đi dưới 0
                         break;
 
                     // Phím mũi tên phải để tua tới (Forward)
@@ -106,7 +115,9 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
                         const duration = player.duration();
                         // Chỉ tua tới nếu video có thời lượng và không vượt quá thời lượng
                         if (duration && !isNaN(duration)) {
-                            player.currentTime(Math.min(duration, currentTimeRight + seekStep)); // Tua tới seekStep giây, không vượt quá duration
+                            player.currentTime(
+                                Math.min(duration, currentTimeRight + seekStep)
+                            ); // Tua tới seekStep giây, không vượt quá duration
                         }
                         break;
 
@@ -126,35 +137,43 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
                     default:
                         break;
                 }
-            }
-        }
+            },
+        },
         // --- Kết thúc cấu hình userActions.hotkeys ---
     };
 
     player!: Player;
 
-    constructor(
-        private elementRef: ElementRef,
-    ) {
-    }
+    constructor(private elementRef: ElementRef) {}
 
-    ngOnInit() {
+    ngOnInit() {}
 
-    }
-
-    // Instantiate a Video.js player OnInit
+    // Instantiate a Video.js player
     ngAfterViewInit() {
-        this.player = videojs(this.target.nativeElement, this.options, function onPlayerReady() {
-        // this.player = videojs('video-js', this.options, function onPlayerReady() {
-            console.log('onPlayerReady', this);
-            this.on('contextmenu', function(event: any) {
-                // Prevent the default right-click context menu
-                event.preventDefault();
-                console.log('Native context menu prevented.'); // Optional: for debugging
+        this.player = videojs(
+            this.target.nativeElement,
+            this.options,
+            function onPlayerReady() {
+                console.log('onPlayerReady', this);
+                
+                // register hlsQualitySelector plugin - a plugin for HLS quality selector
+                // if ((this as any).hlsQualitySelector) {
+                //     (this as any).hlsQualitySelector({
+                //         displayCurrentQuality: true,
+                //     });
+                // }
+                if ((this.player as any).hlsQualitySelector) {
+                    (this.player as any).hlsQualitySelector({
+                        displayCurrentQuality: true,
+                    });
+                }
 
-                // You could potentially show your own custom menu here if desired
-            });
-        });
+                this.on('contextmenu', function (event: any) {
+                    // Prevent the default right-click context menu
+                    event.preventDefault();
+                });
+            }
+        );
         (this.player as any).hlsQualitySelector({
             displayCurrentQuality: true,
         });

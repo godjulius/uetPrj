@@ -3,7 +3,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
 import {AVATAR, LOGIN, PROFILE, SIGNUP, USERINFO} from '../../core/constants/api.const';
 import {IProfileModel, LoginModel, SignUpModel} from './auth.model';
-import {catchError, map, Observable, of, Subject} from 'rxjs';
+import {catchError, map, Observable, of, Subject, throwError} from 'rxjs';
 import {MessageService} from 'primeng/api';
 import {CookieStorageService} from '../../core/services/cookie-storage.service';
 import {AUTH_TOKEN} from '../../core/constants/common.const';
@@ -106,9 +106,14 @@ export class AuthService implements OnInit {
         return observable.pipe(
             catchError((error: any) => {
                 if (error.status === 409) {
-                    this.messageService.add({severity: 'error', summary: 'Error', detail: `Email already exists`});
+                    this.messageService.add({
+                        severity: 'error',
+                        summary: 'Error',
+                        detail: 'Email already exists'
+                    });
+                    return of(null);
                 }
-                return of(null);
+                return throwError(() => error);
             })
         );
     }
