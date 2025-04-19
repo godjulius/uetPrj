@@ -29,16 +29,16 @@ export class CoursesService {
             instructor: "John Doe",
             level: "beginner",
             language: "English",
-            duration: "12h 45m",
+            duration: 2000,
             requirements: ["Biết HTML, CSS, JavaScript"],
             whatYouWillLearn: ["Hiểu React", "State & Props", "Hooks", "Redux"],
             lastUpdated: "2025-02-15",
-            content: [
+            contents: [
                 {
                     sectionTitle: "Introduction",
                     lessons: [
-                        { title: "What is React?", duration: "10m", freePreview: true },
-                        { title: "Setup Development Environment", duration: "15m" }
+                        {title: "What is React?", duration: 2000, freePreview: true},
+                        {title: "Setup Development Environment", duration: 2000}
                     ]
                 }
             ]
@@ -288,7 +288,7 @@ export class CoursesService {
             instructor: "Jane Smith",
             level: "intermediate",
             language: "English",
-            duration: "20h 30m",
+            duration: 2000,
             requirements: ["Không cần kiến thức lập trình trước", "Cần có máy tính để thực hành"],
             whatYouWillLearn: [
                 "Python Basics",
@@ -300,59 +300,25 @@ export class CoursesService {
                 "Tạo API với Flask/Django"
             ],
             lastUpdated: "2025-01-20",
-            content: [
-                {
-                    sectionTitle: "Getting Started",
-                    lessons: [
-                        { title: "Introduction to Python", duration: "12m", freePreview: true },
-                        { title: "Installing Python and IDE", duration: "20m" }
-                    ]
-                },
-                {
-                    sectionTitle: "Python Fundamentals",
-                    lessons: [
-                        { title: "Variables and Data Types", duration: "15m" },
-                        { title: "Control Flow (if, else, loops)", duration: "25m" },
-                        { title: "Functions and Modules", duration: "18m", freePreview: true }
-                    ]
-                },
-                {
-                    sectionTitle: "Object-Oriented Programming",
-                    lessons: [
-                        { title: "Classes and Objects", duration: "22m" },
-                        { title: "Encapsulation, Inheritance, and Polymorphism", duration: "30m" }
-                    ]
-                },
-                {
-                    sectionTitle: "Working with Data",
-                    lessons: [
-                        { title: "Reading and Writing Files", duration: "15m" },
-                        { title: "Working with JSON and CSV", duration: "20m" },
-                        { title: "Using Pandas for Data Analysis", duration: "35m", freePreview: true }
-                    ]
-                },
+            contents: [
                 {
                     sectionTitle: "Web Scraping and APIs",
                     lessons: [
-                        { title: "Introduction to Web Scraping", duration: "20m" },
-                        { title: "Scraping with BeautifulSoup", duration: "25m" },
-                        { title: "Making API Requests with Requests Library", duration: "18m" }
+                        {title: "Introduction to Web Scraping", duration: 2000},
                     ]
                 },
                 {
                     sectionTitle: "Machine Learning Basics",
                     lessons: [
-                        { title: "Introduction to Machine Learning", duration: "20m" },
-                        { title: "Using scikit-learn for ML Models", duration: "30m" },
-                        { title: "Building a Simple Linear Regression Model", duration: "25m" }
+                        {title: "Introduction to Machine Learning", duration: 2000},
                     ]
                 },
                 {
                     sectionTitle: "Building Web Applications",
                     lessons: [
-                        { title: "Introduction to Flask", duration: "20m", freePreview: true },
-                        { title: "Creating a REST API with Flask", duration: "35m" },
-                        { title: "Introduction to Django", duration: "30m" }
+                        {title: "Introduction to Flask", duration: 2000, freePreview: true},
+                        {title: "Creating a REST API with Flask", duration: 2000},
+                        {title: "Introduction to Django", duration: 2000}
                     ]
                 }
             ]
@@ -371,22 +337,23 @@ export class CoursesService {
             instructor: "Mark Wilson",
             level: "advanced",
             language: "English",
-            duration: "35h 10m",
+            duration: 2000,
             requirements: ["Biết JavaScript cơ bản"],
             whatYouWillLearn: ["Frontend với React", "Backend với Node.js", "Database với MongoDB"],
             lastUpdated: "2025-02-05",
-            content: [
+            contents: [
                 {
                     sectionTitle: "Introduction",
                     lessons: [
-                        { title: "What is Fullstack Development?", duration: "15m", freePreview: true },
-                        { title: "Project Setup", duration: "20m" }
+                        {title: "What is Fullstack Development?", duration: 2000, freePreview: true},
+                        {title: "Project Setup", duration: 2000}
                     ]
                 }
             ]
         },
         // Tiếp tục tạo thêm khóa học khác...
     ];
+
     constructor(private router: Router) {
         for (let i = 4; i <= 30; i++) {
             this.courses.push({
@@ -403,16 +370,16 @@ export class CoursesService {
                 instructor: `Instructor ${i}`,
                 level: ["beginner", "intermediate", "advanced"][i % 3] as "beginner" | "intermediate" | "advanced",
                 language: "English",
-                duration: `${Math.floor(Math.random() * 30) + 5}h ${Math.floor(Math.random() * 60)}m`,
+                duration: 2000,
                 requirements: [`Requirement for course ${i}`],
                 whatYouWillLearn: [`Learning topic ${i}-1`, `Learning topic ${i}-2`],
                 lastUpdated: `2025-${String(Math.floor(Math.random() * 12) + 1).padStart(2, "0")}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, "0")}`,
-                content: [
+                contents: [
                     {
                         sectionTitle: `Introduction to Course ${i}`,
                         lessons: [
-                            { title: `Lesson 1 of Course ${i}`, duration: "10m", freePreview: i % 3 === 0 },
-                            { title: `Lesson 2 of Course ${i}`, duration: "15m" }
+                            {title: `Lesson 1 of Course ${i}`, duration: 2000, freePreview: i % 3 === 0},
+                            {title: `Lesson 2 of Course ${i}`, duration: 2000}
                         ]
                     }
                 ]
@@ -424,11 +391,15 @@ export class CoursesService {
         return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}`, courseFormData));
     }
 
+    updateCourse(courseFormData: any, courseId: string) {
+        return this.handleError(this.httpClient.put(`${this.baseUrl}${COURSE}/${courseId}`, courseFormData));
+    }
+
     getCourseById(courseId: string) {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/${courseId}`));
     }
 
-    getCourseById1(index: number ): Observable<ICourse | null> {
+    getCourseById1(index: number): Observable<ICourse | null> {
         // @ts-ignore
         const course = this.courses[index] ?? null;
         return of(course);
@@ -439,11 +410,29 @@ export class CoursesService {
     }
 
     addCategory(newCategory: string) {
-        return this.handleError(this.httpClient.post(`${this.baseUrl}${CATEGORY}`, { name: newCategory }));
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${CATEGORY}`, {name: newCategory}));
     }
 
     getCourses(page: number, size: number) {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE_ALL}?page=${page}&size=${size}`));
+    }
+
+    addSection(courseId: string, section: any) {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/${courseId}/section`, section));
+    }
+
+    addLesson(sectionId: string, lesson: any) {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/section/${sectionId}/lesson`, lesson));
+    }
+
+    postVideo(lessonId: string, video: File) {
+        const formData = new FormData();
+        formData.append('file', video);
+        console.log(lessonId);
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/lesson/${lessonId}/video`, formData, {
+            reportProgress: true,
+            observe: 'events'
+        }));
     }
 
     handleError(observable: any) {
@@ -452,11 +441,11 @@ export class CoursesService {
                 console.log(error);
                 if (error.status === 422) {
                     console.log("hhh")
-                    this.messageService.add({severity:'error', summary: 'Lỗi', detail: error.error.detail});
+                    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: error.error.detail});
                     this.router.navigate(['/404']);
                 }
                 if (error.status === 409) {
-                    this.messageService.add({severity:'error', summary: 'Lỗi', detail: error.error.detail});
+                    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: error.error.detail});
                 }
                 return of(null);
             })

@@ -1,8 +1,178 @@
-<div class="mt-20 flex flex-col gap-24 mb-24">
-    <div class="100% h-[40vh] bg-neutral-900">
-        <h1 class="text-white">
-            123123
-        </h1>
+<div class="mt-20 flex flex-col gap-6 md:gap-12 mb-24 box-border relative">
+    <div class="md:hidden mt-4 p-2 mx-8 sm:mx-10 ">
+        <img [src]="course?.thumbnail || 'assets/images/course-skeleton.png'" alt="{{ course?.title }}"
+             class="max-h-[35vh] object-cover shadow-md mx-auto"/>
+    </div>
+
+    <div class="min-h-[30vh] bg-neutral-900 text-white p-8 hidden md:block lg:px-20 xl:px-52">
+        <div class="w-2/3">
+            <h1 class="text-3xl font-bold mb-4">{{ course?.title }}</h1>
+            <p class="mb-6 text-xl line-clamp-2">{{ course?.headline }}</p>
+
+            <div class="flex items-center text-lg mb-2">
+                <span class="font-medium mr-1">{{ course?.rating }}</span>
+                <i class="pi pi-star-fill text-yellow-500 mr-2"></i>
+                <span class="text-surface-900 font-medium">
+                    Level: {{ course?.level }}
+                </span>
+            </div>
+
+            <p class="font-medium mb-2">Created by: {{ course?.instructor || "Instructor" }}</p>
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-base font-medium">
+                <span>Last Updated {{ course?.lastUpdated | date: 'M/yyyy' }}</span>
+                <span class="flex items-center">
+                    <i class="pi pi-globe mr-2"></i> {{ course?.language || '' | languageName }}
+                </span>
+                <span>{{ course?.students | number }} students</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="md:hidden md:max-w-[50rem]">
+        <div class="md:mt-6 mx-10">
+            <h1 class="text-xl font-bold mb-4">{{ course?.title }}</h1>
+            <p class="mb-6 text-xl line-clamp-2">{{ course?.headline }}</p>
+
+            <div class="flex items-center text-lg mb-2">
+                <span class="font-medium mr-1">{{ course?.rating }}</span>
+                <i class="pi pi-star-fill text-yellow-500 mr-2"></i>
+                <span class="text-surface-900 font-medium">
+                    Level: {{ course?.level }}
+                </span>
+            </div>
+
+            <p class="font-medium mb-2">Created by: {{ course?.instructor }}</p>
+
+            <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-4 text-base font-medium">
+                <span>Last Updated {{ course?.lastUpdated }}</span>
+                <span class="flex items-center">
+                    <i class="pi pi-globe mr-2"></i> {{ course?.language }}
+                </span>
+                <span>{{ course?.students | number }} students</span>
+            </div>
+
+            <div class="mt-4">
+                <p class="text-2xl font-bold text-gray-900">${{ course?.price }}</p>
+
+                <div class="flex items-stretch w-full mt-4 space-x-2">
+                    <button pButton pRipple label="Add to Cart" type="button" raised class="flex-1"></button>
+                    <button pButton pRipple icon="pi pi-heart" severity="danger" outlined raised></button>
+                </div>
+
+                <button pButton pRipple label="Buy Now" icon="pi pi-shopping-cart" outlined
+                        class="w-full mt-2 font-semibold"></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="mx-8 lg:mx-20 xl:mx-52" *ngIf="course">
+        <div class="flex gap-12">
+            <!-- Nội dung bên trái -->
+            <div class="w-full md:w-2/3 md:space-y-6 flex flex-col gap-6">
+                <p-card header="What You'll Learn" class="shadow-lg">
+                    <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+                        <li *ngFor="let item of course?.whatYouWillLearn" class="flex items-start space-x-2 ">
+                            <i class="pi pi-check text-green-500 mr-2 pt-1"></i>
+                            <span class="text-sm">{{ item }}</span>
+                        </li>
+                    </ul>
+                </p-card>
+
+                <!-- Explore Related Topics -->
+                <div>
+                    <h2 class="text-xl font-bold mb-4">Explore Related Topics</h2>
+                    <div class="flex flex-wrap items-center gap-2">
+                        <button pButton pRipple outlined *ngFor="let item of course?.categories"
+                                severity="contrast"> {{ item }}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Course Content -->
+                <div>
+                    <h2 class="text-xl font-bold mb-4">Course Content</h2>
+                    <div class="font-semibold mb-4">
+                        {{ getTotalContent().totalSections }} sections •
+                        {{ getTotalContent().totalLessons }} lessons •
+                        {{ getTotalContent().totalDuration }} total duration
+                    </div>
+                    <p-accordion [value]="['0']" [multiple]="true">
+                        <p-accordion-panel *ngFor="let section of course?.contents; let i = index"
+                                           [value]="i.toString()">
+                            <p-accordion-header>
+                                <div class="flex justify-between items-center w-full">
+                                    <h3 class="text-lg font-semibold ">{{ section.sectionTitle }}</h3>
+                                    <span class="text-sm mr-4">
+                                        {{ section.lessons.length }} lessons • {{ getTotalDuration(section.lessons) }}
+                                    </span>
+                                </div>
+                            </p-accordion-header>
+
+                            <p-accordion-content>
+                                <ul class="list-none space-y-2">
+                                    <li *ngFor="let lesson of section.lessons"
+                                        class="flex items-center justify-between space-x-2">
+                                        <div class="flex items-center space-x-2">
+                                            <i class="pi pi-play-circle text-blue-500"></i>
+                                            <span>{{ lesson.title }} </span>
+                                        </div>
+                                        <span>{{ lesson.duration || "00:00" }}</span>
+                                        <!--                                        <span *ngIf="lesson.freePreview" class="text-green-600">[Free]</span>-->
+                                    </li>
+                                </ul>
+                            </p-accordion-content>
+                        </p-accordion-panel>
+                    </p-accordion>
+                </div>
+
+                <!-- Requirements -->
+                <div>
+                    <h2 class="text-xl font-bold mb-4">Requirements</h2>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li *ngFor="let requirement of course?.requirements">{{ requirement }}</li>
+                    </ul>
+                </div>
+
+                <!-- Description -->
+                <div>
+                    <h2 class="text-xl font-bold mb-4">Description</h2>
+                    <app-editor-read-only [content]="course?.description"></app-editor-read-only>
+                </div>
+            </div>
+
+            <div class="w-1/3 hidden md:block">
+                <div class="bg-white dark:bg-neutral-900 rounded-lg shadow-lg transition-all duration-300"
+                     [ngClass]="isSticky ? 'sticky top-24' : 'absolute block top-8'"
+                     [style.width]="calculateWidth()">
+                    <img [src]="course.thumbnail || 'assets/images/course-skeleton.png'" alt="{{ course.title }}"
+                         class="rounded-t-lg w-full h-60 object-cover shadow-md"/>
+
+                    <div class="p-6">
+                        <p class="text-2xl font-bold  ">${{ course.price | number }}</p>
+
+                        <div class="flex justify-between w-full mt-4 space-x-2">
+                            <div class="flex-1">
+                                <p-button pRipple label="Add to Cart" type="button" raised
+                                          styleClass="w-full"></p-button>
+                            </div>
+                            <button pButton pRipple icon="pi pi-heart" severity="danger" outlined raised></button>
+                        </div>
+
+                        <p-button pRipple label="Buy Now" icon="pi pi-shopping-cart" outlined
+                                  styleClass="w-full mt-2 font-semibold"></p-button>
+
+                        <div class="mt-6 w-full">
+                            <ul class="list-none space-y-2">
+                                <li><strong>Level:</strong> {{ course.level }}</li>
+                                <li><strong>Duration:</strong> {{ course.duration || 0 | durationFormat }}</li>
+                                <li><strong>Language:</strong> {{ course.language || '' | languageName }}</li>
+                                <li><strong>Students:</strong> {{ course.students | number }}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-

@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, inject, OnInit, ViewChild} from '@angular/core';
-import { Card } from 'primeng/card';
-import { InputTextModule } from 'primeng/inputtext';
+import {Card} from 'primeng/card';
+import {InputTextModule} from 'primeng/inputtext';
 import {
     FormControl,
     FormGroup,
@@ -8,27 +8,26 @@ import {
     ReactiveFormsModule,
     Validators,
 } from '@angular/forms';
-import { TextareaModule } from 'primeng/textarea';
-import { InputNumber } from 'primeng/inputnumber';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { Chip } from 'primeng/chip';
-import { Select } from 'primeng/select';
-import { ButtonModule } from 'primeng/button';
-import { CommonModule } from '@angular/common';
+import {TextareaModule} from 'primeng/textarea';
+import {InputNumber} from 'primeng/inputnumber';
+import {MultiSelectModule} from 'primeng/multiselect';
+import {Chip} from 'primeng/chip';
+import {Select} from 'primeng/select';
+import {ButtonModule} from 'primeng/button';
+import {CommonModule} from '@angular/common';
 import {ActivatedRoute, Router, RouterLink} from '@angular/router';
-import { CoursesService } from '../../courses/courses.service';
-import { AccordionModule } from 'primeng/accordion';
-import { FieldsetModule } from 'primeng/fieldset';
-import { Dialog } from 'primeng/dialog';
-import { StepperModule } from 'primeng/stepper';
-import { SelectButton } from 'primeng/selectbutton';
-import { Editor } from 'primeng/editor';
+import {CoursesService} from '../../courses/courses.service';
+import {AccordionModule} from 'primeng/accordion';
+import {FieldsetModule} from 'primeng/fieldset';
+import {Dialog} from 'primeng/dialog';
+import {StepperModule} from 'primeng/stepper';
 import {QuizLessonComponent} from '../../quiz/quiz-lesson/quiz-lesson.component';
 import {EditorComponent} from "../../../shared/components/editor/editor.component";
 import {MessageService} from 'primeng/api';
 import {finalize} from 'rxjs';
 import {BaseComponent} from '../../../core/base.component';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {LessonComponentComponent} from './lesson-component/lesson-component.component';
 
 @Component({
     selector: 'app-course-edit',
@@ -50,10 +49,10 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
         FieldsetModule,
         Dialog,
         StepperModule,
-        SelectButton,
-        Editor,
+
         QuizLessonComponent,
         EditorComponent,
+        LessonComponentComponent,
     ],
     templateUrl: './course-edit.component.html',
     styleUrl: './course-edit.component.css',
@@ -68,35 +67,69 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     loading = false;
     isNewCourse = false;
     courseId!: string;
-    categories = [
-    ];
+    categories = [];
 
     levels = [
-        { name: 'Beginner', value: 'beginner' },
-        { name: 'Intermediate', value: 'intermediate' },
-        { name: 'Advanced', value: 'advanced' },
+        {name: 'Beginner', value: 'beginner'},
+        {name: 'Intermediate', value: 'intermediate'},
+        {name: 'Advanced', value: 'advanced'},
     ];
     descriptionData: any = undefined
     languages = [
-        { name: 'English', value: 'en' },
-        { name: 'Vietnamese', value: 'vi' },
+        {name: 'English', value: 'en'},
+        {name: 'Vietnamese', value: 'vi'},
     ];
     courseImageUrl!: string;
     courseImage!: File;
-    courseContent: any[] = [1, 2, 3, 4, 5];
-    active = 1;
-    // Edit Lesson dialog
-    isLessonDialogVisible = false;
-    isQuizDialogVisible = false;
-    lessionOptions: any[] = [
-        { label: 'Video', value: 'video' },
-        { label: 'Document', value: 'document' },
+    courseContent: any[] = [
+        {
+            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+            "sectionTitle": "Giới thiệu",
+            "lessons": [
+                {
+                    "id": "1f88f671-6762-4ccb-bd24-8e74e49b60c9",
+                    "title": "Giới thiệu khóa học",
+                    "duration": 120,
+                    "freePreview": true,
+                    "link": "https://example.com/lesson-1",
+                    "type": "video"
+                },
+                {
+                    "id": "c7b6fc55-0752-445c-8ffa-f2afe1c02dc2",
+                    "title": "Tổng quan tài liệu",
+                    "duration": 0,
+                    "freePreview": false,
+                    "link": "https://example.com/lesson-2",
+                    "type": "document"
+                }
+            ]
+        },
+        {
+            "id": "d438700b-9250-4f43-a2a9-9dfbabb611f2",
+            "sectionTitle": "Cơ bản về HTML",
+            "lessons": [
+                {
+                    "id": "da6cd6a6-0bdf-4666-8a7d-c862e2a11929",
+                    "title": "HTML là gì?",
+                    "duration": 180,
+                    "freePreview": true,
+                    "link": "https://example.com/lesson-3",
+                    "type": "video"
+                }
+            ]
+        }
     ];
-    typeOfNewLesson: string = 'video';
-    documentContent: string = '';
-    currentStep = 1;
+    active = 0;
+    // Edit Lesson dialog
+    isLessonDialogVisible = false
+    isQuizDialogVisible = false;
     isCategoryDialogVisible = false;
     newCategory: string = '';
+    newLessonName: string = '';
+    isAddingNewLesson = false;
+    isAddingNewSection = false;
+    newSectionName: string = '';
+    lessonId: string = '';
     constructor() {
         super()
         this.activatedRoute.url.subscribe((url: any) => {
@@ -109,12 +142,12 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
 
     ngOnInit() {
         this.courseForm = new FormGroup({
-            title: new FormControl('', { validators: [Validators.required] }),
-            headline: new FormControl('', { validators: [Validators.required] }),
+            title: new FormControl('', {validators: [Validators.required]}),
+            headline: new FormControl('', {validators: [Validators.required]}),
             categories: new FormControl([], {
                 validators: [Validators.required],
             }),
-            level: new FormControl('', { validators: [Validators.required] }),
+            level: new FormControl('', {validators: [Validators.required]}),
             language: new FormControl([], {
                 validators: [Validators.required],
             }),
@@ -192,6 +225,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                     });
                     this.descriptionData = res.description;
                     this.courseImageUrl = res.image;
+                    this.courseContent = res.contents;
                 }
             })
     }
@@ -206,7 +240,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             );
     }
 
-    handleCreateCourse() {
+    handleCreateCourse(update: boolean = false) {
         if (this.courseForm.invalid) {
             return;
         }
@@ -221,21 +255,51 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                 level: this.courseForm.get('level')!.value.value,
                 description: outputData,
             }
-            this.courseService.createCourse(course)
-                .pipe(
-                    finalize(() => {
-                        this.loading = false;
-                    }),
-                    takeUntilDestroyed(this.destroyRef),
-                )
-                .subscribe((res: any) => {
-                    this.messageService.add({severity: 'success', summary: 'Success', detail: `Course created successfully: ${res.title}, ${res.id}`});
-                    this.router.navigate(['/user/user-courses'])
-                });
+            if (update) {
+                this.updateCourse(course);
+            } else {
+                this.createCourse(course);
+            }
+
         })
             .catch((error) => {
                 console.log(error);
             })
+    }
+
+    createCourse(course: any) {
+        this.courseService.createCourse(course)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                }),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((res: any) => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: `Course created successfully: ${res.title}, ${res.id}`
+                });
+                this.router.navigate(['/user/user-courses'])
+            });
+    }
+
+    updateCourse(course: any) {
+        this.courseService.updateCourse(course, this.courseId)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                }),
+                takeUntilDestroyed(this.destroyRef),
+            )
+            .subscribe((res: any) => {
+                this.messageService.add({
+                    severity: 'success',
+                    summary: 'Success',
+                    detail: `Update course successfully: ${res.title}, ${res.id}`
+                });
+            });
     }
 
     onFileSelected(event: Event) {
@@ -246,18 +310,75 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
         }
     }
 
-    toggleCreateLessonDialog() {
-        this.isLessonDialogVisible = !this.isLessonDialogVisible;
+    handleAddLesson() {
+        // this.isLessonDialogVisible = !this.isLessonDialogVisible;
+        this.isAddingNewLesson = true;
     }
 
-    handleCreateLesson() {
-        console.log(this.documentContent);
+    handleSaveNewLesson(sectionId: string, sectionIndex: number) {
+        console.log(this.newLessonName)
+        if (!this.newLessonName) {
+            this.messageService.add({severity: 'error', summary: 'Error', detail: 'Please enter lesson name'});
+            return;
+        }
+        this.loading = true;
+        this.courseService.addLesson(sectionId, {
+            title: this.newLessonName,
+        }).pipe(
+            takeUntilDestroyed(this.destroyRef),
+            finalize(() => {
+                this.loading = false;
+            })
+        )
+            .subscribe((res: any) => {
+                if (res) {
+                    console.log(res);
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: `Lesson added successfully: ${res.title}, ${res.id}`
+                    });
+                    if (sectionIndex !== -1) {
+                        if (!this.courseContent[sectionIndex].lessons) {
+                            this.courseContent[sectionIndex].lessons = [res];
+                        } else {
+                            this.courseContent[sectionIndex].lessons.push(res);
+                        }
+                    }
+                    this.newLessonName = '';
+                    this.isAddingNewLesson = false;
+                }
+            })
     }
 
-    clearLessonForm() {
-        this.typeOfNewLesson = 'video';
-        this.documentContent = '';
-        this.currentStep = 1;
+    handleAddNewSection() {
+        if (!this.newSectionName) {
+            this.messageService.add({severity: 'error', summary: 'Error', detail: 'Please enter section name'});
+            return;
+        }
+        this.loading = true;
+        this.courseService.addSection(this.courseId, {
+            sectionTitle: this.newSectionName,
+        })
+            .pipe(
+                takeUntilDestroyed(this.destroyRef),
+                finalize(() => {
+                    this.loading = false;
+                })
+            )
+            .subscribe((res: any) => {
+                if (res) {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: `Section added successfully: ${res.sectionTitle}, ${res.id}`
+                    });
+                    this.courseContent.push(res);
+                    this.active = this.courseContent.length - 1;
+                    this.newSectionName = '';
+                    this.isAddingNewSection = false;
+                }
+            })
     }
 
     toggleQuizDialog() {
@@ -277,15 +398,15 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                 takeUntilDestroyed(this.destroyRef)
             )
             .subscribe((res: any) => {
-            if (res) {
-                this.messageService.add({severity: 'success', summary: 'Success', detail: `Category added successfully: ${res.name}, ${res.id}`});
-                this.newCategory = '';
-                this.isCategoryDialogVisible = false;
-            }
-        });
-    }
-
-    handleUpdateCourse() {
-        //Todo: update course
+                if (res) {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: `Category added successfully: ${res.name}, ${res.id}`
+                    });
+                    this.newCategory = '';
+                    this.isCategoryDialogVisible = false;
+                }
+            });
     }
 }

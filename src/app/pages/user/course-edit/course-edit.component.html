@@ -1,215 +1,288 @@
 <div class="mt-10">
-    <form
+    <div
         class="flex flex-col gap-4"
-        [formGroup]="courseForm"
-        (ngSubmit)="handleCreateCourse()"
+
     >
+
         <p-card>
-            <div class="flex justify-between">
-                <h2 class="text-2xl font-semibold mb-4">New course</h2>
-                <div class="flex items-center">
-                    <a class="p-button p-button-sm p-button-secondary p-button-outlined" routerLink="../">
-                        <span class="pi pi-arrow-left"></span>
-                        Back
-                    </a>
-                    @if(isNewCourse) {
-                        <p-button (click)="handleCreateCourse()" styleClass="m-4" size="small" [loading]="loading">
-                            Create
-                        </p-button>
-                    } @else {
-                        <p-button (click)="handleUpdateCourse()" styleClass="m-4" size="small" [loading]="loading">
-                            Save
-                        </p-button>
-                    }
-                </div>
-            </div>
-            <div class="flex flex-col gap-4">
-                <div class="flex flex-col gap-2">
-                    <label for="name" class="text-lg font-semibold"
-                    >Course's name</label
-                    >
-                    <input
-                        formControlName="title"
-                        pInputText
-                        id="name"
-                        class="w-full"
-                        [ngClass]="{'ng-dirty ng-touched': courseForm.get('title')?.invalid}"
-                    />
-                </div>
+            <form
+                [formGroup]="courseForm"
+                (ngSubmit)="handleCreateCourse()"
+            >
 
-                <div class="flex flex-col gap-2">
-                    <label for="headline" class="text-lg font-semibold"
-                    >Course's headline</label
-                    >
-                    <input
-                        formControlName="headline"
-                        pInputText
-                        id="headline"
-                        class="w-full"
-                        [ngClass]="{'ng-dirty ng-touched': courseForm.get('headline')?.invalid}"
-                    />
-                </div>
 
-                <div class="flex flex-col gap-2">
-                    <label for="description" class="text-lg font-semibold"
-                    >Description</label
-                    >
-                    <app-editor #description [defaultData]="descriptionData"></app-editor>
-                </div>
-
-                <div class="flex flex-col gap-2">
-                    <div class="flex justify-between">
-                        <label for="categories" class="text-lg font-semibold"
-                        >Category
-                        </label>
-                        <p-button label="add category" icon="pi pi-plus" size="small"
-                                  (onClick)="isCategoryDialogVisible = true">
-                        </p-button>
-                    </div>
-                    <p-multiselect
-                        [maxSelectedLabels]="1"
-                        fluid
-                        [options]="categories"
-                        optionLabel="name"
-                        display="comma"
-                        placeholder="Select categories"
-                        styleClass="w-full"
-                        [loading]="loading"
-                        formControlName="categories"
-                        [ngClass]="{'ng-dirty ng-touched': courseForm.get('categories')?.invalid}"
-                    ></p-multiselect>
-                    <div class="flex gap-1 px-2 flex-wrap">
-                        @for (category of courseForm.get('categories')?.value;
-                            track category.id) {
-                            <p-chip
-                                [label]="category.name"
-                                [removable]="true"
-                                (onRemove)="handleRemoveCategory(category.name)"
-                                styleClass="h-[32px]"
-                            />
+                <div class="flex justify-between">
+                    <h2 class="text-2xl font-semibold mb-4">New course</h2>
+                    <div class="flex items-center">
+                        <a class="p-button p-button-sm p-button-secondary p-button-outlined" routerLink="../">
+                            <span class="pi pi-arrow-left"></span>
+                            Back
+                        </a>
+                        @if (isNewCourse) {
+                            <p-button (click)="handleCreateCourse()" styleClass="m-4" size="small" [loading]="loading">
+                                Create
+                            </p-button>
+                        } @else {
+                            <p-button (click)="handleCreateCourse(true)" styleClass="m-4" size="small"
+                                      [loading]="loading">
+                                Save
+                            </p-button>
                         }
                     </div>
                 </div>
-
-                <div class="flex flex-col gap-2 md:flex-row">
-                    <div class="flex flex-col gap-2 w-full md:w-1/2">
-                        <label for="level" class="text-lg font-semibold"
-                        >Level</label
+                <div class="flex flex-col gap-4">
+                    <div class="flex flex-col gap-2">
+                        <label for="name" class="text-lg font-semibold"
+                        >Course's name</label
                         >
-                        <p-select
-                            inputId="level"
-                            formControlName="level"
-                            [options]="levels"
-                            optionLabel="name"
-                            placeholder="Select a level"
-                            class=""
-                            [ngClass]="{'ng-dirty ng-touched': courseForm.get('level')?.invalid}"
-                        />
-                    </div>
-                    <div class="flex flex-col gap-2 w-full md:w-1/2">
-                        <label for="language" class="text-lg font-semibold"
-                        >Language</label
-                        >
-                        <p-select
-                            inputId="language"
-                            formControlName="language"
-                            [options]="languages"
-                            optionLabel="name"
-                            placeholder="Select a language"
-                            class=""
-                            [ngClass]="{'ng-dirty ng-touched': courseForm.get('languages')?.invalid}"
-                        />
-                    </div>
-                </div>
-
-                <div class="flex flex-col gap-2">
-                    <label for="price" class="text-lg font-semibold"
-                    >Price ($)</label
-                    >
-                    <p-inputnumber
-                        inputId="price"
-                        formControlName="price"
-                        mode="decimal"
-                        locale="en-US"
-                        [minFractionDigits]="2"
-                        [ngClass]="{'ng-dirty ng-touched': courseForm.get('price')?.invalid}"
-                    ></p-inputnumber>
-                </div>
-                @if (!isNewCourse) {
-                    <div class="flex flex-col gap-2 items-center">
                         <input
-                            type="file"
-                            (change)="onFileSelected($event)"
-                            #fileInput
-                            hidden
+                            formControlName="title"
+                            pInputText
+                            id="name"
+                            class="w-full"
+                            [ngClass]="{'ng-dirty ng-touched': courseForm.get('title')?.invalid}"
                         />
-                        <p-button
-                            type="button"
-                            (click)="fileInput.click()"
-                            styleClass="w-full"
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="headline" class="text-lg font-semibold"
+                        >Course's headline</label
                         >
-                            <span class="pi pi-image"></span>
-                            Choose course thumbnail
-                        </p-button>
-                        <img
-                            [src]="
+                        <input
+                            formControlName="headline"
+                            pInputText
+                            id="headline"
+                            class="w-full"
+                            [ngClass]="{'ng-dirty ng-touched': courseForm.get('headline')?.invalid}"
+                        />
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="description" class="text-lg font-semibold"
+                        >Description</label
+                        >
+                        <app-editor #description [defaultData]="descriptionData"></app-editor>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <div class="flex justify-between">
+                            <label for="categories" class="text-lg font-semibold"
+                            >Category
+                            </label>
+                            <p-button label="add category" icon="pi pi-plus" size="small"
+                                      (onClick)="isCategoryDialogVisible = true">
+                            </p-button>
+                        </div>
+                        <p-multiselect
+                            [maxSelectedLabels]="1"
+                            fluid
+                            [options]="categories"
+                            optionLabel="name"
+                            display="comma"
+                            placeholder="Select categories"
+                            styleClass="w-full"
+                            [loading]="loading"
+                            formControlName="categories"
+                            [ngClass]="{'ng-dirty ng-touched': courseForm.get('categories')?.invalid}"
+                        ></p-multiselect>
+                        <div class="flex gap-1 px-2 flex-wrap">
+                            @for (category of courseForm.get('categories')?.value;
+                                track category.id) {
+                                <p-chip
+                                    [label]="category.name"
+                                    [removable]="true"
+                                    (onRemove)="handleRemoveCategory(category.name)"
+                                    styleClass="h-[32px]"
+                                />
+                            }
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2 md:flex-row">
+                        <div class="flex flex-col gap-2 w-full md:w-1/2">
+                            <label for="level" class="text-lg font-semibold"
+                            >Level</label
+                            >
+                            <p-select
+                                inputId="level"
+                                formControlName="level"
+                                [options]="levels"
+                                optionLabel="name"
+                                placeholder="Select a level"
+                                class=""
+                                [ngClass]="{'ng-dirty ng-touched': courseForm.get('level')?.invalid}"
+                            />
+                        </div>
+                        <div class="flex flex-col gap-2 w-full md:w-1/2">
+                            <label for="language" class="text-lg font-semibold"
+                            >Language</label
+                            >
+                            <p-select
+                                inputId="language"
+                                formControlName="language"
+                                [options]="languages"
+                                optionLabel="name"
+                                placeholder="Select a language"
+                                class=""
+                                [ngClass]="{'ng-dirty ng-touched': courseForm.get('languages')?.invalid}"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col gap-2">
+                        <label for="price" class="text-lg font-semibold"
+                        >Price ($)</label
+                        >
+                        <p-inputnumber
+                            inputId="price"
+                            formControlName="price"
+                            mode="decimal"
+                            locale="en-US"
+                            [minFractionDigits]="2"
+                            [ngClass]="{'ng-dirty ng-touched': courseForm.get('price')?.invalid}"
+                        ></p-inputnumber>
+                    </div>
+                    @if (!isNewCourse) {
+                        <div class="flex flex-col gap-2 items-center">
+                            <input
+                                type="file"
+                                (change)="onFileSelected($event)"
+                                #fileInput
+                                hidden
+                            />
+                            <p-button
+                                type="button"
+                                (click)="fileInput.click()"
+                                styleClass="w-full"
+                            >
+                                <span class="pi pi-image"></span>
+                                Choose course thumbnail
+                            </p-button>
+                            <img
+                                [src]="
                                 courseImageUrl ||
                                 'assets/images/course-skeleton.png'
                             "
-                            alt=""
-                            class="w-full max-w-xl rounded-lg"
-                        />
-                    </div>
-                }
-            </div>
+                                alt=""
+                                class="w-full max-w-xl rounded-lg"
+                            />
+                        </div>
+                    }
+                </div>
+            </form>
         </p-card>
         @if (!isNewCourse) {
 
             <p-card>
                 <h2 class="text-2xl font-semibold mb-4">Course content</h2>
-                <div class="flex mb-4 gap-4">
-                    @for (section of courseContent; track section) {
+                <div class="flex gap-4">
+                    @for (section of courseContent; track section.id; let index = $index) {
                         <p-button
-                            (onClick)="active = section"
+                            (onClick)="active = index"
                             [rounded]="true"
-                            [label]="section"
+                            [label]="(index + 1) + ''"
                             styleClass="w-8 h-8 p-0"
-                            [outlined]="active !== section"
+                            [outlined]="active !== index"
                         />
                     }
                 </div>
+                <div class="">
+                    @if (!isAddingNewSection) {
+                        <p-button
+                            size="small"
+                            type="submit"
+                            label="New section"
+                            icon="pi pi-plus"
+                            class="w-full mt-2"
+                            styleClass="mt-2"
+                            (onClick)="isAddingNewSection = true;"
+                        ></p-button>
+                    } @else {
+                        <div>
 
+                            <p-button
+                                size="small"
+                                label="Save new section"
+                                icon="pi pi-save"
+                                class="w-full mt-2"
+                                styleClass="mt-2 mb-2 mr-2"
+                                (onClick)="handleAddNewSection()"
+                                [loading]="loading"
+                            ></p-button>
+                            <p-button
+                                size="small"
+                                label="Cancel"
+                                icon="pi pi-times-circle"
+                                class="w-full mt-2"
+                                styleClass="mt-2 mb-2"
+                                (onClick)="isAddingNewSection = false"
+                                [loading]="loading"
+                            ></p-button>
+                        </div>
+
+                        <input fluid pInputText [(ngModel)]="newSectionName" type="text"
+                               placeholder="Section name" required/>
+                    }
+                </div>
                 <p-accordion [(value)]="active" [multiple]="false">
-                    @for (section of courseContent; track section) {
-                        <p-accordion-panel [value]="section">
+                    @for (section of courseContent; track section.id; let index = $index) {
+                        <p-accordion-panel [value]="index">
                             <p-accordion-header>
-                                Section {{ section }}
+                                Section {{ index + 1 }} {{ section.sectionTitle }}
                             </p-accordion-header>
                             <p-accordion-content>
                                 <div class="flex flex-col gap-2">
-                                    @for (lesson of courseContent; track lesson) {
+                                    @for (lesson of section.lessons; track lesson.id) {
                                         <p-fieldset [toggleable]="true" [collapsed]="true">
                                             <ng-template #header>
                                                 <div class="flex items-center gap-2 px-2">
                                                     <span class="pi pi-home"></span>
                                                     <span class="font-bold"
-                                                    >Lesson {{ lesson }}</span
+                                                    >{{ lesson.title }}</span
                                                     >
                                                 </div>
                                             </ng-template>
-                                            <p-button outlined raised>
+                                            <p-button outlined raised
+                                                      (onClick)="isLessonDialogVisible = true; lessonId = lesson.id"
+                                                      class="w-full mt-2">
                                                 <span class="pi pi-file-edit"></span>
+                                                add content
                                             </p-button>
-                                            <div>Lesson content</div>
+                                            <div>{{ lesson.link }}</div>
                                         </p-fieldset>
                                     }
                                 </div>
+                                @if (isAddingNewLesson) {
+                                    <form class="w-full mt-2" (ngSubmit)="handleSaveNewLesson(section.id, index)">
+                                        <input fluid pInputText [(ngModel)]="newLessonName" type="text"
+                                               placeholder="Lesson name" required name="lessonName" id="lessonName"/>
+                                        <p-button
+                                            size="small"
+                                            type="submit"
+                                            label="Save"
+                                            icon="pi pi-save"
+                                            class="w-full mt-2"
+                                            styleClass="mt-2"
+                                            [loading]="loading"
+                                        ></p-button>
+                                        <p-button
+                                            size="small"
+                                            label="Cancel"
+                                            icon="pi pi-times-circle"
+                                            class="w-full mt-2"
+                                            styleClass="mt-2 ml-2"
+                                            (onClick)="isAddingNewLesson = false"
+                                            [loading]="loading"
+                                        ></p-button>
+                                    </form>
+                                }
                                 <div class="mt-2 flex flex-wrap gap-2">
                                     <p-button
                                         raised
                                         text
                                         size="small"
-                                        (click)="toggleCreateLessonDialog()"
+                                        (click)="handleAddLesson()"
+                                        [disabled]="isAddingNewLesson"
                                     >
                                         Add Lesson
                                     </p-button>
@@ -229,114 +302,11 @@
                 </p-accordion>
             </p-card>
         }
-    </form>
+    </div>
 </div>
 
 <!-- Create lesson dialog -->
-<p-dialog
-    [(visible)]="isLessonDialogVisible"
-    [modal]="true"
-    [style]="{ width: '80vw', height: '80vh' }"
-    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
-    (onHide)="clearLessonForm()"
->
-    <ng-template #header>
-        <div class="inline-flex items-center justify-center gap-2">
-            <span class="font-bold whitespace-nowrap"> New lesson </span>
-        </div>
-    </ng-template>
-    <div class="h-full">
-        <p-stepper [value]="currentStep" [linear]="false">
-            <p-step-list>
-                <p-step [value]="1">Type</p-step>
-                <p-step [value]="2">Content</p-step>
-                <p-step [value]="3">Materials</p-step>
-            </p-step-list>
-            <p-step-panels>
-                <p-step-panel [value]="1">
-                    <ng-template
-                        #content
-                        let-activateCallback="activateCallback"
-                    >
-                        <div class="flex flex-col h-[400px]">
-                            <div
-                                class="h-full border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex flex-col gap-4 justify-center items-center font-medium"
-                            >
-                                <h2 class="text-2xl font-semibold">
-                                    Choose type of lesson
-                                </h2>
-                                <p-selectbutton
-                                    [(ngModel)]="typeOfNewLesson"
-                                    [options]="lessionOptions"
-                                    (click)="activateCallback(2)"></p-selectbutton>
-                            </div>
-                        </div>
-                    </ng-template>
-                </p-step-panel>
-
-                <p-step-panel [value]="2">
-                    <ng-template
-                        #content
-                        let-activateCallback="activateCallback"
-                    >
-                        <div class="flex flex-col h-[400px]">
-                            <div
-                                class="h-full border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex justify-center items-center font-medium"
-                            >
-                                @if (typeOfNewLesson === 'video') {
-                                    video
-                                } @else {
-                                    <p-editor
-                                        [(ngModel)]="documentContent"
-                                        [style]="{ height: '350px' }"
-                                        class="w-full"
-                                    />
-                                }
-                            </div>
-                        </div>
-                    </ng-template>
-                </p-step-panel>
-
-                <p-step-panel [value]="3">
-                    <ng-template
-                        #content
-                        let-activateCallback="activateCallback"
-                    >
-                        <div class="flex flex-col h-[400px]">
-                            <div
-                                class="border-2 border-dashed border-surface-200 dark:border-surface-700 rounded bg-surface-50 dark:bg-surface-950 flex-auto flex flex-col gap-4 justify-center items-center font-medium"
-                            >
-                                <h2 class="text-2xl font-semibold">
-                                    Link to materials
-                                </h2>
-                                <textarea
-                                    id="materials"
-                                    rows="5"
-                                    cols="30"
-                                    pTextarea
-                                    class="w-full p-0 md:w-1/2 md:p-8"
-                                ></textarea>
-                            </div>
-                        </div>
-                    </ng-template>
-                </p-step-panel>
-            </p-step-panels>
-        </p-stepper>
-    </div>
-    <ng-template #footer>
-        <p-button
-            label="Cancel"
-            severity="secondary"
-            (click)="isLessonDialogVisible = false"
-        />
-        <p-button
-            label="Save"
-            raised
-            severity="contrast"
-            (click)="handleCreateLesson()"
-        />
-    </ng-template>
-</p-dialog>
+<app-lesson-component [(visible)]="isLessonDialogVisible" [lessonId]="lessonId"/>
 
 <app-quiz-lesson [(visible)]="isQuizDialogVisible"/>
 

@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {CourseHeaderComponent} from '../course-header/course-header.component';
 import {CourseLessonComponent} from '../course-lesson/course-lesson.component';
 import {DemoSidebarComponent} from '../../../layout/demo/demo-sidebar/demo-sidebar.component';
 import {RouterOutlet} from '@angular/router';
 import {CourseSideBarComponent} from '../course-side-bar/course-side-bar.component';
+import {CourseLayoutService} from '../course-layout.service';
 
 @Component({
   selector: 'app-course',
@@ -18,5 +19,5 @@ import {CourseSideBarComponent} from '../course-side-bar/course-side-bar.compone
   styleUrl: './course.component.css'
 })
 export class CourseComponent {
-
+    courseLayoutService = inject(CourseLayoutService);
 }

@@ -1,0 +1,60 @@
+<p-dialog
+    [(visible)]="visible"
+    [modal]="true"
+    [style]="{ width: '80vw', height: '80vh' }"
+    [breakpoints]="{ '1199px': '75vw', '575px': '90vw' }"
+    (onHide)="clearLessonForm()"
+>
+    <ng-template #header>
+        <div class="inline-flex items-center justify-center gap-2">
+            <span class="font-bold whitespace-nowrap"> New lesson </span>
+        </div>
+    </ng-template>
+    <div class="h-full">
+        <p-fileUpload
+            name="file"
+            accept="video/*"
+            [url]="'http://localhost:8000/course/lesson/eaf5376f-82c8-4e03-bdb9-f8863808b5a6/video'"
+            method="post"
+            mode="advanced"
+            [multiple]="false"
+            [customUpload]="true"
+            (uploadHandler)="handleUploadVideo($event)"
+            [files]="selectedVideos || []"
+            [disabled]="loading"
+        >
+            <ng-template #content>
+                <div class="flex items-center justify-center flex-col">
+                    <i class="pi pi-cloud-upload !border-2 !rounded-full !p-8 !text-4xl !text-muted-color"></i>
+                    <p class="mt-6 mb-0">Drag and drop files to here to upload.</p>
+                </div>
+            </ng-template>
+        </p-fileUpload>
+        @if (loading) {
+            <div class="mt-2">
+                <p>File name: <span>{{ uploadingVideo?.name }}</span></p>
+                <p>File size: <span>{{ uploadingVideo?.size }} bytes</span></p>
+                <p>File type: <span>{{ uploadingVideo?.type }}</span></p>
+            </div>
+            <div class="flex mt-2 gap-2 justify-center items-center">
+
+                <span class="pi pi-cloud-upload"></span>
+                <div class="grow">
+                    <p-progressbar [value]="uploadProgress"></p-progressbar>
+                </div>
+            </div>
+        }
+    </div>
+    <ng-template #footer>
+        <p-button
+            label="Cancel"
+            severity="secondary"
+            (click)="clearLessonForm()"
+        />
+        <p-button
+            label="Save"
+            raised
+            severity="contrast"
+        />
+    </ng-template>
+</p-dialog>

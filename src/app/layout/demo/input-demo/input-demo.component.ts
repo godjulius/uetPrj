@@ -13,6 +13,7 @@ import {MenuItem} from 'primeng/api';
 import {Fluid} from 'primeng/fluid';
 import {InputMask} from 'primeng/inputmask';
 import {InputOtp} from 'primeng/inputotp';
+import {FileUpload, UploadEvent} from 'primeng/fileupload';
 
 @Component({
     selector: 'app-input-demo',
@@ -26,6 +27,7 @@ import {InputOtp} from 'primeng/inputotp';
         ButtonModule, MenuModule,
         InputMask, Fluid,
         InputOtp,
+        FileUpload
     ],
     templateUrl: './input-demo.component.html',
     styleUrl: './input-demo.component.css'
@@ -40,6 +42,13 @@ export class InputDemoComponent {
     ];
 
     itemsInputWithButton: MenuItem[] = [{label: 'Web Search'}, {label: 'AI Assistant'}, {label: 'History'}];
+
+    uploadedFiles: any[] = [];
+    onUpload(event:UploadEvent) {
+        // for(let file of event.files) {
+        //     this.uploadedFiles.push(file);
+        // }
+    }
 }
 
 interface City {
