@@ -24,7 +24,7 @@ import {StepperModule} from 'primeng/stepper';
 import {QuizLessonComponent} from '../../quiz/quiz-lesson/quiz-lesson.component';
 import {EditorComponent} from "../../../shared/components/editor/editor.component";
 import {MessageService} from 'primeng/api';
-import {finalize} from 'rxjs';
+import {finalize, forkJoin, of} from 'rxjs';
 import {BaseComponent} from '../../../core/base.component';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {LessonComponentComponent} from './lesson-component/lesson-component.component';
@@ -130,6 +130,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     isAddingNewSection = false;
     newSectionName: string = '';
     lessonId: string = '';
+
     constructor() {
         super()
         this.activatedRoute.url.subscribe((url: any) => {
@@ -224,7 +225,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                         level: _level,
                     });
                     this.descriptionData = res.description;
-                    this.courseImageUrl = res.image;
+                    this.courseImageUrl = res.thumbnail;
                     this.courseContent = res.contents;
                 }
             })
@@ -286,20 +287,37 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     }
 
     updateCourse(course: any) {
-        this.courseService.updateCourse(course, this.courseId)
-            .pipe(
-                finalize(() => {
-                    this.loading = false;
-                }),
-                takeUntilDestroyed(this.destroyRef),
-            )
-            .subscribe((res: any) => {
+        this.loading = true;
+
+        const updateCourse$ = this.courseService.updateCourse(course, this.courseId);
+        const uploadThumbnail$ = this.courseImage
+            ? this.courseService.uploadCourseThumbnail(this.courseId, this.courseImage)
+            : of(null);
+
+        forkJoin({
+            updateRes: updateCourse$,
+            uploadRes: uploadThumbnail$
+        }).pipe(
+            finalize(() => {
+                this.loading = false;
+            }),
+            takeUntilDestroyed(this.destroyRef),
+        ).subscribe({
+            next: ({updateRes, uploadRes}: { updateRes: any, uploadRes: any }) => {
                 this.messageService.add({
                     severity: 'success',
                     summary: 'Success',
-                    detail: `Update course successfully: ${res.title}, ${res.id}`
+                    detail: `Update course successfully: ${updateRes.title}, ${updateRes.id}`
                 });
-            });
+            },
+            error: (error) => {
+                this.messageService.add({
+                    severity: 'error',
+                    summary: 'Error',
+                    detail: `Error updating course: ${error.message}`
+                });
+            }
+        });
     }
 
     onFileSelected(event: Event) {

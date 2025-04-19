@@ -399,12 +399,6 @@ export class CoursesService {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/${courseId}`));
     }
 
-    getCourseById1(index: number): Observable<ICourse | null> {
-        // @ts-ignore
-        const course = this.courses[index] ?? null;
-        return of(course);
-    }
-
     getAllCategories() {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${ALL_CATEGORY}`));
     }
@@ -423,6 +417,12 @@ export class CoursesService {
 
     addLesson(sectionId: string, lesson: any) {
         return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/section/${sectionId}/lesson`, lesson));
+    }
+
+    uploadCourseThumbnail(courseId: string, thumbnail: File) {
+        const formData = new FormData();
+        formData.append('file', thumbnail);
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/${courseId}/thumbnail`, formData));
     }
 
     postVideo(lessonId: string, video: File) {
