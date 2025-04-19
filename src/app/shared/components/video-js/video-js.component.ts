@@ -155,7 +155,7 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
             this.options,
             function onPlayerReady() {
                 console.log('onPlayerReady', this);
-                
+
                 // register hlsQualitySelector plugin - a plugin for HLS quality selector
                 // if ((this as any).hlsQualitySelector) {
                 //     (this as any).hlsQualitySelector({
