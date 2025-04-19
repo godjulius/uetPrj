@@ -117,8 +117,15 @@
                                             <i class="pi pi-play-circle text-blue-500"></i>
                                             <span>{{ lesson.title }} </span>
                                         </div>
-                                        <span>{{ lesson.duration || "00:00" }}</span>
-                                        <!--                                        <span *ngIf="lesson.freePreview" class="text-green-600">[Free]</span>-->
+                                        <div>
+                                            @if (lesson.freePreview) {
+                                                <p-button
+                                                    label="Preview"
+                                                    [link]="true"
+                                                />
+                                            }
+                                            <span class="ml-4">{{ formatDuration(lesson.duration || 0) }}</span>
+                                        </div>
                                     </li>
                                 </ul>
                             </p-accordion-content>

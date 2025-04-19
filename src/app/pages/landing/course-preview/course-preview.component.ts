@@ -39,17 +39,27 @@ export class CoursePreviewComponent implements OnInit {
             });
     }
 
+    formatDuration(seconds: number): string {
+        const mins = Math.floor(seconds / 60);
+        const secs = seconds % 60;
+        return `${this.pad(mins)}:${this.pad(secs)}`;
+    }
+
+    private pad(num: number): string {
+        return num < 10 ? '0' + num : num.toString();
+    }
+
     getTotalDuration(lessons: any[]): string {
-        let totalMinutes = 0;
+        let totalSeconds = 0;
 
         lessons.forEach(lesson => {
-            totalMinutes += lesson.duration || 0;
+            totalSeconds += lesson.duration || 0;
         });
 
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
 
-        return hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+        return hours > 0 ? `${hours}hr ${minutes}min` : `${minutes}min`;
     }
 
     getTotalContent(): { totalSections: number; totalLessons: number; totalDuration: string } {
@@ -57,18 +67,19 @@ export class CoursePreviewComponent implements OnInit {
 
         let totalSections = this.course.contents.length;
         let totalLessons = 0;
-        let totalMinutes = 0;
+        let totalSeconds = 0;
 
         this.course.contents.forEach(section => {
             totalLessons += section.lessons.length;
             section.lessons.forEach(lesson => {
-                totalMinutes += lesson.duration || 0
+                totalSeconds += lesson.duration || 0
             });
         });
 
-        const hours = Math.floor(totalMinutes / 60);
-        const minutes = totalMinutes % 60;
-        const totalDuration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`;
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+        const totalDuration = hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m ${seconds}s`;
 
         return {totalSections, totalLessons, totalDuration};
     }
