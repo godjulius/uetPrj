@@ -14,7 +14,6 @@ import {Toast} from 'primeng/toast';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {BaseComponent} from '../../../core/base.component';
 
-
 @Component({
     selector: 'app-quiz-lesson',
     standalone: true,
@@ -33,8 +32,8 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
     active = 0;
 
     typeOptions: any[] = [
-        { label: 'Single', value: 'single' },
-        { label: 'Multi', value: 'multi' },
+        {label: 'Single', value: 'single'},
+        {label: 'Multi', value: 'multi'},
     ];
 
     constructor(private fb: FormBuilder, private messageService: MessageService) {
@@ -69,8 +68,8 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
                 takeUntilDestroyed(this.destroyRef)
             )
             .subscribe((type) => {
-            questionForm.get('correctAnswer')?.setValue([]);
-        });
+                questionForm.get('correctAnswer')?.setValue([]);
+            });
 
         return questionForm;
     }
@@ -121,6 +120,8 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
         }
 
         const formValue = this.quizForm.value;
+
+        this.quiz.quizTitle = formValue.quizTitle;
 
         formValue.questions.forEach((q: any) => {
             const options = [q.answer1, q.answer2, q.answer3, q.answer4];

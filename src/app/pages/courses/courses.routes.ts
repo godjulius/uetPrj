@@ -1,6 +1,6 @@
 import {Routes} from '@angular/router';
 import {CourseComponent} from './course/course.component';
-import {CourseContentComponent} from './course-content/course-content.component';
+import {CourseOverviewComponent} from './course-overview/course-overview.component';
 
 export const routes: Routes = [
     {
@@ -9,7 +9,7 @@ export const routes: Routes = [
         children: [
             {
                 path: 'lesson/:id',
-                component: CourseContentComponent,
+                component: CourseOverviewComponent,
             }
         ]
     }

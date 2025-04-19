@@ -4,7 +4,7 @@
         <!--                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"-->
         <!--                allowfullscreen></iframe>-->
         <app-video-js #videoPlayer></app-video-js>
-        @if(!courseLayoutService.isSidebarOpen) {
+        @if (!courseLayoutService.isSidebarOpen) {
             <button (click)="handleOpenSidebar()"
                     class="!absolute top-2 right-2 p-button p-component p-button-outlined p-button-sm z-[1001] !text-white">
                 Open Sidebar
@@ -22,7 +22,7 @@
             <p-tabpanels>
                 <p-tabpanel value="0">
                     @if (activeIndex == '0') {
-                        <app-course-content></app-course-content>
+                        <app-course-overview></app-course-overview>
                     }
                 </p-tabpanel>
                 <p-tabpanel value="1">

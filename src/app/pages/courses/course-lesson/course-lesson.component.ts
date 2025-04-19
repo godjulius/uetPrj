@@ -1,7 +1,7 @@
 import {Component, ViewChild, inject} from '@angular/core';
 import {LandingFooterComponent} from '../../landing/landing-footer/landing-footer.component';
 import {TabsModule} from 'primeng/tabs';
-import {CourseContentComponent} from '../course-content/course-content.component';
+import {CourseOverviewComponent} from '../course-overview/course-overview.component';
 import {VideoJsComponent} from '../../../shared/components/video-js/video-js.component';
 import {CourseReviewsComponent} from '../course-reviews/course-reviews.component';
 import {CourseAnnouncementsComponent} from '../course-announcements/course-announcements.component';
@@ -9,12 +9,12 @@ import {CourseNotesComponent} from '../course-notes/course-notes.component';
 import {CourseLayoutService} from '../course-layout.service';
 
 @Component({
-  selector: 'app-course-lesson',
-  standalone: true,
+    selector: 'app-course-lesson',
+    standalone: true,
     imports: [
         LandingFooterComponent,
         TabsModule,
-        CourseContentComponent,
+        CourseOverviewComponent,
         VideoJsComponent,
         CourseReviewsComponent,
         CourseAnnouncementsComponent,
@@ -27,6 +27,7 @@ export class CourseLessonComponent {
     @ViewChild('videoPlayer') videoComponent!: VideoJsComponent;
     activeIndex = '0';
     courseLayoutService = inject(CourseLayoutService)
+
     handleOpenSidebar() {
         this.courseLayoutService.openSideBar();
     }

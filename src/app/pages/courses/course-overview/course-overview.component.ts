@@ -11,13 +11,13 @@ import {FormsModule} from '@angular/forms';
 import {CustomRatingComponent} from '../../../shared/components/custom-rating/custom-rating.component';
 
 @Component({
-    selector: 'app-course-content',
+    selector: 'app-course-overview',
     standalone: true,
     imports: [CommonModule, EditorReadOnlyComponent, Card, ProgressBarModule, FormsModule],
-    templateUrl: './course-content.component.html',
-    styleUrl: './course-content.component.css'
+    templateUrl: './course-overview.component.html',
+    styleUrl: './course-overview.component.css'
 })
-export class CourseContentComponent implements OnInit {
+export class CourseOverviewComponent implements OnInit {
     course: ICourse | null = null;
     private destroyRef = inject(DestroyRef);
 
@@ -26,14 +26,22 @@ export class CourseContentComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        const index = 1;
+        // const index = 1
+        const index = "7d9c6d26-ee4c-4118-8235-116b0bf9e7be";
 
-        this.coursesService.getCourseById1(index)
+        this.coursesService.getCourseById(index)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((data: ICourse | null) => {
                 this.course = data;
                 console.log("course", this.course);
             });
+        
+        // this.coursesService.getCourseById1(index)
+        //     .pipe(takeUntilDestroyed(this.destroyRef))
+        //     .subscribe((data: ICourse | null) => {
+        //         this.course = data;
+        //         console.log("course", this.course);
+        //     });
 
     }
 }

@@ -1,11 +1,11 @@
 export class Question {
-    question: string;
+    questionName: string;
     options: string[];
     correctAnswer: string | string[];
     type: 'single' | 'multi';
 
-    constructor(question: string, options: string[], correctAnswer: string | string[], type: 'single' | 'multi') {
-        this.question = question;
+    constructor(questionName: string, options: string[], correctAnswer: string | string[], type: 'single' | 'multi') {
+        this.questionName = questionName;
         this.options = options;
         this.correctAnswer = correctAnswer;
         this.type = type;
@@ -13,17 +13,19 @@ export class Question {
 }
 
 export class Quiz {
-    questionList: Question[];
+    quizTitle: string;
+    questions: Question[];
 
     constructor() {
-        this.questionList = [];
+        this.quizTitle = '';
+        this.questions = [];
     }
 
     addQuestion(question: Question) {
-        this.questionList.push(question);
+        this.questions.push(question);
     }
 
     getQuestions(): Question[] {
-        return this.questionList;
+        return this.questions;
     }
 }
