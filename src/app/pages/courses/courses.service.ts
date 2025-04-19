@@ -419,6 +419,12 @@ export class CoursesService {
         return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/section/${sectionId}/lesson`, lesson));
     }
 
+    uploadCourseThumbnail(courseId: string, thumbnail: File) {
+        const formData = new FormData();
+        formData.append('file', thumbnail);
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/${courseId}/thumbnail`, formData));
+    }
+
     postVideo(lessonId: string, video: File) {
         const formData = new FormData();
         formData.append('file', video);
