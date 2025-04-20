@@ -20,14 +20,46 @@ export class CourseNotesComponent {
     @Output() resumeVideo = new EventEmitter<void>();
 
     notes: { time: number, text: string }[] = [];
+    editIndex: number | null = null;
     noteText: string = '';
 
     addNote() {
         if (this.noteText.trim()) {
-            this.notes.push({time: this.currentTime, text: this.noteText.trim()});
+            if (this.editIndex !== null) {
+                // Nếu đang sửa
+                this.notes[this.editIndex].text = this.noteText.trim();
+                this.editIndex = null;
+            } else {
+                // Thêm mới
+                this.notes.push({time: this.currentTime, text: this.noteText.trim()});
+            }
+
+            // Luôn sắp xếp sau khi thêm hoặc sửa
+            this.notes.sort((a, b) => a.time - b.time);
+
             this.noteText = '';
             this.resumeVideo.emit();
         }
+    }
+
+    editNote(index: number) {
+        this.noteText = this.notes[index].text;
+        this.editIndex = index;
+        this.pauseVideo.emit();
+    }
+
+    deleteNote(index: number) {
+        this.notes.splice(index, 1);
+    }
+
+    formatTime(seconds: number): string {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${this.padZero(mins)}:${this.padZero(secs)}`;
+    }
+
+    padZero(num: number): string {
+        return num < 10 ? '0' + num : num.toString();
     }
 
     goToNote(time: number) {

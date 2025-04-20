@@ -8,12 +8,13 @@ import {EditorReadOnlyComponent} from '../../../shared/components/editor-read-on
 import {Card} from 'primeng/card';
 import {ProgressBarModule} from 'primeng/progressbar';
 import {FormsModule} from '@angular/forms';
-import {CustomRatingComponent} from '../../../shared/components/custom-rating/custom-rating.component';
+import {LanguageNamePipe} from '../../../shared/pipes/language-name.pipe';
+import {DurationFormatPipe} from '../../../shared/pipes/duration.pipe';
 
 @Component({
     selector: 'app-course-overview',
     standalone: true,
-    imports: [CommonModule, EditorReadOnlyComponent, Card, ProgressBarModule, FormsModule],
+    imports: [CommonModule, EditorReadOnlyComponent, Card, ProgressBarModule, FormsModule, LanguageNamePipe, DurationFormatPipe],
     templateUrl: './course-overview.component.html',
     styleUrl: './course-overview.component.css'
 })
@@ -26,7 +27,6 @@ export class CourseOverviewComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // const index = 1
         const index = "7d9c6d26-ee4c-4118-8235-116b0bf9e7be";
 
         this.coursesService.getCourseById(index)
@@ -35,13 +35,6 @@ export class CourseOverviewComponent implements OnInit {
                 this.course = data;
                 console.log("course", this.course);
             });
-        
-        // this.coursesService.getCourseById1(index)
-        //     .pipe(takeUntilDestroyed(this.destroyRef))
-        //     .subscribe((data: ICourse | null) => {
-        //         this.course = data;
-        //         console.log("course", this.course);
-        //     });
 
     }
 }

@@ -167,9 +167,9 @@ export class CourseReviewsComponent implements OnInit {
     ngOnInit(): void {
         this.filteredReviews = this.reviews;
 
-        const index = 1;
+        const index = "7d9c6d26-ee4c-4118-8235-116b0bf9e7be";
 
-        this.coursesService.getCourseById1(index)
+        this.coursesService.getCourseById(index)
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((data: ICourse | null) => {
                 this.course = data;
