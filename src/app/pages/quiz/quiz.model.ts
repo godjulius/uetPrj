@@ -1,10 +1,10 @@
 export class Question {
     questionName: string;
     options: string[];
-    correctAnswer: string | string[];
-    type: 'single' | 'multi';
+    correctAnswer: number[];
+    type: 'single' | 'multiple';
 
-    constructor(questionName: string, options: string[], correctAnswer: string | string[], type: 'single' | 'multi') {
+    constructor(questionName: string, options: string[], correctAnswer: number[], type: 'single' | 'multiple') {
         this.questionName = questionName;
         this.options = options;
         this.correctAnswer = correctAnswer;
@@ -13,11 +13,11 @@ export class Question {
 }
 
 export class Quiz {
-    quizTitle: string;
+    title: string;
     questions: Question[];
 
     constructor() {
-        this.quizTitle = '';
+        this.title = '';
         this.questions = [];
     }
 

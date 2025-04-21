@@ -130,6 +130,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     isAddingNewSection = false;
     newSectionName: string = '';
     lessonId: string = '';
+    sectionId: string = '';
 
     constructor() {
         super()
@@ -399,8 +400,14 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             })
     }
 
-    toggleQuizDialog() {
+    toggleQuizDialog(sectionId: string) {
+        console.log(sectionId);
         this.isQuizDialogVisible = !this.isQuizDialogVisible;
+        if (this.isQuizDialogVisible) {
+            this.sectionId = sectionId;
+        } else {
+            this.sectionId = '';
+        }
     }
 
     handleAddCategory() {

@@ -13,6 +13,8 @@ import {MessageService} from 'primeng/api';
 import {Toast} from 'primeng/toast';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {BaseComponent} from '../../../core/base.component';
+import {CoursesService} from '../../courses/courses.service';
+import {ICourse} from '../../courses/courses.model';
 
 @Component({
     selector: 'app-quiz-lesson',
@@ -23,6 +25,7 @@ import {BaseComponent} from '../../../core/base.component';
 })
 export class QuizLessonComponent extends BaseComponent implements OnInit {
     @Input() visible = false;
+    @Input() sectionId: string = '';
     @Output() visibleChange = new EventEmitter<boolean>();
     @ViewChildren('questionContainer') questionContainers!: QueryList<ElementRef>;
 
@@ -33,17 +36,17 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
 
     typeOptions: any[] = [
         {label: 'Single', value: 'single'},
-        {label: 'Multi', value: 'multi'},
+        {label: 'Multi', value: 'multiple'},
     ];
 
-    constructor(private fb: FormBuilder, private messageService: MessageService) {
+    constructor(private fb: FormBuilder, private messageService: MessageService, private coursesService: CoursesService) {
         super()
         this.quiz = new Quiz();
     }
 
     ngOnInit() {
         this.quizForm = this.fb.group({
-            quizTitle: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
+            title: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
             questions: this.fb.array([this.createQuestionForm()], Validators.required)
         });
     }
@@ -121,19 +124,30 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
 
         const formValue = this.quizForm.value;
 
-        this.quiz.quizTitle = formValue.quizTitle;
+        this.quiz.title = formValue.title;
 
         formValue.questions.forEach((q: any) => {
             const options = [q.answer1, q.answer2, q.answer3, q.answer4];
             let sortedCorrectAnswer = Array.isArray(q.correctAnswer)
                 ? [...q.correctAnswer].sort()
-                : q.correctAnswer;
+                : [q.correctAnswer];
 
             const newQuestion = new Question(q.questionName, options, sortedCorrectAnswer, q.type);
             this.quiz.addQuestion(newQuestion);
         });
 
-        console.log('Quiz Created:', this.quiz);
+        const quizData = {
+            ...this.quiz,
+            orderInSection: 1
+        }
+
+        console.log('quizData', quizData);
+        this.coursesService.addQuiz(this.sectionId, quizData)
+            .pipe(takeUntilDestroyed(this.destroyRef))
+            .subscribe((res: any) => {
+                console.log("quiz", res);
+            });
+        // console.log('Quiz Created:', this.quiz);
         this.clearData();
     }
 
