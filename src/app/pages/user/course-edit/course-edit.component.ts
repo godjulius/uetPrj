@@ -324,9 +324,9 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                     });
                     if (sectionIndex !== -1) {
                         if (!this.courseContent[sectionIndex].sectionContents) {
-                            this.courseContent[sectionIndex].sectionContents = [res];
+                            this.courseContent[sectionIndex].sectionContents = [{lesson: res}];
                         } else {
-                            this.courseContent[sectionIndex].sectionContents.push(res);
+                            this.courseContent[sectionIndex].sectionContents.push({lesson: res});
                         }
                     }
                     this.newLessonName = '';

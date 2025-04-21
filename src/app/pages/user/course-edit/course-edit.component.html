@@ -236,13 +236,13 @@
                                         <p-fieldset [toggleable]="true" [collapsed]="true">
                                             <ng-template #header>
                                                 <div class="flex items-center gap-2 px-2">
-                                                    @if(content.lesson) {
+                                                    @if (content.lesson) {
                                                         <span class="pi pi-play-circle"></span>
                                                         <span class="font-bold"
                                                         >{{ content.lesson.title }}</span
                                                         >
                                                     }
-                                                    @if(content.quiz) {
+                                                    @if (content.quiz) {
                                                         <span class="pi pi-question-circle"></span>
                                                         <span class="font-bold"
                                                         >{{ content.quiz.title }}</span
@@ -251,21 +251,23 @@
                                                 </div>
                                             </ng-template>
                                             <div class="flex gap-2">
-                                                <p-button outlined raised
-                                                          (onClick)="isLessonDialogVisible = true; lessonId = content.lesson.id"
+                                                @if (content.lesson) {
+                                                    <p-button outlined raised
+                                                              (onClick)="isLessonDialogVisible = true; lessonId = content.lesson.id"
                                                     >
-                                                    <span class="pi pi-file-edit"></span>
-                                                    Edit content
-                                                </p-button>
+                                                        <span class="pi pi-file-edit"></span>
+                                                        Edit content
+                                                    </p-button>
+                                                }
                                                 <p-button outlined raised
                                                           (onClick)="isLessonDialogVisible = true; lessonId = content.lesson.id"
-                                                          >
+                                                >
                                                     <span class="pi pi-angle-up"></span>
                                                     move up
                                                 </p-button>
                                                 <p-button outlined raised
                                                           (onClick)="isLessonDialogVisible = true; lessonId = content.lesson.id"
-                                                          >
+                                                >
                                                     <span class="pi pi-angle-down"></span>
                                                     move down
                                                 </p-button>
