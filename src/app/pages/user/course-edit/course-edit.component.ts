@@ -81,44 +81,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     ];
     courseImageUrl!: string;
     courseImage!: File;
-    courseContent: any[] = [
-        {
-            "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-            "sectionTitle": "Giới thiệu",
-            "lessons": [
-                {
-                    "id": "1f88f671-6762-4ccb-bd24-8e74e49b60c9",
-                    "title": "Giới thiệu khóa học",
-                    "duration": 120,
-                    "freePreview": true,
-                    "link": "https://example.com/lesson-1",
-                    "type": "video"
-                },
-                {
-                    "id": "c7b6fc55-0752-445c-8ffa-f2afe1c02dc2",
-                    "title": "Tổng quan tài liệu",
-                    "duration": 0,
-                    "freePreview": false,
-                    "link": "https://example.com/lesson-2",
-                    "type": "document"
-                }
-            ]
-        },
-        {
-            "id": "d438700b-9250-4f43-a2a9-9dfbabb611f2",
-            "sectionTitle": "Cơ bản về HTML",
-            "lessons": [
-                {
-                    "id": "da6cd6a6-0bdf-4666-8a7d-c862e2a11929",
-                    "title": "HTML là gì?",
-                    "duration": 180,
-                    "freePreview": true,
-                    "link": "https://example.com/lesson-3",
-                    "type": "video"
-                }
-            ]
-        }
-    ];
+    courseContent: any[] = [];
     active = 0;
     // Edit Lesson dialog
     isLessonDialogVisible = false
@@ -343,6 +306,9 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
         this.loading = true;
         this.courseService.addLesson(sectionId, {
             title: this.newLessonName,
+            type: 'video',
+            freePreview: false,
+            orderInSection: this.courseContent[sectionIndex].sectionContents.length + 1,
         }).pipe(
             takeUntilDestroyed(this.destroyRef),
             finalize(() => {
@@ -358,10 +324,10 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                         detail: `Lesson added successfully: ${res.title}, ${res.id}`
                     });
                     if (sectionIndex !== -1) {
-                        if (!this.courseContent[sectionIndex].lessons) {
-                            this.courseContent[sectionIndex].lessons = [res];
+                        if (!this.courseContent[sectionIndex].sectionContents) {
+                            this.courseContent[sectionIndex].sectionContents = [res];
                         } else {
-                            this.courseContent[sectionIndex].lessons.push(res);
+                            this.courseContent[sectionIndex].sectionContents.push(res);
                         }
                     }
                     this.newLessonName = '';

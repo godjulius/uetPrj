@@ -232,23 +232,50 @@
                             </p-accordion-header>
                             <p-accordion-content>
                                 <div class="flex flex-col gap-2">
-                                    @for (lesson of section.lessons; track lesson.id) {
+                                    @for (content of section.sectionContents; track content.lesson ? content.lesson.id : content.quiz.id) {
                                         <p-fieldset [toggleable]="true" [collapsed]="true">
                                             <ng-template #header>
                                                 <div class="flex items-center gap-2 px-2">
-                                                    <span class="pi pi-home"></span>
-                                                    <span class="font-bold"
-                                                    >{{ lesson.title }}</span
-                                                    >
+                                                    @if(content.lesson) {
+                                                        <span class="pi pi-play-circle"></span>
+                                                        <span class="font-bold"
+                                                        >{{ content.lesson.title }}</span
+                                                        >
+                                                    }
+                                                    @if(content.quiz) {
+                                                        <span class="pi pi-question-circle"></span>
+                                                        <span class="font-bold"
+                                                        >{{ content.quiz.title }}</span
+                                                        >
+                                                    }
                                                 </div>
                                             </ng-template>
-                                            <p-button outlined raised
-                                                      (onClick)="isLessonDialogVisible = true; lessonId = lesson.id"
-                                                      class="w-full mt-2">
-                                                <span class="pi pi-file-edit"></span>
-                                                add content
-                                            </p-button>
-                                            <div>{{ lesson.link }}</div>
+                                            <div class="flex gap-2">
+                                                <p-button outlined raised
+                                                          (onClick)="isLessonDialogVisible = true; lessonId = content.lesson.id"
+                                                    >
+                                                    <span class="pi pi-file-edit"></span>
+                                                    Edit content
+                                                </p-button>
+                                                <p-button outlined raised
+                                                          (onClick)="isLessonDialogVisible = true; lessonId = content.lesson.id"
+                                                          >
+                                                    <span class="pi pi-angle-up"></span>
+                                                    move up
+                                                </p-button>
+                                                <p-button outlined raised
+                                                          (onClick)="isLessonDialogVisible = true; lessonId = content.lesson.id"
+                                                          >
+                                                    <span class="pi pi-angle-down"></span>
+                                                    move down
+                                                </p-button>
+                                                <p-button outlined raised
+                                                          (onClick)="isLessonDialogVisible = true; lessonId = content.lesson.id"
+                                                >
+                                                    <span class="pi pi-trash"></span>
+                                                    Remove
+                                                </p-button>
+                                            </div>
                                         </p-fieldset>
                                     }
                                 </div>
