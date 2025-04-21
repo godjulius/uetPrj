@@ -435,6 +435,10 @@ export class CoursesService {
         }));
     }
 
+    addQuiz(sectionId: string, quiz: any) {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/section/${sectionId}/quiz/`, quiz));
+    }
+
     handleError(observable: any) {
         return observable.pipe(
             catchError((error: any) => {

@@ -50,3 +50,7 @@ h5.ce-header {
 .codex-editor__redactor {
     padding-bottom: 100px !important;
 }
+
+.announcement-content .codex-editor__redactor {
+    padding-bottom: 0 !important;
+}
