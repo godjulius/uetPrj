@@ -13,8 +13,7 @@ import {MessageService} from 'primeng/api';
 import {Toast} from 'primeng/toast';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {BaseComponent} from '../../../core/base.component';
-import {CoursesService} from '../../courses/courses.service';
-import {ICourse} from '../../courses/courses.model';
+import {CoursesService} from '../courses.service';
 
 @Component({
     selector: 'app-quiz-lesson',
