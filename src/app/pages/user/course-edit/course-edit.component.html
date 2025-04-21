@@ -290,7 +290,7 @@
                                         raised
                                         text
                                         size="small"
-                                        (click)="toggleQuizDialog(section.id)"
+                                        (click)="toggleQuizDialog(section.id, section.sectionContents.length)"
                                     >
                                         Add Quiz
                                     </p-button>
@@ -308,7 +308,7 @@
 <!-- Create lesson dialog -->
 <app-lesson-component [(visible)]="isLessonDialogVisible" [lessonId]="lessonId"/>
 
-<app-quiz-lesson [(visible)]="isQuizDialogVisible" [sectionId]="sectionId"/>
+<app-quiz-lesson [(visible)]="isQuizDialogVisible" [sectionId]="sectionId" [orderInSection]="orderInSection"/>
 
 <!--add category dialog-->
 <p-dialog

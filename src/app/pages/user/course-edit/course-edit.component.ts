@@ -131,6 +131,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     newSectionName: string = '';
     lessonId: string = '';
     sectionId: string = '';
+    orderInSection: number = 0;
 
     constructor() {
         super()
@@ -400,13 +401,14 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             })
     }
 
-    toggleQuizDialog(sectionId: string) {
-        console.log(sectionId);
+    toggleQuizDialog(sectionId: string, orderInSection: number) {
         this.isQuizDialogVisible = !this.isQuizDialogVisible;
         if (this.isQuizDialogVisible) {
             this.sectionId = sectionId;
+            this.orderInSection = orderInSection
         } else {
             this.sectionId = '';
+            this.orderInSection = 0;
         }
     }
 

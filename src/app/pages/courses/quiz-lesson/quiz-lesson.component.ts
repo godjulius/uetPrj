@@ -25,6 +25,7 @@ import {CoursesService} from '../courses.service';
 export class QuizLessonComponent extends BaseComponent implements OnInit {
     @Input() visible = false;
     @Input() sectionId: string = '';
+    @Input() orderInSection: number = 0;
     @Output() visibleChange = new EventEmitter<boolean>();
     @ViewChildren('questionContainer') questionContainers!: QueryList<ElementRef>;
 
@@ -137,7 +138,7 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
 
         const quizData = {
             ...this.quiz,
-            orderInSection: 1
+            orderInSection: this.orderInSection + 1
         }
 
         console.log('quizData', quizData);
