@@ -10,12 +10,7 @@ import {
 } from '@angular/core';
 import videojs from 'video.js';
 import Player from 'video.js/dist/types/player';
-// import 'videojs-hls-quality-selector';
 import 'videojs-hls-quality-selector/src/plugin';
-
-interface IPlayer extends Player {
-    hlsQualitySelector: any;
-}
 
 @Component({
     selector: 'app-video-js',
@@ -157,16 +152,16 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
                 console.log('onPlayerReady', this);
 
                 // register hlsQualitySelector plugin - a plugin for HLS quality selector
-                // if ((this as any).hlsQualitySelector) {
-                //     (this as any).hlsQualitySelector({
-                //         displayCurrentQuality: true,
-                //     });
-                // }
-                if ((this.player as any).hlsQualitySelector) {
-                    (this.player as any).hlsQualitySelector({
+                if ((this as any).hlsQualitySelector) {
+                    (this as any).hlsQualitySelector({
                         displayCurrentQuality: true,
                     });
                 }
+                // if ((this.player as any).hlsQualitySelector) {
+                //     (this.player as any).hlsQualitySelector({
+                //         displayCurrentQuality: true,
+                //     });
+                // }
 
                 this.on('contextmenu', function (event: any) {
                     // Prevent the default right-click context menu
@@ -174,9 +169,9 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
                 });
             }
         );
-        (this.player as any).hlsQualitySelector({
-            displayCurrentQuality: true,
-        });
+        // (this.player as any).hlsQualitySelector({
+        //     displayCurrentQuality: true,
+        // });
     }
 
     // Dispose the player OnDestroy
