@@ -11,16 +11,16 @@ import {finalize} from 'rxjs';
 import {BaseComponent} from '../../../core/base.component';
 
 @Component({
-  selector: 'app-course',
-  standalone: true,
+    selector: 'app-course',
+    standalone: true,
     imports: [
         CourseHeaderComponent,
         CourseLessonComponent,
         RouterOutlet,
         CourseSideBarComponent
     ],
-  templateUrl: './course.component.html',
-  styleUrl: './course.component.css'
+    templateUrl: './course.component.html',
+    styleUrl: './course.component.css'
 })
 export class CourseComponent extends BaseComponent implements OnInit {
     courseLayoutService = inject(CourseLayoutService);
@@ -31,6 +31,7 @@ export class CourseComponent extends BaseComponent implements OnInit {
     courseContents: any;
     course: any;
     loading: boolean = false;
+
     constructor() {
         super();
         this.route.params
@@ -42,8 +43,10 @@ export class CourseComponent extends BaseComponent implements OnInit {
                     this.courseId = params['courseId'];
                     this.lessonId = params['lessonId'];
                     this.courseLayoutService.setLessonId(this.lessonId);
+                    console.log('courseId', this.courseId);
+                    console.log('lessonId', this.lessonId);
                 }
-        })
+            })
     }
 
     ngOnInit() {

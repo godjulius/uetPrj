@@ -21,13 +21,14 @@ import {AccordionModule} from 'primeng/accordion';
 import {FieldsetModule} from 'primeng/fieldset';
 import {Dialog} from 'primeng/dialog';
 import {StepperModule} from 'primeng/stepper';
-import {QuizLessonComponent} from '../../courses/quiz-lesson/quiz-lesson.component';
+import {QuizLessonComponent} from './quiz-lesson/quiz-lesson.component';
 import {EditorComponent} from "../../../shared/components/editor/editor.component";
 import {MessageService} from 'primeng/api';
 import {finalize, forkJoin, of} from 'rxjs';
 import {BaseComponent} from '../../../core/base.component';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {LessonComponentComponent} from './lesson-component/lesson-component.component';
+import {Quiz} from './quiz.model';
 
 @Component({
     selector: 'app-course-edit',
@@ -85,7 +86,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     active = 0;
     // Edit Lesson dialog
     isLessonDialogVisible = false
-    isQuizDialogVisible = false;
+    isNewQuizDialogVisible = false;
     isCategoryDialogVisible = false;
     newCategory: string = '';
     newLessonName: string = '';
@@ -94,6 +95,11 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     newSectionName: string = '';
     lessonId: string = '';
     sectionId: string = '';
+    orderInSection: number = 0;
+    isNewQuiz: boolean = true;
+    isEditQuizDialogVisible: boolean = false;
+    quizId: string = '';
+    quizData?: Quiz = undefined;
 
     constructor() {
         super()
@@ -366,13 +372,14 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             })
     }
 
-    toggleQuizDialog(sectionId: string) {
-        console.log(sectionId);
-        this.isQuizDialogVisible = !this.isQuizDialogVisible;
-        if (this.isQuizDialogVisible) {
+    toggleQuizDialog(sectionId: string, orderInSection: number) {
+        this.isNewQuizDialogVisible = !this.isNewQuizDialogVisible;
+        if (this.isNewQuizDialogVisible) {
             this.sectionId = sectionId;
+            this.orderInSection = orderInSection
         } else {
             this.sectionId = '';
+            this.orderInSection = 0;
         }
     }
 
@@ -399,5 +406,22 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                     this.isCategoryDialogVisible = false;
                 }
             });
+    }
+
+    handleCreateQuiz(quiz: Quiz) {
+        const index = this.courseContent.findIndex((section: any) => section.id === this.sectionId);
+        if (!this.courseContent[index].sectionContents) {
+            this.courseContent[index].sectionContents = [{quiz: quiz}];
+        } else {
+            this.courseContent[index].sectionContents.push({quiz: quiz});
+        }
+    }
+
+    handleClickEditQuiz(quizId: string, quiz: Quiz) {
+        console.log('quizId', quizId);
+        console.log('quiz', quiz);
+        this.isEditQuizDialogVisible = true;
+        this.quizId = quizId;
+        this.quizData = quiz;
     }
 }

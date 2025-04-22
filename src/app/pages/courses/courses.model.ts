@@ -17,7 +17,21 @@ export interface ICourse {
     whatYouWillLearn: string[] | undefined; // Những gì học viên sẽ học được
     lastUpdated: string | undefined; // Ngày cập nhật gần nhất
     contents: {
+        id: string | undefined;
         sectionTitle: string | undefined;
-        lessons: { title: string | undefined; duration: number | undefined; freePreview?: boolean | undefined }[]
+        sectionContents: {
+            quiz?: {
+                id: string | undefined;
+                orderInSection: number | undefined;
+                title: string | undefined;
+            },
+            lesson?: {
+                id: string | undefined;
+                orderInSection: number | undefined;
+                title: string | undefined;
+                freePreview?: boolean | undefined;
+                duration?: number | undefined;
+            }
+        }[]
     }[] | undefined; // Nội dung khóa học theo từng phần
 }

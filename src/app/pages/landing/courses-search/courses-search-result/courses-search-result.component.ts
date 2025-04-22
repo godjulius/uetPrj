@@ -10,11 +10,11 @@ import {ICourse} from '../../../courses/courses.model';
 import {FormsModule} from '@angular/forms';
 
 @Component({
-  selector: 'app-courses-search-result',
-  standalone: true,
+    selector: 'app-courses-search-result',
+    standalone: true,
     imports: [ButtonModule, CommonModule, DataView, SelectButton, Skeleton, FormsModule],
-  templateUrl: './courses-search-result.component.html',
-  styleUrl: './courses-search-result.component.css',
+    templateUrl: './courses-search-result.component.html',
+    styleUrl: './courses-search-result.component.css',
     providers: [ProductService]
 })
 export class CoursesSearchResultComponent implements OnInit {
@@ -25,11 +25,12 @@ export class CoursesSearchResultComponent implements OnInit {
 
     options: ('list' | 'grid')[] = ['list', 'grid'];
 
-    constructor() {}
+    constructor() {
+    }
 
     ngOnInit() {
-        this.data.set(structuredClone(this.courseService.courses).reverse());
     }
+
     selectItem(item: any) {
         console.log(item)
     }

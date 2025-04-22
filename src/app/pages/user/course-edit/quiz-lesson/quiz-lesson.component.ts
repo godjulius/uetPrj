@@ -12,8 +12,8 @@ import {SelectButton} from 'primeng/selectbutton';
 import {MessageService} from 'primeng/api';
 import {Toast} from 'primeng/toast';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
-import {BaseComponent} from '../../../core/base.component';
-import {CoursesService} from '../courses.service';
+import {BaseComponent} from '../../../../core/base.component';
+import {CoursesService} from '../../../courses/courses.service';
 
 @Component({
     selector: 'app-quiz-lesson',
@@ -25,7 +25,12 @@ import {CoursesService} from '../courses.service';
 export class QuizLessonComponent extends BaseComponent implements OnInit {
     @Input() visible = false;
     @Input() sectionId: string = '';
+    @Input() orderInSection: number = 0;
+    @Input() isNewQuiz: boolean = true;
+    @Input() quizId: string = '';
+    @Input() quizData: Quiz | undefined;
     @Output() visibleChange = new EventEmitter<boolean>();
+    @Output() createQuiz = new EventEmitter<Quiz>();
     @ViewChildren('questionContainer') questionContainers!: QueryList<ElementRef>;
 
     quizForm!: FormGroup;
@@ -48,6 +53,30 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
             title: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(50)]],
             questions: this.fb.array([this.createQuestionForm()], Validators.required)
         });
+
+        if (this.quizData) {
+            console.log('edit', this.quizData);
+            this.quiz = this.quizData;
+            this.patchQuizForm(this.quizData);
+        }
+    }
+
+    patchQuizForm(quiz: Quiz) {
+        this.quizForm.get('title')?.setValue(quiz.title);
+
+        const questionsFG = quiz.questions.map((q) =>
+            this.fb.group({
+                questionName: [q.questionName, [Validators.required, Validators.minLength(1), Validators.maxLength(500)]],
+                type: [q.type, Validators.required],
+                answer1: new FormControl(q.options[0], Validators.required),
+                answer2: new FormControl(q.options[1], Validators.required),
+                answer3: new FormControl(q.options[2], Validators.required),
+                answer4: new FormControl(q.options[3], Validators.required),
+                correctAnswer: new FormControl(q.correctAnswer, Validators.required)
+            })
+        );
+
+        this.quizForm.setControl('questions', this.fb.array(questionsFG));
     }
 
     get questions(): FormArray {
@@ -137,7 +166,7 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
 
         const quizData = {
             ...this.quiz,
-            orderInSection: 1
+            orderInSection: this.orderInSection + 1
         }
 
         console.log('quizData', quizData);
@@ -146,6 +175,7 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
             .subscribe((res: any) => {
                 console.log("quiz", res);
             });
+        this.createQuiz.emit(this.quiz);
         // console.log('Quiz Created:', this.quiz);
         this.clearData();
     }

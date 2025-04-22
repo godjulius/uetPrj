@@ -7,9 +7,10 @@ import {FormsModule} from '@angular/forms';
 import {Skeleton} from 'primeng/skeleton';
 import {ICourse} from '../../courses/courses.model';
 import {CoursesService} from '../../courses/courses.service';
+
 @Component({
-  selector: 'app-attending-courses',
-  standalone: true,
+    selector: 'app-attending-courses',
+    standalone: true,
     imports: [
         DataView,
         ButtonModule,
@@ -18,10 +19,10 @@ import {CoursesService} from '../../courses/courses.service';
         FormsModule,
         Skeleton
     ],
-  templateUrl: './attending-courses.component.html',
-  styleUrl: './attending-courses.component.css'
+    templateUrl: './attending-courses.component.html',
+    styleUrl: './attending-courses.component.css'
 })
-export class AttendingCoursesComponent implements OnInit{
+export class AttendingCoursesComponent implements OnInit {
     private courseService = inject(CoursesService);
     loading = false;
     layout: ('list' | 'grid') = 'list';
@@ -29,11 +30,12 @@ export class AttendingCoursesComponent implements OnInit{
 
     options: ('list' | 'grid')[] = ['list', 'grid'];
 
-    constructor() {}
+    constructor() {
+    }
 
     ngOnInit() {
-        this.data.set(structuredClone(this.courseService.courses).reverse());
     }
+
     selectItem(item: any) {
         console.log(item)
     }

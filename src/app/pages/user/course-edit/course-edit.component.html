@@ -259,6 +259,14 @@
                                                         Edit content
                                                     </p-button>
                                                 }
+                                                @if (content.quiz) {
+                                                    <p-button outlined raised
+                                                              (onClick)="handleClickEditQuiz(content.quiz.id, content.quiz)"
+                                                    >
+                                                        <span class="pi pi-file-edit"></span>
+                                                        Edit quiz
+                                                    </p-button>
+                                                }
                                                 <p-button outlined raised
                                                           (onClick)="isLessonDialogVisible = true; lessonId = content.lesson.id"
                                                 >
@@ -319,7 +327,7 @@
                                         raised
                                         text
                                         size="small"
-                                        (click)="toggleQuizDialog(section.id)"
+                                        (click)="toggleQuizDialog(section.id, section.sectionContents.length)"
                                     >
                                         Add Quiz
                                     </p-button>
@@ -337,7 +345,19 @@
 <!-- Create lesson dialog -->
 <app-lesson-component [(visible)]="isLessonDialogVisible" [lessonId]="lessonId"/>
 
-<app-quiz-lesson [(visible)]="isQuizDialogVisible" [sectionId]="sectionId"/>
+<app-quiz-lesson
+    [(visible)]="isNewQuizDialogVisible"
+    [sectionId]="sectionId"
+    [orderInSection]="orderInSection"
+    (createQuiz)="handleCreateQuiz($event)"
+/>
+
+<app-quiz-lesson
+    [(visible)]="isEditQuizDialogVisible"
+    [quizId]="quizId"
+    [quizData]="quizData"
+    (createQuiz)="handleCreateQuiz($event)"
+/>
 
 <!--add category dialog-->
 <p-dialog
