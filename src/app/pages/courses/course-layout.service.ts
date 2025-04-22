@@ -5,6 +5,8 @@ import {Injectable} from '@angular/core';
 })
 export class CourseLayoutService {
     isSidebarOpen = true;
+    courseId: string | undefined = undefined;
+    lessonId: string | undefined = undefined;
     constructor() {
     }
 
@@ -18,5 +20,13 @@ export class CourseLayoutService {
 
     openSideBar() {
       this.isSidebarOpen = true;
+    }
+
+    setCourseId(courseId: string | undefined) {
+        this.courseId = courseId;
+    }
+
+    setLessonId(lessonId: string | undefined) {
+        this.lessonId = lessonId;
     }
 }

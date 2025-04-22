@@ -4,13 +4,14 @@ import {CourseContentComponent} from './course-content/course-content.component'
 
 export const routes: Routes = [
     {
-        path: '',
+        path: 'lesson/:lessonId',
         component: CourseComponent,
         children: [
-            {
-                path: 'lesson/:id',
-                component: CourseContentComponent,
-            }
+            // {
+            //     path: 'lesson/:id',
+            //     component: CourseContentComponent,
+            // }
         ]
+
     }
 ];
