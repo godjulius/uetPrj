@@ -29,6 +29,7 @@ import {finalize} from 'rxjs';
 })
 export class CourseLessonComponent extends BaseComponent implements OnInit {
     @Input({required: true}) lessonId: string | undefined;
+    @Input({required: true}) courseId: string | undefined;
     @ViewChild('videoPlayer') videoComponent!: VideoJsComponent;
     activeIndex = '0';
     courseLayoutService = inject(CourseLayoutService)
