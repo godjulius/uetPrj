@@ -27,7 +27,7 @@ export const routes: Routes = [
         canActivate: [AuthGuard]
     },
     {
-        path: 'learning',
+        path: 'course/:courseId',
         loadChildren: () => import('./pages/courses/courses.routes').then(m => m.routes),
     },
     {path: '404', component: NotFoundComponent},

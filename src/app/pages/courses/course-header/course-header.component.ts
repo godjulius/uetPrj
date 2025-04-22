@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {Divider} from 'primeng/divider';
 import {Knob} from 'primeng/knob';
 import {CommonModule} from '@angular/common';
@@ -28,6 +28,7 @@ import {RouterLink} from '@angular/router';
 export class CourseHeaderComponent {
     @ViewChild('progress') progress!: Popover;
     @ViewChild('progress1') progress1!: Popover;
+    @Input({required: true}) course: any;
     value = 40;
     actionsMenu: MenuItem[] | undefined = [
         {

@@ -72,7 +72,7 @@ export class LandingHeaderComponent extends BaseComponent implements OnInit {
                                 },
                                 {
                                     label: 'Learning page', icon: 'pi pi-file', subtext: 'Demo learning page',
-                                    routerLink: 'learning'
+                                    routerLink: 'course/67fe6efc-d605-437e-b48d-1e4acc208916/lesson/da2d6e5b-57e2-427f-86ef-f4cbbf68a320'
                                 },
                                 {label: 'Instructor detail', icon: 'pi pi-users', subtext: 'Demo instructor detail',
                                     routerLink: 'instructor/123',
