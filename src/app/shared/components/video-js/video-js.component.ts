@@ -2,9 +2,9 @@ import {
     AfterViewInit,
     Component,
     ElementRef,
-    Input,
+    Input, OnChanges,
     OnDestroy,
-    OnInit,
+    OnInit, SimpleChanges,
     ViewChild,
     ViewEncapsulation,
 } from '@angular/core';
@@ -20,11 +20,11 @@ import 'videojs-hls-quality-selector/src/plugin';
     styleUrl: './video-js.component.css',
     encapsulation: ViewEncapsulation.None,
 })
-export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
+export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
     @ViewChild('target', { static: true }) target!: ElementRef;
-
+    @Input() src: string = '';
     // See options: https://videojs.com/guides/options
-    @Input() options: any = {
+    options: any = {
         controls: true,
         autoplay: false,
         sources: [
@@ -141,7 +141,17 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy {
 
     constructor(private elementRef: ElementRef) {}
 
-    ngOnInit() {}
+    ngOnInit() {
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        if (changes['src'] && changes['src'].currentValue) {
+            this.options.sources = [{
+                src: changes['src'].currentValue,
+                type: 'application/x-mpegURL',
+            }]
+        }
+    }
 
     // Instantiate a Video.js player
     ngAfterViewInit() {

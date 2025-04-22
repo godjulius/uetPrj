@@ -7,3 +7,4 @@ export const CATEGORY = '/course/category';
 export const ALL_CATEGORY = '/course/category/all';
 export const COURSE = '/course';
 export const COURSE_ALL = '/course/all';
+export const LESSON = '/course/lesson';
