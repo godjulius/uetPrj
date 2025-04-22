@@ -48,9 +48,7 @@ export class UserCoursesComponent extends BaseComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.data.set(this.courseService.courses.filter(course => {
-            return (course.id || 0) <= 5;
-        }));
+
         this.getData()
     }
 

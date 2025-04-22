@@ -53,7 +53,7 @@ export class CoursePreviewComponent implements OnInit {
         let totalSeconds = 0;
 
         lessons.forEach(lesson => {
-            totalSeconds += lesson.duration || 0;
+            totalSeconds += lesson.lesson?.duration || 0;
         });
 
         const hours = Math.floor(totalSeconds / 3600);
@@ -70,9 +70,9 @@ export class CoursePreviewComponent implements OnInit {
         let totalSeconds = 0;
 
         this.course.contents.forEach(section => {
-            totalLessons += section.lessons.length;
-            section.lessons.forEach(lesson => {
-                totalSeconds += lesson.duration || 0
+            totalLessons += section.sectionContents.length;
+            section.sectionContents.forEach(lesson => {
+                totalSeconds += lesson.lesson?.duration || 0
             });
         });
 
