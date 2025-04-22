@@ -1,5 +1,4 @@
-import {Component, ViewChild, inject} from '@angular/core';
-import {Component, inject, Input, OnInit} from '@angular/core';
+import {Component, inject, Input, OnInit, ViewChild} from '@angular/core';
 import {LandingFooterComponent} from '../../landing/landing-footer/landing-footer.component';
 import {TabsModule} from 'primeng/tabs';
 import {CourseOverviewComponent} from '../course-overview/course-overview.component';
