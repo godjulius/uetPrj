@@ -1,0 +1,86 @@
+<div class="w-full mb-24 mx-auto max-w-[60rem] px-4" *ngIf="course">
+    <ng-container>
+        <div class="mx-6 text-2xl mb-6">
+            {{ course.headline }}
+        </div>
+        <div class="flex justify-start mx-6 mb-4">
+            <div class="flex flex-col">
+                <div class="flex items-center text-base font-bold">
+                    <span class="mr-1">{{ course.rating || 0 }}</span>
+                    <i class="pi pi-star-fill text-yellow-500 mr-2"></i>
+                </div>
+                <span class="text-sm text-gray-500">{{ (course.students ?? 0) / 5 | number:'1.0-0' }} ratings</span>
+            </div>
+            <div class="flex flex-col ml-8">
+                <span class="text-base font-bold">
+                    {{ course.students | number }}
+                </span>
+                <span class="text-sm text-gray-500">Students</span>
+            </div>
+            <div class="flex flex-col ml-8">
+                <span class="text-base font-bold">
+                    {{ course.duration || 0 | durationFormat }}
+                </span>
+                <span class="text-sm text-gray-500">Total</span>
+            </div>
+        </div>
+        <div class="mx-6 mb-4">
+            <div class="flex items-center">
+                <i class="pi pi-calendar mr-2 text-lg"></i>
+                <span>Last updated {{ course.lastUpdated | date:'MMMM yyyy' }}</span>
+            </div>
+        </div>
+        <div class="mx-6">
+            <div class="flex items-center">
+                <i class="pi pi-globe mr-2"></i> {{ course.language || '' | languageName }}
+            </div>
+        </div>
+    </ng-container>
+    <p-card header="What You'll Learn" class="shadow-lg w-full mx-6">
+        <ul class="grid grid-cols-1 sm:grid-cols-2 gap-4 ">
+            <li *ngFor="let item of course?.whatYouWillLearn" class="flex items-center space-x-2">
+                <i class="pi pi-check text-green-500 mr-2"></i>
+                <span>{{ item }}</span>
+            </li>
+        </ul>
+    </p-card>
+    <ng-container>
+        <div class="border-t border-gray-300 p-6">
+            <p class="font-bold text-3xl mb-4">By the numbers</p>
+            <div class="max-w-[80rem] flex flex-col md:flex-row">
+                <div class="flex flex-col flex-1">
+                    <span class="font-medium">
+                        Skill level: {{ course.level }}
+                    </span>
+                    <span class="font-medium">
+                        Student: {{ course.students | number }}
+                    </span>
+                    <span class="font-medium">
+                        Languages: {{ course.language || '' | languageName }}
+                    </span>
+                </div>
+                <div class="flex flex-col flex-1">
+                    <span class="font-medium">
+                        Lectures: {{ course.contents?.length }}
+                    </span>
+                    <span class="font-medium">
+                        Video: {{ course.duration || 0 | durationFormat }} total length
+                    </span>
+                </div>
+            </div>
+        </div>
+    </ng-container>
+
+    <ng-container>
+        <div class="border-t border-gray-300 p-6">
+            <p class="font-bold text-3xl mb-4">Description</p>
+            <div class="max-w-[80rem]">
+                <app-editor-read-only [content]="course.description"></app-editor-read-only>
+            </div>
+        </div>
+    </ng-container>
+
+    <!--    <p-card class="w-full" *ngIf="course.description">-->
+    <!--        <app-editor-read-only [content]="course.description"></app-editor-read-only>-->
+    <!--    </p-card>-->
+</div>

@@ -435,6 +435,10 @@ export class CoursesService {
         }));
     }
 
+    addQuiz(sectionId: string, quiz: any) {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/section/${sectionId}/quiz/`, quiz));
+    }
+
     getLessonById(lessonId: string) {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${LESSON}/${lessonId}`));
     }

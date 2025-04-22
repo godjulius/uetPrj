@@ -17,39 +17,33 @@
                 <p-tab value="0">Overview</p-tab>
                 <p-tab value="1">Reviews</p-tab>
                 <p-tab value="2">Announcements</p-tab>
+                <p-tab value="3">Notes</p-tab>
             </p-tablist>
             <p-tabpanels>
                 <p-tabpanel value="0">
                     @if (activeIndex == '0') {
-                        <app-course-content></app-course-content>
+                        <app-course-overview></app-course-overview>
                     }
                 </p-tabpanel>
                 <p-tabpanel value="1">
                     @if (activeIndex == '1') {
-                        <app-course-content></app-course-content>
+                        <app-course-reviews></app-course-reviews>
                     }
                 </p-tabpanel>
                 <p-tabpanel value="2">
-                    <p class="m-0">
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                        deleniti
-                        atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
-                        similique
-                        sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum
-                        quidem rerum
-                        facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
-                        cumque nihil
-                        impedit quo minus.
-                        At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
-                        deleniti
-                        atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident,
-                        similique
-                        sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum
-                        quidem rerum
-                        facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio
-                        cumque nihil
-                        impedit quo minus.
-                    </p>
+                    @if (activeIndex == '2') {
+                        <app-course-announcements></app-course-announcements>
+                    }
+                </p-tabpanel>
+                <p-tabpanel value="3">
+                    @if (activeIndex == '3') {
+                        <app-course-notes
+                            [currentTime]="currentTime"
+                            (seekTo)="seekToTime($event)"
+                            (pauseVideo)="pauseVideo()"
+                            (resumeVideo)="resumeVideo()"
+                        ></app-course-notes>
+                    }
                 </p-tabpanel>
 
             </p-tabpanels>
