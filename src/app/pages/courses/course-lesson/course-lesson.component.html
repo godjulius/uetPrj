@@ -22,7 +22,7 @@
             <p-tabpanels>
                 <p-tabpanel value="0">
                     @if (activeIndex == '0') {
-                        <app-course-overview></app-course-overview>
+                        <app-course-overview [courseId]="courseId"></app-course-overview>
                     }
                 </p-tabpanel>
                 <p-tabpanel value="1">
