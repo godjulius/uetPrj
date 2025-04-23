@@ -27,15 +27,17 @@
                         <p-accordion-header>
                             <div class="flex flex-col">
                                 <h2 class="flex justify-between items-center font-semibold">
-                                    Section {{ index + 1 }}: {{ section.title || 'Untitled' }}
+                                    Section {{ index + 1 }}: {{ section.sectionTitle || 'Untitled' }}
                                 </h2>
                                 <p class="text-xs">9 / 10 | 22min</p>
                             </div>
                         </p-accordion-header>
                         <p-accordion-content>
-                            @for (lesson of section.sectionContents; track (lesson.lesson.id || lesson.quiz.id); let lessonIndex = $index) {
+
+                            @for (lesson of section.sectionContents; track (lesson.lesson?.id || lesson.quiz?.id); let lessonIndex = $index) {
                                 @if (lesson.lesson) {
-                                    <div class="rounded-md hover:bg-gray-200 p-2 dark:hover:bg-gray-800" [ngClass]="{'bg-gray-200 dark:bg-gray-800': lesson.lesson.id === currentLessonId}"
+                                    <div class="rounded-md hover:bg-gray-200 p-2 dark:hover:bg-gray-800"
+                                         [ngClass]="{'bg-gray-200 dark:bg-gray-800': lesson.lesson.id === currentLessonId}"
                                          (click)="handleClickLesson(lesson.lesson.id)">
                                         <div class="flex items-center gap-2 text-sm mr-3 cursor-pointer">
                                             <div
@@ -48,7 +50,8 @@
                                         <div class="flex justify-between pl-6">
                                             <div class="flex items-center gap-2">
                                                 <span class="pi pi-play-circle"></span>
-                                                <span class="text-gray-500 text-xs">{{ lesson.lesson.duration }}</span>
+                                                <span
+                                                    class="text-gray-500 text-xs">{{ lesson.lesson.duration }}</span>
                                             </div>
                                             <div>
                                                 <!--                                <p-button label="Resources" variant="outlined" size="small" icon="pi pi-folder-open" (onClick)="openResourcePopover($event)"/>-->
@@ -64,6 +67,7 @@
                                 }
 
                                 <!--                                     Todo: quiz-->
+
                             }
                         </p-accordion-content>
                     </p-accordion-panel>

@@ -261,7 +261,7 @@
                                                 }
                                                 @if (content.quiz) {
                                                     <p-button outlined raised
-                                                              (onClick)="handleClickEditQuiz(content.quiz.id, content.quiz)"
+                                                              (onClick)="handleClickEditQuiz(section.id, content.quiz.id)"
                                                     >
                                                         <span class="pi pi-file-edit"></span>
                                                         Edit quiz
@@ -348,16 +348,20 @@
 <app-quiz-lesson
     [(visible)]="isNewQuizDialogVisible"
     [sectionId]="sectionId"
+    [isNewQuiz]="isNewQuiz"
     [orderInSection]="orderInSection"
     (createQuiz)="handleCreateQuiz($event)"
 />
 
-<app-quiz-lesson
-    [(visible)]="isEditQuizDialogVisible"
-    [quizId]="quizId"
-    [quizData]="quizData"
-    (createQuiz)="handleCreateQuiz($event)"
-/>
+@if (isEditQuizDialogVisible) {
+    <app-quiz-lesson
+        [(visible)]="isEditQuizDialogVisible"
+        [isNewQuiz]="isNewQuiz"
+        [quizData]="quizData"
+        [orderInSection]="orderInSection"
+        (updateQuiz)="handleUpdateQuiz($event)"
+    />
+}
 
 <!--add category dialog-->
 <p-dialog

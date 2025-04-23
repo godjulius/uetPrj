@@ -27,10 +27,10 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
     @Input() sectionId: string = '';
     @Input() orderInSection: number = 0;
     @Input() isNewQuiz: boolean = true;
-    @Input() quizId: string = '';
-    @Input() quizData: Quiz | undefined;
+    @Input() quizData: any = undefined;
     @Output() visibleChange = new EventEmitter<boolean>();
-    @Output() createQuiz = new EventEmitter<Quiz>();
+    @Output() createQuiz = new EventEmitter<any>();
+    @Output() updateQuiz = new EventEmitter<any>();
     @ViewChildren('questionContainer') questionContainers!: QueryList<ElementRef>;
 
     quizForm!: FormGroup;
@@ -55,8 +55,6 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
         });
 
         if (this.quizData) {
-            console.log('edit', this.quizData);
-            this.quiz = this.quizData;
             this.patchQuizForm(this.quizData);
         }
     }
@@ -164,19 +162,38 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
             this.quiz.addQuestion(newQuestion);
         });
 
-        const quizData = {
+        let quizFormData: any = {
             ...this.quiz,
-            orderInSection: this.orderInSection + 1
+            orderInSection: this.orderInSection
         }
 
-        console.log('quizData', quizData);
-        this.coursesService.addQuiz(this.sectionId, quizData)
-            .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((res: any) => {
-                console.log("quiz", res);
-            });
-        this.createQuiz.emit(this.quiz);
-        // console.log('Quiz Created:', this.quiz);
+        console.log('quizFormData', quizFormData);
+
+        if (this.isNewQuiz) {
+            this.coursesService.addQuiz(this.sectionId, quizFormData)
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe((res: any) => {
+                    console.log("quiz", res);
+                    this.createQuiz.emit({
+                        id: res.id,
+                        orderInSection: res.orderInSection,
+                        title: res.title
+                    });
+                });
+        } else {
+            quizFormData = {
+                ...quizFormData,
+                id: this.quizData?.id
+            }
+            console.log('thisQuizData', quizFormData)
+
+            // this.coursesService.updateQuiz(this.sectionId, quizFormData)
+            //     .pipe(takeUntilDestroyed(this.destroyRef))
+            //     .subscribe((res: any) => {
+            //         console.log("quiz", res);
+            //     });
+            this.updateQuiz.emit(this.quiz);
+        }
         this.clearData();
     }
 
@@ -198,7 +215,7 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
 
             if (dialog && questionElement) {
                 dialog.scrollTo({
-                    top: questionElement.offsetTop - 205,
+                    top: questionElement.offsetTop - 190,
                     behavior: 'smooth'
                 });
             }

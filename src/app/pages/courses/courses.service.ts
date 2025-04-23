@@ -75,6 +75,10 @@ export class CoursesService {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${LESSON}/${lessonId}`));
     }
 
+    getQuizById(quizId: string) {
+        return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/quiz/${quizId}`));
+    }
+
     handleError(observable: any) {
         return observable.pipe(
             catchError((error: any) => {
