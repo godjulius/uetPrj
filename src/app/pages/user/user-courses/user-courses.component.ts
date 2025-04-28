@@ -54,7 +54,7 @@ export class UserCoursesComponent extends BaseComponent implements OnInit {
 
     getData() {
         this.loading = true;
-        this.courseService.getCourses(this.page, this.rows)
+        this.courseService.getMyCourses(this.page, this.rows)
             .pipe(
                 finalize(() => {
                     this.loading = false;

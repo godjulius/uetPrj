@@ -17,4 +17,5 @@ export interface IProfileModel {
     bio?: string;
     id: string | null;
     avatar: string | undefined;
+    isInstructor: boolean | null;
 }

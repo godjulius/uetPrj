@@ -1,13 +1,14 @@
 import {DestroyRef, inject, Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../../environments/environment';
-import {AVATAR, LOGIN, PROFILE, SIGNUP, USERINFO} from '../../core/constants/api.const';
+import {AVATAR, INSTRUCTOR, LOGIN, PROFILE, SIGNUP, USERINFO} from '../../core/constants/api.const';
 import {IProfileModel, LoginModel, SignUpModel} from './auth.model';
-import {catchError, map, Observable, of, Subject, throwError} from 'rxjs';
+import {BehaviorSubject, catchError, map, Observable, of, throwError} from 'rxjs';
 import {MessageService} from 'primeng/api';
 import {CookieStorageService} from '../../core/services/cookie-storage.service';
-import {AUTH_TOKEN} from '../../core/constants/common.const';
+import {AUTH_TOKEN, USER} from '../../core/constants/common.const';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {LocalStorageService} from '../../core/services/local-storage.service';
 
 @Injectable({
     providedIn: 'root'
@@ -17,6 +18,7 @@ export class AuthService implements OnInit {
     private httpClient = inject(HttpClient);
     private readonly messageService = inject(MessageService);
     private readonly cookieStorageService = inject(CookieStorageService);
+    private readonly localStorageService = inject(LocalStorageService)
     private readonly destroyRef = inject(DestroyRef)
     profile: IProfileModel = {
         email: '...@gmail.com',
@@ -26,9 +28,10 @@ export class AuthService implements OnInit {
         gender: "other",
         bio: '',
         id: '',
-        avatar: ''
+        avatar: '',
+        isInstructor: null
     }
-    profileObject = new Subject<IProfileModel>();
+    profileObject = new BehaviorSubject<IProfileModel>(this.profile);
 
     constructor() {
         if (this.cookieStorageService.getCookie(AUTH_TOKEN)) {
@@ -47,10 +50,11 @@ export class AuthService implements OnInit {
     profileObjectEmit() {
         this.getUserInfo()
             .pipe(takeUntilDestroyed(this.destroyRef))
-            .subscribe((res: any) => {
+            .subscribe((res: IProfileModel) => {
                 if (res) {
                     this.profile = res;
                     this.profileObject.next(res);
+                    this.localStorageService.setObject(USER, res)
                 }
             })
     }
@@ -100,6 +104,11 @@ export class AuthService implements OnInit {
 
     logout() {
         this.cookieStorageService.deleteCookie(AUTH_TOKEN);
+        this.localStorageService.clear();
+    }
+
+    registerInstructor() {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${INSTRUCTOR}`, {}))
     }
 
     handleError(observable: any) {
