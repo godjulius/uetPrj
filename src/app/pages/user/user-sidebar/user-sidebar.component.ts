@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, inject, OnInit, ViewChild} from '@angular/core';
 import {Avatar} from "primeng/avatar";
 import {Button} from "primeng/button";
 import {Drawer} from "primeng/drawer";
@@ -10,10 +10,12 @@ import {MenuItem} from 'primeng/api';
 import {LayoutService} from '../../../shared/services/layout.service';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {BaseComponent} from '../../../core/base.component';
+import {AuthService} from '../../auth/auth.service';
+import {IProfileModel} from '../../auth/auth.model';
 
 @Component({
-  selector: 'app-user-sidebar',
-  standalone: true,
+    selector: 'app-user-sidebar',
+    standalone: true,
     imports: [
         Avatar,
         Button,
@@ -24,181 +26,80 @@ import {BaseComponent} from '../../../core/base.component';
         RouterLinkActive,
         RouterLink
     ],
-  templateUrl: './user-sidebar.component.html',
-  styleUrl: './user-sidebar.component.css'
+    templateUrl: './user-sidebar.component.html',
+    styleUrl: './user-sidebar.component.css'
 })
 export class UserSidebarComponent extends BaseComponent implements OnInit {
-    items!: MenuItem[];
+    items: MenuItem[] = [
+        {
+            label: 'User settings',
+            icon: 'pi pi-user',
+            items: [
+                {
+                    label: 'User profile',
+                    icon: 'pi pi-user-edit',
+                    routerLink: 'profile',
+                },
+            ]
+        },
+        {
+            label: 'Courses',
+            icon: 'pi pi-palette',
+            items: [
+                {
+                    label: 'Attending courses',
+                    icon: 'pi pi-book',
+                    routerLink: 'attending-courses',
+                },
+                {
+                    label: 'Your courses',
+                    icon: 'pi pi-list',
+                    routerLink: 'user-courses',
+                },
+            ]
+        },
+        {
+            label: 'External',
+            icon: 'pi pi-link',
+            items: [
+                {
+                    label: 'Angular',
+                    icon: 'pi pi-star',
+                    url: 'https://angular.io/'
+                },
+                {
+                    label: 'Vite.js',
+                    icon: 'pi pi-bookmark',
+                    url: 'https://vitejs.dev/'
+                },
+            ]
+        }
+    ];
     visible: boolean = false;
     @ViewChild('drawerRef') drawerRef!: Drawer;
+    authService = inject(AuthService)
+    profile: IProfileModel | undefined;
+
     constructor(private router: Router, private layoutService: LayoutService) {
         super();
         this.sidebarSubjectSubscribe();
     }
 
+
     ngOnInit() {
-        this.items = [
-            {
-                label: 'User settings',
-                icon: 'pi pi-user',
-                items: [
-                    {
-                        label: 'User profile',
-                        icon: 'pi pi-user-edit',
-                        routerLink: 'profile',
-                    },
-                ]
-            },
-            {
-                label: 'Courses',
-                icon: 'pi pi-palette',
-                items: [
-                    {
-                        label: 'Attending courses',
-                        icon: 'pi pi-book',
-                        routerLink: 'attending-courses',
-                    },
-                    {
-                        label: 'Your courses',
-                        icon: 'pi pi-list',
-                        routerLink: 'user-courses',
-                    },
-                ]
-            },
-            {
-                label: 'External',
-                icon: 'pi pi-link',
-                items: [
-                    {
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },
-                    {
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'Vite.js',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },{
-                        label: 'Angular',
-                        icon: 'pi pi-star',
-                        url: 'https://angular.io/'
-                    },
-                    {
-                        label: 'end',
-                        icon: 'pi pi-bookmark',
-                        url: 'https://vitejs.dev/'
-                    },
-                ]
-            }
-        ];
+        this.initData();
+    }
+
+    private initData() {
+        this.profileSubscribe();
     }
 
     sidebarSubjectSubscribe() {
         this.layoutService.sidebarSubject
             .pipe(takeUntilDestroyed(this.destroyRef))
             .subscribe((isCollapsed: boolean) => {
-            this.visible = isCollapsed;
-        });
+                this.visible = isCollapsed;
+            });
     }
 
     toggleSideBar() {
@@ -211,5 +112,38 @@ export class UserSidebarComponent extends BaseComponent implements OnInit {
 
     closeDrawerCallback(e: any): void {
         this.drawerRef.close(e);
+    }
+
+    profileSubscribe() {
+        this.authService.profileObject
+            .pipe(
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((profile: IProfileModel) => {
+                console.log(1);
+                this.profile = profile;
+                if (!profile.isInstructor) {
+                    const coursesIndex = this.items.findIndex(item => {
+                        return item.label === 'Courses'
+                    })
+                    this.items[coursesIndex].items = this.items[coursesIndex].items?.filter(item => {
+                        return item.label !== 'Your courses';
+                    })
+                } else {
+                    const coursesIndex = this.items.findIndex(item => {
+                        return item.label === 'Courses'
+                    })
+                    const isIncluded = this.items[coursesIndex].items?.some(item => {
+                        return item.label === 'Your courses';
+                    })
+                    if (!isIncluded) {
+                        this.items[coursesIndex].items!.push({
+                            label: 'Your courses',
+                            icon: 'pi pi-list',
+                            routerLink: 'user-courses',
+                        })
+                    }
+                }
+            })
     }
 }

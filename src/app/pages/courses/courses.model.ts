@@ -6,6 +6,7 @@ export interface ICourse {
     price: number | undefined;
     rating: number | undefined; // Trung bình số sao đánh giá
     students: number | undefined; // Số lượng học viên đã đăng ký
+    numStudent: number | undefined; // Số lượng học viên đã đăng ký
     lessons: number | undefined; // Số bài học
     thumbnail: string | undefined; // Ảnh đại diện khóa học
     categories: string[] | undefined; // Danh mục khóa học

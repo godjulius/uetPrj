@@ -7,19 +7,6 @@
         </button>
     </div>
     <div class="overflow-y-auto h-screen">
-        <!--        <div>-->
-        <!--            <div class="p-4 border-b-2">-->
-        <!--                <div>-->
-        <!--                    <h2 class="flex justify-between items-center font-semibold">-->
-        <!--                        Section 1: Getting started-->
-        <!--                        <span class="pi pi-angle-down"></span>-->
-        <!--                    </h2>-->
-        <!--                    <p class="text-xs">9 / 10 | 22min</p>-->
-        <!--                </div>-->
-        <!--                <div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
         <p-accordion [value]="0" [multiple]="true">
             @if (courseContents) {
                 @for (section of courseContents; track section.id; let index = $index) {
@@ -35,9 +22,11 @@
                         <p-accordion-content>
                             @for (lesson of section.sectionContents; track (lesson.lesson.id || lesson.quiz.id); let lessonIndex = $index) {
                                 @if (lesson.lesson) {
-                                    <div class="rounded-md hover:bg-gray-200 p-2 dark:hover:bg-gray-800" [ngClass]="{'bg-gray-200 dark:bg-gray-800': lesson.lesson.id === currentLessonId}"
-                                         (click)="handleClickLesson(lesson.lesson.id)">
-                                        <div class="flex items-center gap-2 text-sm mr-3 cursor-pointer">
+                                    <a [routerLink]="'/course/' + courseId + '/lesson/' + lesson.lesson.id"
+                                       class="block rounded-md hover:bg-gray-200 p-2 dark:hover:bg-gray-800 cursor-pointer"
+                                       [ngClass]="{'bg-gray-200 dark:bg-gray-800': lesson.lesson.id === currentLessonId}"
+                                       (click)="handleClickLesson(lesson.lesson.id)">
+                                        <div class="flex items-center gap-2 text-sm mr-3">
                                             <div
                                                 class="w-4 h-4 rounded bg-indigo-500 text-white flex justify-center items-center">
                                                 <span class="pi pi-check" style="font-size: 10px;"></span>
@@ -60,7 +49,7 @@
                                                 </button>
                                             </div>
                                         </div>
-                                    </div>
+                                    </a>
                                 }
 
                                 <!--                                     Todo: quiz-->

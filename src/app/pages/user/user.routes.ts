@@ -4,6 +4,7 @@ import {UserComponent} from './user/user.component';
 import {UserCoursesComponent} from './user-courses/user-courses.component';
 import {AttendingCoursesComponent} from './attending-courses/attending-courses.component';
 import {CourseEditComponent} from './course-edit/course-edit.component';
+import {InstructorGuard} from '../../core/guards/instructor.guard';
 
 export const routes: Routes = [
     {
@@ -17,6 +18,7 @@ export const routes: Routes = [
             {
                 path: 'user-courses',
                 component: UserCoursesComponent,
+                canActivate: [InstructorGuard],
             },
             {
                 path: 'attending-courses',
@@ -25,10 +27,12 @@ export const routes: Routes = [
             {
                 path: 'user-courses/:courseId',
                 component: CourseEditComponent,
+                canActivate: [InstructorGuard],
             },
             {
                 path: 'user-courses/new',
                 component: CourseEditComponent,
+                canActivate: [InstructorGuard],
             }
         ]
     }

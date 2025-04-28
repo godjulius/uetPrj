@@ -24,7 +24,7 @@
                 <span class="flex items-center">
                     <i class="pi pi-globe mr-2"></i> {{ course?.language || '' | languageName }}
                 </span>
-                <span>{{ course?.students | number }} students</span>
+                <span>{{ course?.numStudent || 0 | number }} students</span>
             </div>
         </div>
     </div>
@@ -49,7 +49,7 @@
                 <span class="flex items-center">
                     <i class="pi pi-globe mr-2"></i> {{ course?.language }}
                 </span>
-                <span>{{ course?.students | number }} students</span>
+                <span>{{ course?.numStudent | number }} students</span>
             </div>
 
             <div class="mt-4">
@@ -191,7 +191,7 @@
                                 <li><strong>Level:</strong> {{ course.level }}</li>
                                 <li><strong>Duration:</strong> {{ course.duration || 0 | durationFormat }}</li>
                                 <li><strong>Language:</strong> {{ course.language || '' | languageName }}</li>
-                                <li><strong>Students:</strong> {{ course.students | number }}</li>
+                                <li><strong>Students:</strong> {{ course.numStudent || 0 | number }}</li>
                             </ul>
                         </div>
                     </div>

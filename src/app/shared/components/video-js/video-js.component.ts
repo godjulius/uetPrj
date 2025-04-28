@@ -31,8 +31,8 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
             {
                 // src: 'https://vjs.zencdn.net/v/oceans.mp4',
                 // type: 'video/mp4'
-                src: 'https://d37u0eh7zt2bro.cloudfront.net/course/video/eaf5376f-82c8-4e03-bdb9-f8863808b5a6/hls.m3u8',
-                type: 'application/x-mpegURL',
+                // src: 'https://d37u0eh7zt2bro.cloudfront.net/course/video/eaf5376f-82c8-4e03-bdb9-f8863808b5a6/hls.m3u8',
+                // type: 'application/x-mpegURL',
             },
         ],
         tracks: [
@@ -179,9 +179,6 @@ export class VideoJsComponent implements OnInit, AfterViewInit, OnDestroy, OnCha
                 });
             }
         );
-        // (this.player as any).hlsQualitySelector({
-        //     displayCurrentQuality: true,
-        // });
     }
 
     // Dispose the player OnDestroy

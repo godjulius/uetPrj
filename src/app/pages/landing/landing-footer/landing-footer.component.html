@@ -9,7 +9,8 @@
             </div>
             <p-button size="large" variant="outlined" severity="contrast"
                       styleClass="h-8 mt-4 md:mt-0" iconPos="left"
-                      [routerLink]="'/account/teacher-signup'"
+                      (onClick)="handleRegister()"
+                      *ngIf="!isInstructor"
             >
                 <span pButtonLabel class="!font-normal">Register</span>
             </p-button>
