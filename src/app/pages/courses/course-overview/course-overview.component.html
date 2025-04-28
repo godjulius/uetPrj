@@ -9,11 +9,12 @@
                     <span class="mr-1">{{ course.rating || 0 }}</span>
                     <i class="pi pi-star-fill text-yellow-500 mr-2"></i>
                 </div>
-                <span class="text-sm text-gray-500">{{ (course.students ?? 0) / 5 | number:'1.0-0' }} ratings</span>
+                <span class="text-sm text-gray-500">{{ (course.numStudent ?? 0) / 5 | number:'1.0-0' }}
+                    ratings</span>
             </div>
             <div class="flex flex-col ml-8">
                 <span class="text-base font-bold">
-                    {{ course.students | number }}
+                    {{ (course.numStudent) | number }}
                 </span>
                 <span class="text-sm text-gray-500">Students</span>
             </div>
@@ -50,10 +51,10 @@
             <div class="max-w-[80rem] flex flex-col md:flex-row">
                 <div class="flex flex-col flex-1">
                     <span class="font-medium">
-                        Skill level: {{ course.level }}
+                        Skill level: {{ course.level || '' | capitalize }}
                     </span>
                     <span class="font-medium">
-                        Student: {{ course.students | number }}
+                        Student: {{ course.numStudent | number }}
                     </span>
                     <span class="font-medium">
                         Languages: {{ course.language || '' | languageName }}

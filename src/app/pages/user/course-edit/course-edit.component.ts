@@ -96,10 +96,10 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     lessonId: string = '';
     sectionId: string = '';
     orderInSection: number = 0;
-    isNewQuiz: boolean = true;
     isEditQuizDialogVisible: boolean = false;
     quizId: string = '';
     quizData?: Quiz = undefined;
+    isNewQuiz: boolean = true;
 
     constructor() {
         super()
@@ -373,10 +373,11 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     }
 
     toggleQuizDialog(sectionId: string, orderInSection: number) {
+        this.isNewQuiz = true;
         this.isNewQuizDialogVisible = !this.isNewQuizDialogVisible;
         if (this.isNewQuizDialogVisible) {
             this.sectionId = sectionId;
-            this.orderInSection = orderInSection
+            this.orderInSection = orderInSection + 1
         } else {
             this.sectionId = '';
             this.orderInSection = 0;
@@ -408,7 +409,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
             });
     }
 
-    handleCreateQuiz(quiz: Quiz) {
+    handleCreateQuiz(quiz: any) {
         const index = this.courseContent.findIndex((section: any) => section.id === this.sectionId);
         if (!this.courseContent[index].sectionContents) {
             this.courseContent[index].sectionContents = [{quiz: quiz}];
@@ -417,11 +418,35 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
         }
     }
 
-    handleClickEditQuiz(quizId: string, quiz: Quiz) {
+    handleUpdateQuiz(quiz: any) {
+        const index = this.courseContent.findIndex((section: any) => section.id === this.sectionId);
+        console.log('index', index);
+        const quizIndex = this.courseContent[index].sectionContents.findIndex((item: any) => item.quiz?.id === this.quizId);
+        console.log('quizIndex', quizIndex);
+        if (quizIndex !== -1) {
+            this.courseContent[index].sectionContents[quizIndex].quiz.title = quiz.title;
+        }
+    }
+
+    handleClickEditQuiz(sectionId: string, quizId: string) {
         console.log('quizId', quizId);
-        console.log('quiz', quiz);
-        this.isEditQuizDialogVisible = true;
+        this.sectionId = sectionId;
         this.quizId = quizId;
-        this.quizData = quiz;
+        this.loading = true;
+        this.courseService.getQuizById(quizId)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                }),
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((res: any) => {
+                if (res) {
+                    this.quizData = res;
+                    this.isNewQuiz = false;
+                    this.orderInSection = res.orderInSection;
+                    this.isEditQuizDialogVisible = true;
+                }
+            });
     }
 }

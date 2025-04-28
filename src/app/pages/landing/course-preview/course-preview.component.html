@@ -13,7 +13,7 @@
                 <span class="font-medium mr-1">{{ course?.rating }}</span>
                 <i class="pi pi-star-fill text-yellow-500 mr-2"></i>
                 <span class="text-surface-900 font-medium">
-                    Level: {{ course?.level }}
+                    Level: {{ course?.level || '' | capitalize }}
                 </span>
             </div>
 
@@ -38,7 +38,7 @@
                 <span class="font-medium mr-1">{{ course?.rating }}</span>
                 <i class="pi pi-star-fill text-yellow-500 mr-2"></i>
                 <span class="text-surface-900 font-medium">
-                    Level: {{ course?.level }}
+                    Level: {{ course?.level || '' | capitalize }}
                 </span>
             </div>
 
@@ -188,10 +188,12 @@
 
                         <div class="mt-6 w-full">
                             <ul class="list-none space-y-2">
-                                <li><strong>Level:</strong> {{ course.level }}</li>
-                                <li><strong>Duration:</strong> {{ course.duration || 0 | durationFormat }}</li>
-                                <li><strong>Language:</strong> {{ course.language || '' | languageName }}</li>
-                                <li><strong>Students:</strong> {{ course.numStudent || 0 | number }}</li>
+                                <li><span class="font-bold">Level:</span> {{ course.level || '' | capitalize }}</li>
+                                <li><span class="font-bold">Duration:</span> {{ course.duration || 0 | durationFormat }}
+                                </li>
+                                <li><span class="font-bold">Language:</span> {{ course.language || '' | languageName }}
+                                </li>
+                                <li><span class="font-bold">Students:</span> {{ course.numStudent || 0 | number }}</li>
                             </ul>
                         </div>
                     </div>

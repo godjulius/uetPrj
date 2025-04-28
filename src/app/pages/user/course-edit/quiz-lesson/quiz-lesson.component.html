@@ -15,7 +15,8 @@
         <form [formGroup]="quizForm" (ngSubmit)="submitQuiz()">
             <div class="flex flex-col gap-2">
                 <!-- Sticky Header -->
-                <div class="sticky top-0 z-10  p-2 border-b border-gray-300">
+                <div
+                    class="sticky top-0 z-10  p-2 border-b border-gray-300 bg-white dark:bg-[rgb(24,24,27)] dark:border-gray-700">
                     <!-- Quiz Title -->
                     <div class="flex items-center gap-4">
                         <label for="title" class="text-xl font-semibold whitespace-nowrap">Quiz Title:</label>
@@ -47,7 +48,7 @@
                 >
                     <div *ngFor="let question of questions.controls; let i = index"
                          [formGroupName]="i"
-                         class="flex flex-col gap-2 border border-gray-200 p-2 rounded-lg"
+                         class="flex flex-col gap-2 border border-gray-200 dark:border-gray-600 p-2 rounded-lg"
                          #questionContainer
                     >
                         <div class="flex items-center justify-between">
@@ -131,7 +132,7 @@
             (click)="closeDialog()"
         />
         <p-button
-            label="Create Quiz"
+            [label]="quizData ? 'Save' : 'Create Quiz'"
             raised severity="contrast"
             type="submit"
             class="text-lg"

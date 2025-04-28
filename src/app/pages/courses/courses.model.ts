@@ -5,7 +5,7 @@ export interface ICourse {
     description: any | undefined;
     price: number | undefined;
     rating: number | undefined; // Trung bình số sao đánh giá
-    students: number | undefined; // Số lượng học viên đã đăng ký
+    students: object[] | undefined; // Thông tin học viên của khóa học
     numStudent: number | undefined; // Số lượng học viên đã đăng ký
     lessons: number | undefined; // Số bài học
     thumbnail: string | undefined; // Ảnh đại diện khóa học
@@ -17,6 +17,7 @@ export interface ICourse {
     requirements: string[] | undefined; // Yêu cầu đầu vào (VD: ["Biết lập trình cơ bản", "Cài đặt Node.js"])
     whatYouWillLearn: string[] | undefined; // Những gì học viên sẽ học được
     lastUpdated: string | undefined; // Ngày cập nhật gần nhất
+    numStudent: number | undefined; // Số lượng học viên đã đăng ký
     contents: {
         id: string | undefined;
         sectionTitle: string | undefined;

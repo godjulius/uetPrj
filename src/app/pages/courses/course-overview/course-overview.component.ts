@@ -11,11 +11,12 @@ import {FormsModule} from '@angular/forms';
 import {LanguageNamePipe} from '../../../shared/pipes/language-name.pipe';
 import {DurationFormatPipe} from '../../../shared/pipes/duration.pipe';
 import {BaseComponent} from '../../../core/base.component';
+import {CapitalizePipe} from '../../../shared/pipes/capitalize.pipe';
 
 @Component({
     selector: 'app-course-overview',
     standalone: true,
-    imports: [CommonModule, EditorReadOnlyComponent, Card, ProgressBarModule, FormsModule, LanguageNamePipe, DurationFormatPipe],
+    imports: [CommonModule, EditorReadOnlyComponent, Card, ProgressBarModule, FormsModule, LanguageNamePipe, DurationFormatPipe, CapitalizePipe],
     templateUrl: './course-overview.component.html',
     styleUrl: './course-overview.component.css'
 })
@@ -28,7 +29,7 @@ export class CourseOverviewComponent extends BaseComponent implements OnInit, On
     }
 
     ngOnChanges(changes: SimpleChanges) {
-        if(changes['courseId'] && changes['courseId'].currentValue) {
+        if (changes['courseId'] && changes['courseId'].currentValue) {
             this.courseId = changes['courseId'].currentValue;
             this.coursesService.getCourseById(this.courseId!)
                 .pipe(takeUntilDestroyed(this.destroyRef))

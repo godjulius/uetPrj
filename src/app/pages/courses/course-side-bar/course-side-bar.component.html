@@ -14,13 +14,14 @@
                         <p-accordion-header>
                             <div class="flex flex-col">
                                 <h2 class="flex justify-between items-center font-semibold">
-                                    Section {{ index + 1 }}: {{ section.title || 'Untitled' }}
+                                    Section {{ index + 1 }}: {{ section.sectionTitle || 'Untitled' }}
                                 </h2>
                                 <p class="text-xs">9 / 10 | 22min</p>
                             </div>
                         </p-accordion-header>
                         <p-accordion-content>
-                            @for (lesson of section.sectionContents; track (lesson.lesson.id || lesson.quiz.id); let lessonIndex = $index) {
+
+                            @for (lesson of section.sectionContents; track (lesson.lesson?.id || lesson.quiz?.id); let lessonIndex = $index) {
                                 @if (lesson.lesson) {
                                     <a [routerLink]="'/course/' + courseId + '/lesson/' + lesson.lesson.id"
                                        class="block rounded-md hover:bg-gray-200 p-2 dark:hover:bg-gray-800 cursor-pointer"
