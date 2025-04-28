@@ -11,13 +11,14 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {LanguageNamePipe} from '../../../shared/pipes/language-name.pipe';
 import {EditorReadOnlyComponent} from '../../../shared/components/editor-read-only/editor-read-only.component';
 import {DurationFormatPipe} from '../../../shared/pipes/duration.pipe';
+import {CapitalizePipe} from '../../../shared/pipes/capitalize.pipe';
 
 @Component({
     selector: 'app-course-preview',
     standalone: true,
     imports: [
         CommonModule, CardModule, ButtonDirective, Ripple, Accordion, AccordionPanel,
-        AccordionHeader, AccordionContent, LanguageNamePipe, EditorReadOnlyComponent, Button, DurationFormatPipe
+        AccordionHeader, AccordionContent, LanguageNamePipe, EditorReadOnlyComponent, Button, DurationFormatPipe, CapitalizePipe
     ],
     templateUrl: './course-preview.component.html',
     styleUrl: './course-preview.component.css'

@@ -181,17 +181,12 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
                     });
                 });
         } else {
-            quizFormData = {
-                ...quizFormData,
-                id: this.quizData?.id
-            }
-            console.log('thisQuizData', quizFormData)
-
-            // this.coursesService.updateQuiz(this.sectionId, quizFormData)
-            //     .pipe(takeUntilDestroyed(this.destroyRef))
-            //     .subscribe((res: any) => {
-            //         console.log("quiz", res);
-            //     });
+            console.log('quizId', this.quizData.id)
+            this.coursesService.updateQuiz(this.quizData.id, quizFormData)
+                .pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe((res: any) => {
+                    console.log("quizResponse", res);
+                });
             this.updateQuiz.emit(this.quiz);
         }
         this.clearData();

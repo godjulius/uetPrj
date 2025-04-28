@@ -6,9 +6,17 @@ import {Pipe, PipeTransform} from '@angular/core';
 })
 export class DurationFormatPipe implements PipeTransform {
     transform(minutes: number): string {
-        if (!minutes && minutes !== 0) return '';
+        if (minutes == null) return '';
+
+        if (minutes === 0) return '-';
+
         const hrs = Math.floor(minutes / 60);
         const mins = minutes % 60;
-        return `${hrs}h ${mins < 10 ? '0' + mins : mins}m`;
+
+        if (hrs > 0) {
+            return `${hrs}h ${mins < 10 ? '0' + mins : mins}m`;
+        } else {
+            return `${mins}m`;
+        }
     }
 }
