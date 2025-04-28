@@ -4,8 +4,17 @@ import {environment} from '../../../environments/environment';
 import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, of} from 'rxjs';
 import {MessageService} from 'primeng/api';
-import {ALL_CATEGORY, CATEGORY, COURSE, COURSE_ALL, LESSON} from '../../core/constants/api.const';
+import {
+    ALL_CATEGORY,
+    CATEGORY,
+    COURSE,
+    COURSE_ALL,
+    COURSE_SEARCH,
+    LESSON,
+    MY_COURSES
+} from '../../core/constants/api.const';
 import {Router} from '@angular/router';
+import {ICourseSearchModel} from '../landing/courses-search/search.model';
 
 @Injectable({
     providedIn: 'root'
@@ -39,8 +48,12 @@ export class CoursesService {
         return this.handleError(this.httpClient.post(`${this.baseUrl}${CATEGORY}`, {name: newCategory}));
     }
 
-    getCourses(page: number, size: number) {
+    getAllCourses(page: number, size: number) {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE_ALL}?page=${page}&size=${size}`));
+    }
+
+    getMyCourses(page: number, size: number) {
+        return this.handleError(this.httpClient.get(`${this.baseUrl}${MY_COURSES}?page=${page}&size=${size}`));
     }
 
     addSection(courseId: string, section: any) {
@@ -75,8 +88,21 @@ export class CoursesService {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${LESSON}/${lessonId}`));
     }
 
-    getQuizById(quizId: string) {
-        return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/quiz/${quizId}`));
+    searchCourses(filter: ICourseSearchModel) {
+        console.log(filter);
+        const params = {
+            keyword: filter.keyword,
+            // level: filter.filter.level || undefined,
+            // language: filter.filter.language || undefined,
+            // price: filter.filter.price || undefined,
+            // rating: filter.filter.rating || undefined,
+            // duration: filter.filter.duration || undefined,
+            page: filter.page.toString(),
+            size: filter.size.toString()
+        };
+        return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE_SEARCH}`, {
+            params: params
+        }));
     }
 
     handleError(observable: any) {

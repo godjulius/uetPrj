@@ -7,24 +7,26 @@ import {ButtonModule} from 'primeng/button';
 import {Popover, PopoverModule} from 'primeng/popover';
 import {CourseLayoutService} from '../course-layout.service';
 import {CommonModule} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-course-side-bar',
   standalone: true,
-  imports: [
-      CommonModule,
-      Tooltip,
-      AccordionModule,
-      AvatarModule, BadgeModule,
-      ButtonModule,
-      PopoverModule
-  ],
+    imports: [
+        CommonModule,
+        Tooltip,
+        AccordionModule,
+        AvatarModule, BadgeModule,
+        ButtonModule,
+        PopoverModule, RouterLink
+    ],
   templateUrl: './course-side-bar.component.html',
   styleUrl: './course-side-bar.component.css'
 })
 export class CourseSideBarComponent implements OnChanges {
     @Input({required: true}) courseContents: any;
     @Input({required: true}) currentLessonId: string | undefined;
+    @Input({required: true}) courseId: string | undefined;
     @ViewChild('resourcesPopover') resourcesPopover!: Popover;
     courseLayoutService = inject(CourseLayoutService)
 

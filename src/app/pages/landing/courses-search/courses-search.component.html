@@ -1,9 +1,7 @@
-<div class="pt-32 app-container flex flex-col gap-6">
-    <h2 class="text-2xl font-bold">2,769 results for “{{ token }}”</h2>
-    <div class="flex flex-col xl:flex-row gap-4">
+<div class="pt-32 app-container flex flex-col gap-6 min-h-screen">
+    <h2 class="text-2xl font-bold">{{ data?.total || 0 }} results for “{{ filter.keyword }}”</h2>
+    <div class="flex flex-col gap-4">
         <app-courses-filter></app-courses-filter>
-        <div class="flex-grow">
-        <app-courses-search-result></app-courses-search-result>
-        </div>
+        <app-courses-search-result [data]="data"></app-courses-search-result>
     </div>
 </div>

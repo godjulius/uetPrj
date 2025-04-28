@@ -1,6 +1,6 @@
 import {inject, Injectable} from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { CookieStorageService } from './cookie-storage.service';
+import { CookieStorageService } from '../services/cookie-storage.service';
 import { AUTH_TOKEN } from '../constants/common.const';
 import {MessageService} from 'primeng/api';
 
@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
     } else {
         this.messageService.add({severity:'error', summary:'Error', detail:'Please login to continue'});
       this.router.navigate(['/account/login']);
-      return false;
+  return false;
     }
   }
 }

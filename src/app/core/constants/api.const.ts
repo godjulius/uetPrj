@@ -8,3 +8,6 @@ export const ALL_CATEGORY = '/course/category/all';
 export const COURSE = '/course';
 export const COURSE_ALL = '/course/all';
 export const LESSON = '/course/lesson';
+export const INSTRUCTOR = '/user/instructor';
+export const COURSE_SEARCH = '/course/search';
+export const MY_COURSES = '/course/my_courses';

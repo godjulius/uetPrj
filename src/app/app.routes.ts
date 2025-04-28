@@ -1,5 +1,5 @@
 import {Routes} from '@angular/router';
-import {AuthGuard, LoginGuard} from './core/services/auth.guard';
+import {AuthGuard, LoginGuard} from './core/guards/auth.guard';
 import {LoginComponent} from './pages/auth/login/login.component';
 import {NotFoundComponent} from './pages/not-found/not-found.component';
 

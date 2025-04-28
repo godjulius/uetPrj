@@ -1,9 +1,41 @@
-<div class="flex justify-center">
-    <div class="flex gap-3 h-16">
-        <p-button icon="pi pi-arrow-right-arrow-left" [outlined]="true" label="Filter" variant="outlined" size="large"/>
-        <p-iftalabel class="w-full md:w-56">
-            <p-select [(ngModel)]="sortBy" inputId="sort-by" [options]="sortValues" optionLabel="label" styleClass="w-full"/>
-            <label for="sort-by">Sort</label>
-        </p-iftalabel>
+<div class="flex flex-wrap gap-4 justify-center">
+    <p-iftalabel class="w-[200px]">
+        <p-select [(ngModel)]="sortBy" inputId="sort-by" [options]="sortValues" optionLabel="label"
+                  styleClass="w-full"/>
+        <label for="sort-by">Sort</label>
+    </p-iftalabel>
+    <p-iftalabel class="w-[200px]">
+        <p-select
+            inputId="language"
+            [options]="languages"
+            optionLabel="name"
+            placeholder="Select a language"
+            class=""
+            styleClass="w-full"
+        />
+        <label for="language">Language</label>
+    </p-iftalabel>
+    <p-iftalabel class="w-[200px]">
+        <p-select
+            inputId="level"
+            [options]="levels"
+            optionLabel="name"
+            placeholder="Select a level"
+            class=""
+            styleClass="w-full"
+        />
+        <label for="level">Level</label>
+    </p-iftalabel>
+    <p-iftalabel>
+        <p-inputnumber [(ngModel)]="duration" inputId="duration" mode="decimal"></p-inputnumber>
+        <label for="duration">Duration (hour)</label>
+    </p-iftalabel>
+
+    <div class="flex flex-col gap-2 items-center justify-center">
+        <p-slider [(ngModel)]="rangeValues" [range]="true" styleClass="w-[300px]" [min]="0" [max]="1000"/>
+        <!--            <label for="price">Price</label>-->
+        <span class="">
+                Price: {{ rangeValues[0] + '$ - ' + rangeValues[1] + '$' }}
+            </span>
     </div>
 </div>
