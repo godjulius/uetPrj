@@ -1,0 +1,116 @@
+<!-- Start Screen -->
+<div *ngIf="currentIndex === -1 && !isCompleted" class="p-12 max-w-4xl mx-auto text-left">
+    <h1 class="text-2xl font-bold">{{ quiz.title }}</h1>
+
+    <p class="text-gray-600 mt-2">
+        {{ quiz.questions.length }} question{{ quiz.questions.length !== 1 ? 's' : '' }}
+    </p>
+
+    <ul class="text-sm text-gray-600 mt-4 list-disc list-inside">
+        <li>Choose the correct answer(s) for each question.</li>
+        <li>You can navigate between questions.</li>
+        <li>Click "Submit Quiz" when you're done.</li>
+    </ul>
+
+    <button pButton type="button" label="Start Quiz" class="mt-12" (click)="startQuiz()"></button>
+</div>
+
+
+<!-- Quiz Screen -->
+<div *ngIf="!isCompleted && currentIndex >= 0 && currentIndex < quiz.questions.length"
+     class="mx-12 p-12 md:mx-auto max-w-4xl">
+    <form [formGroup]="quizForm" (ngSubmit)="submitQuiz()">
+        <div formArrayName="questions">
+            <div [formGroupName]="currentIndex">
+                <h2 class="text-xl font-semibold">
+                    Question {{ currentIndex + 1 }}:
+                </h2>
+                <p class="mt-2 text-lg text-gray-800">
+                    {{ quiz.questions[currentIndex].questionName }}
+                </p>
+
+                <div class="mt-4 space-y-2">
+                    <ng-container
+                        *ngFor="let optionText of quiz.questions[currentIndex].options; let j = index">
+                        <label
+                            class="flex items-center gap-3 border rounded-lg p-3 cursor-pointer transition-colors duration-200"
+                            [for]="'answer' + (j + 1)"
+                            [ngClass]="{
+                                'bg-blue-50 border-blue-500': isOptionSelected(currentIndex, j + 1),
+                                'hover:border-blue-300': true,
+                                'border-gray-300': !isOptionSelected(currentIndex, j + 1)
+                            }"
+                        >
+                            <!-- Single choice -->
+                            <ng-container *ngIf="quiz.questions[currentIndex].type === 'single'; else multipleChoice">
+                                <p-radiobutton
+                                    [inputId]="'answer' + (j + 1)"
+                                    [value]="(j + 1)"
+                                    formControlName="submitAnswer"
+                                ></p-radiobutton>
+                            </ng-container>
+
+                            <!-- Multiple choice -->
+                            <ng-template #multipleChoice>
+                                <p-checkbox
+                                    [inputId]="'answer' + (j + 1)"
+                                    [value]="(j + 1)"
+                                    formControlName="submitAnswer"
+                                ></p-checkbox>
+                            </ng-template>
+
+                            <span class="text-gray-800">{{ optionText }}</span>
+                        </label>
+                    </ng-container>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-between mt-6">
+            <button
+                pButton
+                type="button"
+                label="Previous"
+                class="p-button-secondary"
+                (click)="prevQuestion()"
+                [disabled]="currentIndex === 0"
+            ></button>
+
+            <button
+                pButton
+                type="button"
+                label="Next"
+                class="p-button-primary"
+                *ngIf="currentIndex < quiz.questions.length - 1"
+                (click)="nextQuestion()"
+            ></button>
+
+            <button
+                pButton
+                type="submit"
+                label="Submit Quiz"
+                class="p-button-success"
+                *ngIf="currentIndex === quiz.questions.length - 1"
+            ></button>
+        </div>
+    </form>
+</div>
+
+<!-- Result Screen -->
+<div *ngIf="isCompleted" class="text-center p-12">
+    <h1 class="text-2xl font-bold text-green-700">Quiz Completed!</h1>
+
+    <p class="mt-2 text-lg">
+        Your score: <span class="font-semibold">{{ score }}%</span>
+    </p>
+
+    <p class="mt-1 text-gray-700">
+        You got {{ correctAnswers }} out of {{ quiz.questions.length }} correct.
+    </p>
+
+    <div class="mt-4 flex justify-center gap-4">
+        <button pButton type="button" label="Retry Quiz" class="p-button-secondary" (click)="startQuiz()"></button>
+
+        <button pButton type="button" label="Continue" class="p-button-primary" (click)="nextLesson()"></button>
+    </div>
+</div>
