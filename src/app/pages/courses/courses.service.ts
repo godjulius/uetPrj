@@ -84,6 +84,10 @@ export class CoursesService {
         return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/section/${sectionId}/quiz/`, quiz));
     }
 
+    getQuizById(quizId: string) {
+        return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/quiz/${quizId}`));
+    }
+
     updateQuiz(quizId: string, quiz: any) {
         return this.handleError(this.httpClient.put(`${this.baseUrl}${COURSE}/quiz/${quizId}`, quiz));
     }

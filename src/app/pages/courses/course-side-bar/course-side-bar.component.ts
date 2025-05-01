@@ -10,8 +10,8 @@ import {CommonModule} from '@angular/common';
 import {RouterLink} from '@angular/router';
 
 @Component({
-  selector: 'app-course-side-bar',
-  standalone: true,
+    selector: 'app-course-side-bar',
+    standalone: true,
     imports: [
         CommonModule,
         Tooltip,
@@ -20,8 +20,8 @@ import {RouterLink} from '@angular/router';
         ButtonModule,
         PopoverModule, RouterLink
     ],
-  templateUrl: './course-side-bar.component.html',
-  styleUrl: './course-side-bar.component.css'
+    templateUrl: './course-side-bar.component.html',
+    styleUrl: './course-side-bar.component.css'
 })
 export class CourseSideBarComponent implements OnChanges {
     @Input({required: true}) courseContents: any;

@@ -1,3 +1,11 @@
+export interface ILessonContent {
+    id: string | undefined;
+    orderInSection: number | undefined;
+    title: string | undefined;
+    freePreview?: boolean | undefined;
+    duration: number | undefined;
+}
+
 export interface ICourse {
     id: number | undefined;
     title: string | undefined;
@@ -17,23 +25,12 @@ export interface ICourse {
     requirements: string[] | undefined; // Yêu cầu đầu vào (VD: ["Biết lập trình cơ bản", "Cài đặt Node.js"])
     whatYouWillLearn: string[] | undefined; // Những gì học viên sẽ học được
     lastUpdated: string | undefined; // Ngày cập nhật gần nhất
-    numStudent: number | undefined; // Số lượng học viên đã đăng ký
     contents: {
         id: string | undefined;
         sectionTitle: string | undefined;
         sectionContents: {
-            quiz?: {
-                id: string | undefined;
-                orderInSection: number | undefined;
-                title: string | undefined;
-            },
-            lesson?: {
-                id: string | undefined;
-                orderInSection: number | undefined;
-                title: string | undefined;
-                freePreview?: boolean | undefined;
-                duration?: number | undefined;
-            }
+            quiz?: ILessonContent,
+            lesson?: ILessonContent
         }[]
     }[] | undefined; // Nội dung khóa học theo từng phần
 }
