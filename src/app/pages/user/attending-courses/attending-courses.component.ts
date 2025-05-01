@@ -7,6 +7,10 @@ import {FormsModule} from '@angular/forms';
 import {Skeleton} from 'primeng/skeleton';
 import {ICourse} from '../../courses/courses.model';
 import {CoursesService} from '../../courses/courses.service';
+import {finalize, first} from 'rxjs';
+import {Router, RouterLink} from '@angular/router';
+import {Paginator, PaginatorState} from 'primeng/paginator';
+import {Tooltip} from 'primeng/tooltip';
 
 @Component({
     selector: 'app-attending-courses',
@@ -17,27 +21,52 @@ import {CoursesService} from '../../courses/courses.service';
         CommonModule,
         SelectButton,
         FormsModule,
-        Skeleton
+        Skeleton,
+        Paginator,
+        RouterLink,
+        Tooltip
     ],
     templateUrl: './attending-courses.component.html',
     styleUrl: './attending-courses.component.css'
 })
 export class AttendingCoursesComponent implements OnInit {
     private courseService = inject(CoursesService);
+    private router = inject(Router)
     loading = false;
     layout: ('list' | 'grid') = 'list';
+    first = 0;
+    page = 1;
+    rows = 5;
+    totalRecords = 0;
     data = signal<ICourse[]>([] as ICourse[]);
-
     options: ('list' | 'grid')[] = ['list', 'grid'];
 
     constructor() {
     }
 
     ngOnInit() {
+        this.getData()
     }
 
-    selectItem(item: any) {
+    getData() {
+        this.loading = true;
+        this.courseService.getAttendingCourses()
+            .pipe(
+                first(),
+                finalize(() => {
+                    this.loading = false
+                })
+            )
+            .subscribe((data: any) => {
+                this.data.set(data.items);
+                console.log(this.data())
+                this.totalRecords = data.total;
+        });
+    }
+
+    selectItem(item: ICourse) {
         console.log(item)
+        this.router.navigate([`/course/${item.id}/lesson/${item.contents[0].sectionContents[0].lesson?.id}`]);
     }
 
     counterArray(n: number): any[] {
@@ -46,5 +75,12 @@ export class AttendingCoursesComponent implements OnInit {
 
     toggleLoading() {
         this.loading = !this.loading;
+    }
+
+    onPageChange(event: PaginatorState) {
+        this.first = event.first ?? 0;
+        this.rows = event.rows ?? 10;
+        this.page = (event.page ?? 1) + 1;
+        this.getData();
     }
 }

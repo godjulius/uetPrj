@@ -5,7 +5,7 @@ import {HttpClient} from '@angular/common/http';
 import {catchError, Observable, of} from 'rxjs';
 import {MessageService} from 'primeng/api';
 import {
-    ALL_CATEGORY,
+    ALL_CATEGORY, ATTENDING_COURSES,
     CATEGORY,
     COURSE,
     COURSE_ALL,
@@ -113,21 +113,31 @@ export class CoursesService {
         }));
     }
 
+    registerCourse(courseId: string) {
+        return this.handleError(this.httpClient.post(`${this.baseUrl}${COURSE}/${courseId}/register`, {}));
+    }
+
+    getAttendingCourses() {
+        return this.handleError(this.httpClient.get(`${this.baseUrl}${ATTENDING_COURSES}`));
+    }
+
     handleError(observable: any) {
         return observable.pipe(
             catchError((error: any) => {
                 console.log(error);
                 if (error.status === 422) {
                     console.log("hhh")
-                    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: error.error.detail});
+                    this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.detail});
                     this.router.navigate(['/404']);
                 }
                 if (error.status === 409) {
-                    this.messageService.add({severity: 'error', summary: 'Lỗi', detail: error.error.detail});
+                    this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.detail});
+                }
+                if (error.status === 403) {
+                    this.messageService.add({severity: 'error', summary: 'Error', detail: error.error.detail});
                 }
                 return of(null);
             })
         );
     }
-
 }

@@ -53,15 +53,29 @@
             </div>
 
             <div class="mt-4">
-                <p class="text-2xl font-bold text-gray-900">${{ course?.price }}</p>
+                @if (course?.price) {
+                    <p class="text-2xl font-bold text-gray-900">${{ course?.price }}</p>
+                } @else {
+                    <span class="text-2xl font-bold text-green-500">
+                        Free
+                    </span>
+                }
 
                 <div class="flex items-stretch w-full mt-4 space-x-2">
-                    <button pButton pRipple label="Add to Cart" type="button" raised class="flex-1"></button>
+                    @if (isAttended) {
+                        <p-button pRipple label="Learn now" type="button" raised
+                                  styleClass="flex-1" (onClick)="handleEnterLearningPage()"
+                                  [loading]="loading"></p-button>
+                    } @else {
+                        <p-button pRipple label="Enroll now" type="button" raised
+                                  styleClass="flex-1" (onClick)="handleRegisterCourse()" [loading]="loading"></p-button>
+                    }
                     <button pButton pRipple icon="pi pi-heart" severity="danger" outlined raised></button>
                 </div>
-
-                <button pButton pRipple label="Buy Now" icon="pi pi-shopping-cart" outlined
-                        class="w-full mt-2 font-semibold"></button>
+                @if (course?.price) {
+                    <button pButton pRipple label="Buy Now" icon="pi pi-shopping-cart" outlined
+                            class="w-full mt-2 font-semibold"></button>
+                }
             </div>
         </div>
     </div>
@@ -173,18 +187,32 @@
                          class="rounded-t-lg w-full h-60 object-cover shadow-md"/>
 
                     <div class="p-6">
-                        <p class="text-2xl font-bold  ">${{ course.price | number }}</p>
+                        @if (course.price) {
+                            <p class="text-2xl font-bold  ">${{ course.price | number }}</p>
+                        } @else {
+                            <span class="text-2xl font-bold text-green-500">
+                                Free
+                            </span>
+                        }
 
                         <div class="flex justify-between w-full mt-4 space-x-2">
                             <div class="flex-1">
-                                <p-button pRipple label="Add to Cart" type="button" raised
-                                          styleClass="w-full"></p-button>
+                                @if (isAttended) {
+                                    <p-button pRipple label="Learn now" type="button" raised
+                                              styleClass="w-full" (onClick)="handleEnterLearningPage()"
+                                              [loading]="loading"></p-button>
+                                } @else {
+                                    <p-button pRipple label="Enroll now" type="button" raised
+                                              styleClass="w-full" (onClick)="handleRegisterCourse()"
+                                              [loading]="loading"></p-button>
+                                }
                             </div>
                             <button pButton pRipple icon="pi pi-heart" severity="danger" outlined raised></button>
                         </div>
-
-                        <p-button pRipple label="Buy Now" icon="pi pi-shopping-cart" outlined
-                                  styleClass="w-full mt-2 font-semibold"></p-button>
+                        @if (course.price) {
+                            <p-button pRipple label="Buy Now" icon="pi pi-shopping-cart" outlined
+                                      styleClass="w-full mt-2 font-semibold"></p-button>
+                        }
 
                         <div class="mt-6 w-full">
                             <ul class="list-none space-y-2">
