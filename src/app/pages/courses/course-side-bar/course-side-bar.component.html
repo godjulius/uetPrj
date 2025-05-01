@@ -6,7 +6,7 @@
             <span class="pi pi-times" style="font-size: 10px;"></span>
         </button>
     </div>
-    <div class="overflow-y-auto h-screen">
+    <div class="overflow-y-auto h-screen lesson-sidebar">
         <p-accordion [value]="0" [multiple]="true">
             @if (courseContents) {
                 @for (section of courseContents; track section.id; let index = $index) {
@@ -24,12 +24,12 @@
                             @for (lesson of section.sectionContents; track (lesson.lesson?.id || lesson.quiz?.id); let lessonIndex = $index) {
                                 @if (lesson.lesson) {
                                     <a [routerLink]="'/course/' + courseId + '/lesson/' + lesson.lesson.id"
-                                       class="block rounded-md hover:bg-gray-200 p-2 dark:hover:bg-gray-800 cursor-pointer"
+                                       class="block hover:bg-gray-200 p-2 dark:hover:bg-gray-800 cursor-pointer"
                                        [ngClass]="{'bg-gray-200 dark:bg-gray-800': lesson.lesson.id === currentLessonId}"
                                        (click)="handleClickLesson(lesson.lesson.id)">
                                         <div class="flex items-center gap-2 text-sm mr-3">
                                             <div
-                                                class="w-4 h-4 rounded bg-indigo-500 text-white flex justify-center items-center">
+                                                class="w-4 h-4 rounded bg-nindigo-500 text-white flex justify-center items-center">
                                                 <span class="pi pi-check" style="font-size: 10px;"></span>
                                             </div>
                                             <!--                                        1. Introduction to the course-->

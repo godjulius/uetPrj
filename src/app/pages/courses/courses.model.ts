@@ -7,7 +7,7 @@ export interface ILessonContent {
 }
 
 export interface ICourse {
-    id: number | undefined;
+    id: string | undefined;
     title: string | undefined;
     headline: string | undefined;
     description: any | undefined;
@@ -32,5 +32,5 @@ export interface ICourse {
             quiz?: ILessonContent,
             lesson?: ILessonContent
         }[]
-    }[] | undefined; // Nội dung khóa học theo từng phần
+    }[]; // Nội dung khóa học theo từng phần
 }

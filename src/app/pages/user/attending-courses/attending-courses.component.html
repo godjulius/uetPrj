@@ -1,5 +1,5 @@
 <div class="mt-10">
-    <p-dataview #dv [value]="data()" [layout]="layout" [rows]="5" [paginator]="true">
+    <p-dataview #dv [value]="data()" [layout]="layout">
         <ng-template #header>
             <div class="flex justify-end gap-1">
                 <p-button (click)="toggleLoading()">
@@ -15,7 +15,7 @@
         <ng-template #list let-items>
             @if (loading) {
                 <div class="flex flex-col">
-                    <div *ngFor="let i of counterArray(6); let first = first">
+                    <div *ngFor="let i of counterArray(rows); let first = first">
                         <div
                             class="flex flex-col xl:flex-row xl:items-start p-6 gap-6"
                             [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
@@ -47,54 +47,65 @@
                     <div
                         class="flex flex-col sm:flex-row sm:items-center p-6 gap-4"
                         [ngClass]="{ 'border-t border-surface-200 dark:border-surface-700': !first }"
-                        (click)="selectItem(item)"
                     >
                         <div class="md:w-40 relative">
                             <img
                                 class="block xl:block mx-auto rounded w-full"
-                                [src]="'assets/images/course-skeleton.png'"
-                                [alt]="item.name"
+                                [src]="item.thumbnail ? item.thumbnail : 'assets/images/course-skeleton.png'"
+                                [alt]="item.title"
                             />
                         </div>
                         <div class="flex flex-col md:flex-row justify-between md:items-center flex-1 gap-6">
                             <div class="flex flex-row md:flex-col justify-between items-start gap-2">
                                 <div>
                                     <span
-                                        class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{ item.category }}</span>
-                                    <div class="text-lg font-medium mt-2">{{ item.name }}</div>
+                                        class="font-medium text-surface-500 dark:text-surface-400 text-sm line-clamp-1">
+                                        <ng-container *ngFor="let category of item.categories; let i = index">
+                                            {{ category + (i < item.categories.length - 1 ? ', ' : '') }}
+                                        </ng-container>
+                                    </span>
+                                    <div
+                                        class="text-lg font-medium mt-2 line-clamp-2"
+                                        [pTooltip]="item.title"
+                                        tooltipPosition="top"
+                                    >
+                                        {{ item.title }}
+                                    </div>
                                 </div>
                                 <div class="bg-surface-100 p-1" style="border-radius: 30px">
                                     <div
                                         class="bg-surface-0 flex items-center gap-2 justify-center py-1 px-2"
                                         style="border-radius: 30px; box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)"
                                     >
-                                        <span class="text-surface-900 font-medium text-sm">{{ item.rating }}</span>
+                                        <span class="text-surface-900 font-medium text-sm">{{ item.rating || 0 }}</span>
                                         <i class="pi pi-star-fill text-yellow-500"></i>
                                     </div>
                                 </div>
                             </div>
                             <div class="flex flex-col md:items-end gap-8">
-                                <span class="text-xl font-semibold">{{ item.price | currency: 'USD' }}</span>
+<!--                                <span class="text-xl font-semibold">{{ item.price | currency: 'USD' }}</span>-->
                                 <div class="flex flex-row-reverse md:flex-row gap-2">
-                                    <button pButton icon="pi pi-heart" [outlined]="true"></button>
+<!--                                    <button pButton icon="pi pi-heart" [outlined]="true"></button>-->
                                     <button
                                         pButton
-                                        icon="pi pi-shopping-cart"
-                                        label="Buy Now"
+                                        icon="pi pi-pen-to-square"
+                                        label="Learn now"
                                         class="flex-auto md:flex-initial whitespace-nowrap"
+                                        (click)="selectItem(item)"
                                     ></button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <ng-container *ngTemplateOutlet="paginator"></ng-container>
             }
         </ng-template>
         <ng-template #grid let-items>
             @if (loading) {
                 <div class="grid grid-cols-12 gap-4">
                     <div
-                        *ngFor="let i of counterArray(6); let first = first"
+                        *ngFor="let i of counterArray(rows); let first = first"
                         class="col-span-12 sm:col-span-6 xl:col-span-4 p-2"
                     >
                         <div
@@ -121,14 +132,13 @@
                     <div *ngFor="let item of items" class="col-span-12 sm:col-span-6 xl:col-span-4 p-2">
                         <div
                             class="p-6 border border-surface-200 dark:border-surface-700 bg-surface-0 dark:bg-surface-900 rounded flex flex-col"
-                            (click)="selectItem(item)"
                         >
                             <div class="bg-surface-50 flex justify-center rounded p-4">
                                 <div class="relative mx-auto">
                                     <img
                                         class="rounded w-full"
-                                        [src]="'assets/images/course-skeleton.png'"
-                                        [alt]="item.name"
+                                        [src]="item.thumbnail ? item.thumbnail : 'assets/images/course-skeleton.png'"
+                                        [alt]="item.title"
                                         style="max-width: 300px"
                                     />
                                 </div>
@@ -136,38 +146,54 @@
                             <div class="pt-6">
                                 <div class="flex flex-row justify-between products-start gap-2">
                                     <div>
-                                        <span class="font-medium text-surface-500 dark:text-surface-400 text-sm">{{
-                                                item.category
-                                            }}</span>
-                                        <div class="text-lg font-medium mt-1">{{ item.name }}</div>
+                                        <span class="font-medium text-surface-500 dark:text-surface-400 text-sm line-clamp-1">
+                                            <ng-container *ngFor="let category of item.categories; let i = index">
+                                                {{ category + ', ' }}
+                                            </ng-container>
+                                        </span>
+                                        <div
+                                            class="text-lg font-medium mt-1 line-clamp-2"
+                                            [pTooltip]="item.title"
+                                            tooltipPosition="top"
+                                        >
+                                            {{ item.title }}
+                                        </div>
                                     </div>
                                     <div class="bg-surface-100 p-1" style="border-radius: 30px; height:100%">
                                         <div
                                             class="bg-surface-0 flex products-center gap-2 justify-center py-1 px-2"
                                             style="border-radius: 30px; box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.04), 0px 1px 2px 0px rgba(0, 0, 0, 0.06)"
                                         >
-                                            <span class="text-surface-900 font-medium text-sm">{{ item.rating }}</span>
+                                            <span class="text-surface-900 font-medium text-sm">{{ item.rating || 0 }}</span>
                                             <i class="pi pi-star-fill text-yellow-500"></i>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="flex flex-col gap-6 mt-6">
-                                    <span class="text-2xl font-semibold">{{ item.price | currency: 'USD' }}</span>
+<!--                                    <span class="text-2xl font-semibold">{{ item.price | currency: 'USD' }}</span>-->
                                     <div class="flex gap-2">
                                         <button
                                             pButton
-                                            icon="pi pi-shopping-cart"
-                                            label="Buy Now"
+                                            icon="pi pi-pen-to-square"
+                                            label="Learn now"
                                             class="flex-auto whitespace-nowrap"
+                                            (click)="selectItem(item)"
                                         ></button>
-                                        <button pButton icon="pi pi-heart" outlined></button>
+<!--                                        <button pButton icon="pi pi-heart" outlined></button>-->
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <ng-container *ngTemplateOutlet="paginator"></ng-container>
             }
         </ng-template>
     </p-dataview>
+
 </div>
+
+<ng-template #paginator>
+    <p-paginator (onPageChange)="onPageChange($event)" [first]="first" [rows]="rows" [totalRecords]="totalRecords"
+                 [rowsPerPageOptions]="[2, 5, 10, 20, 30]"/>
+</ng-template>

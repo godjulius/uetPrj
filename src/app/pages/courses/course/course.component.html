@@ -2,7 +2,7 @@
 <div class="flex relative">
     <div class="overflow-y-auto w-full">
         <!--        <router-outlet></router-outlet>-->
-        <app-course-lesson [lessonId]="lessonId" [courseId]="courseId" [courseContents]="courseContents"/>
+        <app-course-lesson [lessonId]="lessonId" [courseId]="courseId"/>
     </div>
     @if (courseLayoutService.isSidebarOpen) {
         <app-course-side-bar [courseId]="courseId" [courseContents]="courseContents"
