@@ -1,10 +1,11 @@
 <app-course-header [course]="course"></app-course-header>
 <div class="flex relative">
     <div class="overflow-y-auto w-full">
-<!--        <router-outlet></router-outlet>-->
-        <app-course-lesson [lessonId]="lessonId" [courseId]="courseId"/>
+        <!--        <router-outlet></router-outlet>-->
+        <app-course-lesson [lessonId]="lessonId" [courseId]="courseId" [courseContents]="courseContents"/>
     </div>
-    @if(courseLayoutService.isSidebarOpen) {
-    <app-course-side-bar [courseId]="courseId" [courseContents]="courseContents" [currentLessonId]="lessonId"></app-course-side-bar>
+    @if (courseLayoutService.isSidebarOpen) {
+        <app-course-side-bar [courseId]="courseId" [courseContents]="courseContents"
+                             [currentLessonId]="lessonId"></app-course-side-bar>
     }
 </div>

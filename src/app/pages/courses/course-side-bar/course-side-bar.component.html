@@ -33,7 +33,7 @@
                                                 <span class="pi pi-check" style="font-size: 10px;"></span>
                                             </div>
                                             <!--                                        1. Introduction to the course-->
-                                            {{ lessonIndex + '.' }} {{ lesson.lesson.title || 'Untitled' }}
+                                            {{ lessonIndex + 1 + '.' }} {{ lesson.lesson.title || 'Untitled' }}
                                         </div>
                                         <div class="flex justify-between pl-6">
                                             <div class="flex items-center gap-2">
@@ -51,9 +51,36 @@
                                             </div>
                                         </div>
                                     </a>
+                                } @else if (lesson.quiz) {
+                                    <a [routerLink]="'/course/' + courseId + '/quiz/' + lesson.quiz.id"
+                                       class="block rounded-md hover:bg-gray-200 p-2 dark:hover:bg-gray-800 cursor-pointer"
+                                       [ngClass]="{'bg-gray-200 dark:bg-gray-800': lesson.quiz.id === currentLessonId}">
+                                        <div class="flex items-center gap-2 text-sm mr-3">
+                                            <div
+                                                class="w-4 h-4 rounded bg-indigo-500 text-white flex justify-center items-center">
+                                                <span class="pi pi-check" style="font-size: 10px;"></span>
+                                            </div>
+                                            <!--                                        1. Introduction to the course-->
+                                            {{ lessonIndex + 1 + '.' }} {{ lesson.quiz.title || 'Untitled' }}
+                                        </div>
+                                        <div class="flex justify-between pl-6">
+                                            <div class="flex items-center gap-2">
+                                                <span class="pi pi-question-circle"></span>
+                                                <!--                                                <span class="text-gray-500 text-xs">{{ lesson.lesson.duration }}</span>-->
+                                            </div>
+                                            <div>
+                                                <!--                                <p-button label="Resources" variant="outlined" size="small" icon="pi pi-folder-open" (onClick)="openResourcePopover($event)"/>-->
+                                                <button pButton class="p-button-outlined p-button-sm"
+                                                        (click)="openResourcePopover($event)">
+                                                    <span class="pi pi-folder-open"></span>
+                                                    Resources
+                                                    <span class="pi pi-angle-down"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </a>
                                 }
 
-                                <!--                                     Todo: quiz-->
                             }
                         </p-accordion-content>
                     </p-accordion-panel>

@@ -12,6 +12,8 @@ import {BaseComponent} from '../../../core/base.component';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {finalize} from 'rxjs';
 import {ProgressSpinner} from 'primeng/progressspinner';
+import {QuizPlayerComponent} from '../quiz-player/quiz-player.component';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'app-course-lesson',
@@ -24,7 +26,8 @@ import {ProgressSpinner} from 'primeng/progressspinner';
         CourseReviewsComponent,
         CourseAnnouncementsComponent,
         CourseNotesComponent,
-        ProgressSpinner
+        ProgressSpinner,
+        QuizPlayerComponent
     ],
     templateUrl: './course-lesson.component.html',
     styleUrl: './course-lesson.component.css'
@@ -38,7 +41,9 @@ export class CourseLessonComponent extends BaseComponent implements OnInit, OnCh
     courseService = inject(CoursesService)
     loading: boolean = false;
     lessonContent: any;
-    constructor() {
+    isLesson: boolean = true;
+
+    constructor(private router: Router) {
         super();
     }
 
@@ -46,23 +51,42 @@ export class CourseLessonComponent extends BaseComponent implements OnInit, OnCh
 
     }
 
-    ngOnChanges(changes:SimpleChanges) {
+    ngOnChanges(changes: SimpleChanges) {
+        const currentUrl = this.router.url;
         if (changes['lessonId'] && changes['lessonId'].currentValue) {
             this.loading = true;
-            this.courseService.getLessonById(this.lessonId!)
-                .pipe(
-                    takeUntilDestroyed(this.destroyRef),
-                    finalize(() => {
-                        this.loading = false
+            this.lessonContent = null
+            if (currentUrl.includes('lesson')) {
+                this.isLesson = true;
+                this.courseService.getLessonById(this.lessonId!)
+                    .pipe(
+                        takeUntilDestroyed(this.destroyRef),
+                        finalize(() => {
+                            this.loading = false
+                        })
+                    )
+                    .subscribe((res: any) => {
+                        if (res) {
+                            console.log(res);
+                            this.lessonContent = res;
+                        }
                     })
-                )
-                .subscribe((res: any) => {
-                    if(res) {
-                        console.log('course lesson');
-                        console.log(res);
-                        this.lessonContent = res;
-                    }
-                })
+            } else if (currentUrl.includes('quiz')) {
+                this.isLesson = false;
+                this.courseService.getQuizById(this.lessonId!)
+                    .pipe(
+                        takeUntilDestroyed(this.destroyRef),
+                        finalize(() => {
+                            this.loading = false;
+                        })
+                    )
+                    .subscribe((quizData: any) => {
+                        if (quizData) {
+                            console.log(quizData);
+                            this.lessonContent = quizData;
+                        }
+                    });
+            }
         }
     }
 
