@@ -1,12 +1,12 @@
 <!-- Start Screen -->
-<div *ngIf="currentIndex === -1 && !isCompleted" class="p-12 max-w-4xl mx-auto text-left">
-    <h1 class="text-2xl font-bold">{{ quiz.title }}</h1>
+<div *ngIf="currentIndex === -1 && !isCompleted" class="p-12 max-w-4xl mx-auto text-left ">
+    <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ quiz.title }}</h1>
 
-    <p class="text-gray-600 mt-2">
+    <p class="text-gray-600 dark:text-gray-300 mt-2">
         {{ quiz.questions.length }} question{{ quiz.questions.length !== 1 ? 's' : '' }}
     </p>
 
-    <ul class="text-sm text-gray-600 mt-4 list-disc list-inside">
+    <ul class="text-sm text-gray-600 dark:text-gray-300 mt-4 list-disc list-inside">
         <li>Choose the correct answer(s) for each question.</li>
         <li>You can navigate between questions.</li>
         <li>Click "Submit Quiz" when you're done.</li>
@@ -18,28 +18,29 @@
 
 <!-- Quiz Screen -->
 <div *ngIf="!isCompleted && currentIndex >= 0 && currentIndex < quiz.questions.length"
-     class="mx-12 p-12 md:mx-auto max-w-4xl">
+     class="mx-12 p-12 md:mx-auto max-w-4xl text-gray-800 dark:text-gray-200">
     <form [formGroup]="quizForm" (ngSubmit)="submitQuiz()">
         <div formArrayName="questions">
             <div [formGroupName]="currentIndex">
                 <h2 class="text-xl font-semibold">
                     Question {{ currentIndex + 1 }}:
                 </h2>
-                <p class="mt-2 text-lg text-gray-800">
+                <p class="mt-2 text-lg text-gray-800 dark:text-gray-200">
                     {{ quiz.questions[currentIndex].questionName }}
                 </p>
 
                 <div class="mt-4 space-y-2">
-                    <ng-container
-                        *ngFor="let optionText of quiz.questions[currentIndex].options; let j = index">
+                    <ng-container *ngFor="let optionText of quiz.questions[currentIndex].options; let j = index">
                         <label
-                            class="flex items-center gap-3 border rounded-lg p-3 cursor-pointer transition-colors duration-200"
+                            class="flex items-center gap-3 border rounded-lg p-3 cursor-pointer transition-colors duration-200
+                       bg-white dark:bg-gray-800
+                       text-gray-800 dark:text-gray-200
+                       hover:border-blue-300 dark:hover:border-blue-400"
                             [for]="'answer' + (j + 1)"
                             [ngClass]="{
-                                'bg-blue-50 border-blue-500': isOptionSelected(currentIndex, j + 1),
-                                'hover:border-blue-300': true,
-                                'border-gray-300': !isOptionSelected(currentIndex, j + 1)
-                            }"
+                    'bg-blue-50 border-blue-500 dark:bg-blue-900': isOptionSelected(currentIndex, j + 1),
+                    'border-gray-300 dark:border-gray-600': !isOptionSelected(currentIndex, j + 1)
+                }"
                         >
                             <!-- Single choice -->
                             <ng-container *ngIf="quiz.questions[currentIndex].type === 'single'; else multipleChoice">
@@ -59,7 +60,7 @@
                                 ></p-checkbox>
                             </ng-template>
 
-                            <span class="text-gray-800">{{ optionText }}</span>
+                            <span class="text-gray-800 dark:text-gray-200">{{ optionText }}</span>
                         </label>
                     </ng-container>
                 </div>
@@ -97,14 +98,14 @@
 </div>
 
 <!-- Result Screen -->
-<div *ngIf="isCompleted" class="text-center p-12">
-    <h1 class="text-2xl font-bold text-green-700">Quiz Completed!</h1>
+<div *ngIf="isCompleted" class="text-center p-12 text-gray-900 dark:text-gray-100">
+    <h1 class="text-2xl font-bold text-green-700 dark:text-green-400">Quiz Completed!</h1>
 
     <p class="mt-2 text-lg">
         Your score: <span class="font-semibold">{{ score }}%</span>
     </p>
 
-    <p class="mt-1 text-gray-700">
+    <p class="mt-1 text-gray-700 dark:text-gray-300">
         You got {{ correctAnswers }} out of {{ quiz.questions.length }} correct.
     </p>
 
