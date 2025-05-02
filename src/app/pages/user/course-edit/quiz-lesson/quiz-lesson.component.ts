@@ -224,8 +224,4 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
     getControl(index: number, fieldName: string): FormControl {
         return this.questions.at(index).get(fieldName) as FormControl;
     }
-
-    checkClick() {
-        console.log('checkClick', this.quizForm.value);
-    }
 }
