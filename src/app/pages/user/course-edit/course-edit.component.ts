@@ -23,12 +23,14 @@ import {Dialog} from 'primeng/dialog';
 import {StepperModule} from 'primeng/stepper';
 import {QuizLessonComponent} from './quiz-lesson/quiz-lesson.component';
 import {EditorComponent} from "../../../shared/components/editor/editor.component";
-import {MessageService} from 'primeng/api';
+import {ConfirmationService, MessageService} from 'primeng/api';
 import {finalize, forkJoin, of} from 'rxjs';
 import {BaseComponent} from '../../../core/base.component';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {LessonComponentComponent} from './lesson-component/lesson-component.component';
 import {Quiz} from './quiz.model';
+import {ConfirmPopupModule} from 'primeng/confirmpopup';
+import {ILessonContent, ISectionContent} from '../../courses/courses.model';
 
 @Component({
     selector: 'app-course-edit',
@@ -50,11 +52,12 @@ import {Quiz} from './quiz.model';
         FieldsetModule,
         Dialog,
         StepperModule,
-
         QuizLessonComponent,
         EditorComponent,
         LessonComponentComponent,
+        ConfirmPopupModule
     ],
+    providers: [ConfirmationService],
     templateUrl: './course-edit.component.html',
     styleUrl: './course-edit.component.css',
 })
@@ -64,6 +67,7 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
     private messageService = inject(MessageService);
     private activatedRoute = inject(ActivatedRoute);
     private router = inject(Router)
+    private confirmationService = inject(ConfirmationService)
     courseForm!: FormGroup;
     loading = false;
     isNewCourse = false;
@@ -448,5 +452,171 @@ export class CourseEditComponent extends BaseComponent implements OnInit, AfterV
                     this.isEditQuizDialogVisible = true;
                 }
             });
+    }
+
+    handleConfirmDeleteCourse(event: Event) {
+        console.log(1)
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message: 'Are you sure you want to delete?',
+            icon: 'pi pi-exclamation-triangle',
+            rejectButtonProps: {
+                label: 'Cancel',
+                severity: 'secondary',
+                outlined: true
+            },
+            acceptButtonProps: {
+                label: 'Delete'
+            },
+            accept: () => {
+                this.handleDeleteCourse()
+            },
+            reject: () => {
+            }
+        });
+    }
+
+    handleDeleteCourse() {
+        this.loading = true;
+        this.courseService.deleteCourse(this.courseId)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                }),
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((res: any) => {
+                if (res) {
+                    console.log(res);
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: `Course deleted successfully: ${res.title}, ${res.id}`
+                    });
+                    this.router.navigate(['/user/user-courses'])
+                }
+            })
+    }
+
+    handleConfirmRemoveLesson(event: Event, lessonContent: ILessonContent) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message: 'Are you sure you want to delete this lesson?',
+            icon: 'pi pi-exclamation-triangle',
+            rejectButtonProps: {
+                label: 'Cancel',
+                severity: 'secondary',
+                outlined: true
+            },
+            acceptButtonProps: {
+                label: 'Delete'
+            },
+            accept: () => {
+                if (lessonContent.lesson) {
+                    this.handleRemoveLesson(lessonContent.lesson.id!)
+
+                } else if (lessonContent.quiz) {
+                    this.handleRemoveQuiz(lessonContent.quiz.id!)
+                }
+            },
+            reject: () => {
+            }
+        });
+    }
+
+    handleRemoveLesson(lessonId: string) {
+        this.courseService.removeLesson(lessonId)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                }),
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((res: any) => {
+                if (res) {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: `Lesson deleted successfully`
+                    });
+                    this.courseContent.forEach((section: ISectionContent) => {
+                        section.sectionContents = section.sectionContents.filter((item: ILessonContent) => {
+                            if (item.lesson) {
+                                return item.lesson.id !== lessonId
+                            }
+                            return true
+                        })
+                    })
+                }
+            })
+    }
+
+    handleRemoveQuiz(quizId: string) {
+        this.courseService.removeQuiz(quizId)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                }),
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((res: any) => {
+                if (res) {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: `Quiz deleted successfully`
+                    });
+                    this.courseContent.forEach((section: ISectionContent) => {
+                        section.sectionContents = section.sectionContents.filter((item: ILessonContent) => {
+                            if (item.quiz) {
+                                return item.quiz.id !== quizId
+                            }
+                            return true
+                        })
+                    })
+                    console.log(this.courseContent)
+                }
+            })
+    }
+
+    handleConfirmRemoveSection(event: Event, sectionId: string) {
+        this.confirmationService.confirm({
+            target: event.target as EventTarget,
+            message: 'Are you sure you want to delete this section?',
+            icon: 'pi pi-exclamation-triangle',
+            rejectButtonProps: {
+                label: 'Cancel',
+                severity: 'secondary',
+                outlined: true
+            },
+            acceptButtonProps: {
+                label: 'Delete'
+            },
+            accept: () => {
+                this.handleRemoveSection(sectionId)
+            },
+            reject: () => {
+            }
+        });
+    }
+
+    private handleRemoveSection(sectionId: string) {
+        this.courseService.removeSection(sectionId)
+            .pipe(
+                finalize(() => {
+                    this.loading = false;
+                }),
+                takeUntilDestroyed(this.destroyRef)
+            )
+            .subscribe((res: any) => {
+                if (res) {
+                    this.messageService.add({
+                        severity: 'success',
+                        summary: 'Success',
+                        detail: `Section deleted successfully`
+                    });
+                    this.courseContent = this.courseContent.filter((section: ISectionContent) => section.id !== sectionId)
+                }
+            })
     }
 }

@@ -11,7 +11,7 @@ import {
     COURSE_ALL,
     COURSE_SEARCH,
     LESSON,
-    MY_COURSES
+    MY_COURSES, QUIZ, SECTION
 } from '../../core/constants/api.const';
 import {Router} from '@angular/router';
 import {ICourseSearchModel} from '../landing/courses-search/search.model';
@@ -85,11 +85,11 @@ export class CoursesService {
     }
 
     getQuizById(quizId: string) {
-        return this.handleError(this.httpClient.get(`${this.baseUrl}${COURSE}/quiz/${quizId}`));
+        return this.handleError(this.httpClient.get(`${this.baseUrl}${QUIZ}/${quizId}`));
     }
 
     updateQuiz(quizId: string, quiz: any) {
-        return this.handleError(this.httpClient.put(`${this.baseUrl}${COURSE}/quiz/${quizId}`, quiz));
+        return this.handleError(this.httpClient.put(`${this.baseUrl}${QUIZ}/${quizId}`, quiz));
     }
 
     getLessonById(lessonId: string) {
@@ -119,6 +119,30 @@ export class CoursesService {
 
     getAttendingCourses() {
         return this.handleError(this.httpClient.get(`${this.baseUrl}${ATTENDING_COURSES}`));
+    }
+
+    deleteCourse(courseId: string) {
+        return this.handleError(this.httpClient.delete(`${this.baseUrl}${COURSE}/${courseId}`, {
+            responseType: 'text'
+        }));
+    }
+
+    removeLesson(lessonId: string) {
+        return this.handleError(this.httpClient.delete(`${this.baseUrl}${LESSON}/${lessonId}`, {
+            responseType: 'text'
+        }));
+    }
+
+    removeQuiz(quizId: string) {
+        return this.handleError(this.httpClient.delete(`${this.baseUrl}${QUIZ}/${quizId}`, {
+            responseType: 'text'
+        }));
+    }
+
+    removeSection(sectionId: string) {
+        return this.handleError(this.httpClient.delete(`${this.baseUrl}${SECTION}/${sectionId}`, {
+            responseType: 'text'
+        }));
     }
 
     handleError(observable: any) {
