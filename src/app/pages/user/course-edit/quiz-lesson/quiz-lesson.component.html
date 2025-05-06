@@ -7,7 +7,9 @@
 >
     <ng-template #header>
         <div class="inline-flex items-center justify-center gap-2">
-            <span class="font-bold whitespace-nowrap">New Quiz</span>
+            <span class="font-bold whitespace-nowrap">
+                {{ !quizData ? 'New Quiz' : 'Edit Quiz' }}
+            </span>
         </div>
     </ng-template>
 
@@ -78,7 +80,7 @@
                             <label for="questionName" class="font-semibold">Question Name</label>
                             <textarea
                                 id="questionName"
-                                rows="3"
+                                rows="2"
                                 pTextarea
                                 formControlName="questionName"
                                 class="text-lg"
@@ -92,18 +94,20 @@
                             <div *ngFor="let num of [1, 2, 3, 4]; let j = index" class="flex items-center gap-2 mt-2">
                                 <ng-container *ngIf="question.get('type')?.value === 'single'; else multipleChoice">
                                     <p-radiobutton
-                                        [inputId]="'answer' + num"
+                                        inputId="answer{{i}}_{{num}}"
                                         [value]="num"
-                                        formControlName="correctAnswer"
+                                        [formControl]="getControl(i, 'correctAnswer')"
+                                        name="correctAnswer{{i}}}"
                                     >
                                     </p-radiobutton>
                                 </ng-container>
 
                                 <ng-template #multipleChoice>
                                     <p-checkbox
-                                        [inputId]="'answer' + num"
+                                        inputId="answer{{i}}_{{num}}"
                                         [value]="num"
-                                        formControlName="correctAnswer"
+                                        [formControl]="getControl(i, 'correctAnswer')"
+                                        name="correctAnswer{{i}}}"
                                     >
                                     </p-checkbox>
                                 </ng-template>

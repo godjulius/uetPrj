@@ -89,7 +89,7 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
             answer2: new FormControl('', Validators.required),
             answer3: new FormControl('', Validators.required),
             answer4: new FormControl('', Validators.required),
-            correctAnswer: new FormControl([], Validators.required)
+            correctAnswer: new FormControl<null | number | number[]>([], Validators.required)
         });
 
         questionForm.get('type')?.valueChanges
@@ -97,7 +97,11 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
                 takeUntilDestroyed(this.destroyRef)
             )
             .subscribe((type) => {
-                questionForm.get('correctAnswer')?.setValue([]);
+                if (type === 'single') {
+                    questionForm.get('correctAnswer')?.setValue(null);
+                } else {
+                    questionForm.get('correctAnswer')?.setValue([]);
+                }
             });
 
         return questionForm;
@@ -215,5 +219,9 @@ export class QuizLessonComponent extends BaseComponent implements OnInit {
                 });
             }
         }, 100);
+    }
+
+    getControl(index: number, fieldName: string): FormControl {
+        return this.questions.at(index).get(fieldName) as FormControl;
     }
 }
