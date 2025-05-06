@@ -123,27 +123,102 @@ export class UserSidebarComponent extends BaseComponent implements OnInit {
                 console.log(1);
                 this.profile = profile;
                 if (!profile.isInstructor) {
-                    const coursesIndex = this.items.findIndex(item => {
-                        return item.label === 'Courses'
-                    })
-                    this.items[coursesIndex].items = this.items[coursesIndex].items?.filter(item => {
-                        return item.label !== 'Your courses';
-                    })
+                    this.items = studentMenu;
                 } else {
-                    const coursesIndex = this.items.findIndex(item => {
-                        return item.label === 'Courses'
-                    })
-                    const isIncluded = this.items[coursesIndex].items?.some(item => {
-                        return item.label === 'Your courses';
-                    })
-                    if (!isIncluded) {
-                        this.items[coursesIndex].items!.push({
-                            label: 'Your courses',
-                            icon: 'pi pi-list',
-                            routerLink: 'user-courses',
-                        })
-                    }
+                    this.items = instructorMenu;
                 }
             })
     }
 }
+
+const studentMenu: MenuItem[] = [
+    {
+        label: 'User settings',
+        icon: 'pi pi-user',
+        items: [
+            {
+                label: 'User profile',
+                icon: 'pi pi-user-edit',
+                routerLink: 'profile',
+            },
+        ]
+    },
+    {
+        label: 'Courses',
+        icon: 'pi pi-palette',
+        items: [
+            {
+                label: 'Attending courses',
+                icon: 'pi pi-book',
+                routerLink: 'attending-courses',
+            },
+        ]
+    },
+    {
+        label: 'External',
+        icon: 'pi pi-link',
+        items: [
+            {
+                label: 'Angular',
+                icon: 'pi pi-star',
+                url: 'https://angular.io/'
+            },
+            {
+                label: 'Vite.js',
+                icon: 'pi pi-bookmark',
+                url: 'https://vitejs.dev/'
+            },
+        ]
+    }
+];
+
+const instructorMenu: MenuItem[] = [
+    {
+        label: 'User settings',
+        icon: 'pi pi-user',
+        items: [
+            {
+                label: 'User profile',
+                icon: 'pi pi-user-edit',
+                routerLink: 'profile',
+            },
+        ]
+    },
+    {
+        label: 'Courses',
+        icon: 'pi pi-palette',
+        items: [
+            {
+                label: 'Statistics',
+                icon: 'pi pi-chart-line',
+                routerLink: 'statistics',
+            },
+            {
+                label: 'Attending courses',
+                icon: 'pi pi-book',
+                routerLink: 'attending-courses',
+            },
+            {
+                label: 'Your courses',
+                icon: 'pi pi-list',
+                routerLink: 'user-courses',
+            },
+        ]
+    },
+    {
+        label: 'External',
+        icon: 'pi pi-link',
+        items: [
+            {
+                label: 'Angular',
+                icon: 'pi pi-star',
+                url: 'https://angular.io/'
+            },
+            {
+                label: 'Vite.js',
+                icon: 'pi pi-bookmark',
+                url: 'https://vitejs.dev/'
+            },
+        ]
+    }
+]

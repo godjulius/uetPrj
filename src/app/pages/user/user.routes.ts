@@ -33,6 +33,11 @@ export const routes: Routes = [
                 path: 'user-courses/new',
                 component: CourseEditComponent,
                 canActivate: [InstructorGuard],
+            },
+            {
+                path: 'statistics',
+                loadComponent: () => import('./statistics/statistics.component').then(m => m.StatisticsComponent),
+                canActivate: [InstructorGuard],
             }
         ]
     }

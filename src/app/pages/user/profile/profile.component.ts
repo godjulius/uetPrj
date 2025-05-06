@@ -164,8 +164,8 @@ export class ProfileComponent extends BaseComponent implements OnInit{
             .subscribe((res: IProfileModel) => {
                 if (res) {
                     this.messageService.add({severity: 'success', summary: 'Success', detail: `You are now an instructor`});
-                    this.authService.profileObject.next(res);
-                    window.location.reload();
+                    this.authService.profileObjectEmit()
+                    // window.location.reload();
                 }
             });
     }

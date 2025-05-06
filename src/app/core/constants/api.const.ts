@@ -12,3 +12,5 @@ export const INSTRUCTOR = '/user/instructor';
 export const COURSE_SEARCH = '/course/search';
 export const MY_COURSES = '/course/my_courses';
 export const ATTENDING_COURSES = '/course/attending_courses';
+export const QUIZ = '/course/quiz';
+export const SECTION = '/course/section';

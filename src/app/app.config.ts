@@ -64,8 +64,9 @@ export const appConfig: ApplicationConfig = {
                         id: GoogleLoginProvider.PROVIDER_ID,
                         provider: new GoogleLoginProvider(
                             environment['google_oauth2'] ||
-                            '678773826180-11bfng2mkn4h8h3p4s17kcl32a4fdjfp.apps.googleusercontent.com'
-                        )
+                            '678773826180-11bfng2mkn4h8h3p4s17kcl32a4fdjfp.apps.googleusercontent.com',
+                        ),
+                        redirect_uri: 'https://uet-prj.vercel.app/account/login',
                     },
                     {
                         id: FacebookLoginProvider.PROVIDER_ID,
