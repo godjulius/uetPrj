@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "skills": {
+    "angular-best-practices-legacy": {
+      "source": "develite98/angular-best-practices",
+      "sourceType": "github",
+      "computedHash": "40a375e00f2420f7016afdeba2b72684fcb70d76c16b8d7bf5317c0d221f9342"
+    },
+    "angular-best-practices-v20": {
+      "source": "develite98/angular-best-practices",
+      "sourceType": "github",
+      "computedHash": "2928b73cbf55cfdc4ba7bc4c4dfd13acbcc62dee00d27b4704e9b62eb1cb8323"
+    },
+    "angular-css-bem-best-practices": {
+      "source": "develite98/angular-best-practices",
+      "sourceType": "github",
+      "computedHash": "709330762d24c8646a883beb5de0a001f4ccc3f52f80d2bb039e116f5fe344d0"
+    },
+    "the-art-of-naming": {
+      "source": "develite98/angular-best-practices",
+      "sourceType": "github",
+      "computedHash": "abc67d876e9e69351fe42889771eb9f22de22092b0de1f0377ae29c98acf6730"
+    }
+  }
+}
